@@ -1,0 +1,18 @@
+
+# TINJAUAN PUSTAKA {#sec-tinjauan-pustaka}
+
+## Isi Tinjauan Pustaka
+
+<!-- Apa yang sudah diteliti sebelumnya, dan apa yang perlu diteliti lebih lanjut.
+Hanya acuan berisi data/fakta yang boleh dikutip, bukan opini. -->
+
+Tinjauan pustaka memaparkan penelitian terdahulu beserta hasil-hasilnya dan celah yang
+masih perlu diteliti. Penelitian mengenai kondisi energi nuklir di kawasan telah dilaporkan
+[@caballero2015], sedangkan pembahasan reaktor modular kecil dapat dilihat pada
+[@kessides2012]. Contoh acuan berupa skripsi adalah [@putra2008].
+
+## Penulisan Acuan
+
+Penulisan acuan sangat disarankan dikelola dengan aplikasi manajemen pustaka, misalnya
+Zotero atau Mendeley. Pustaka yang diacu sebaiknya baru, misalnya dengan tahun
+penerbitan paling lama 20 tahun terakhir.

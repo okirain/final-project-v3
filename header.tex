@@ -1,0 +1,74 @@
+% ============================================================
+% header.tex  --  aturan tipografi sesuai Panduan TA/Skripsi DTNTF UGM
+% ============================================================
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{etoolbox}
+\usepackage{setspace}
+
+% Alinea rata kiri-kanan, awal alinea menjorok 1 cm
+\setlength{\parindent}{1cm}
+\setlength{\parskip}{0pt}
+
+% ---------- Penomoran ----------
+% Bab: BAB I (Romawi); subbab: I.1, I.2.1
+% Gambar/Tabel/Persamaan: angka Arab per bab (3.1). Counter di-reset per bab oleh class report.
+\renewcommand{\thechapter}{BAB~\Roman{chapter}}
+\renewcommand{\thesection}{\Roman{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand{\theequation}{\arabic{chapter}.\arabic{equation}}
+
+% ---------- Judul bab / subbab ----------
+% Judul bab: HURUF KAPITAL, tebal, rata tengah, tanpa titik
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\centering}{\thechapter}{12pt}{\MakeUppercase}
+\titleformat{name=\chapter,numberless}[block]
+  {\normalfont\bfseries\centering}{}{0pt}{\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{24pt}
+
+% Subbab dst.: rata kiri, tebal, Title Case (diketik manual), tanpa titik di akhir
+\titleformat{\section}{\normalfont\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\bfseries}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\bfseries}{\thesubsubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{6pt}
+
+% ---------- Daftar isi ----------
+\titlecontents{chapter}[0pt]{\addvspace{6pt}}
+  {\thecontentslabel\ \ }{}{\titlerule*[.5pc]{.}\contentspage}
+\titlecontents{section}[4em]{}
+  {\contentslabel{3em}}{}{\titlerule*[.5pc]{.}\contentspage}
+\titlecontents{subsection}[8em]{}
+  {\contentslabel{4em}}{}{\titlerule*[.5pc]{.}\contentspage}
+
+% ---------- Nomor halaman ----------
+% Kanan atas; tengah bawah pada halaman yang memuat judul bab
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---------- Judul gambar/tabel ----------
+% "Gambar 3.1." / "Tabel 3.1." (label tebal), spasi 1 untuk judul >1 baris
+\captionsetup{font={stretch=1}, labelfont=bf, labelsep=period,
+              singlelinecheck=off, justification=justified, format=hang}
+\DeclareCaptionListFormat{gambarlist}{\figurename~#1#2}
+\DeclareCaptionListFormat{tabellist}{\tablename~#1#2}
+\captionsetup[figure]{listformat=gambarlist}
+\captionsetup[table]{listformat=tabellist}
+\makeatletter
+\renewcommand*{\l@figure}{\@dottedtocline{1}{0em}{6em}}
+\renewcommand*{\l@table}{\@dottedtocline{1}{0em}{6em}}
+\makeatother
+
+% ---------- Daftar pustaka: spasi 1 ----------
+\AtBeginEnvironment{CSLReferences}{\singlespacing}

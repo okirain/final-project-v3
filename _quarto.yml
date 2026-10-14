@@ -1,0 +1,52 @@
+project:
+  type: default
+  output-dir: _output
+  render:
+    - skripsi.qmd
+
+lang: id
+bibliography: references.bib
+csl: skripsi-ugm.csl
+
+crossref:
+  fig-title: "Gambar"
+  tbl-title: "Tabel"
+  fig-prefix: "Gambar"
+  tbl-prefix: "Tabel"
+  eq-prefix: "Persamaan"
+  fig-labels: arabic
+  tbl-labels: arabic
+
+format:
+  pdf:
+    pdf-engine: xelatex
+    documentclass: report
+    top-level-division: chapter     # "# Judul" -> \chapter
+    papersize: a4
+    fontsize: 12pt
+    # Times New Roman bila terpasang; TeX Gyre Termes punya metrik hampir identik
+    # dan selalu ada di TeX Live. Ganti ke "Times New Roman" di komputer sendiri.
+    mainfont: "TeX Gyre Termes"
+    linestretch: 1.5
+    indent: true                    # paragraf menjorok (diatur di header.tex: 1 cm)
+    geometry:
+      - top=4cm
+      - bottom=3cm
+      - left=4cm
+      - right=3cm
+      - headheight=15pt
+    toc: false                      # Daftar isi/tabel/gambar disusun manual (front/daftar.qmd)
+    lof: false
+    lot: false
+    number-sections: true
+    number-depth: 3
+    colorlinks: false
+    link-citations: false
+    fig-cap-location: bottom        # judul Gambar di bawah gambar
+    tbl-cap-location: top           # judul Tabel di atas tabel
+    fig-pos: "htbp"
+    include-in-header:
+      - meta.tex
+      - header.tex
+    keep-tex: true
+    output-file: skripsi

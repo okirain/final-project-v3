@@ -1,0 +1,13 @@
+
+# TABEL DENSITAS MATERIAL {#sec-lampiran-b}
+
+## Densitas Zona Blanket
+
+Contoh tabel pada lampiran dirujuk dengan @tbl-densitas.
+
+| Unsur  | A (g/mol) | N ($10^{24}$/cm$^3$) |
+|:-------|----------:|---------------------:|
+| Th-232 | 232,038   | 0,021                |
+| O-16   | 15,995    | 0,042                |
+
+: Densitas ThO$_2$ pada zona blanket aksial. {#tbl-densitas}

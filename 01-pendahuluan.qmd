@@ -1,0 +1,39 @@
+```{=latex}
+% Bagian Utama: nomor halaman angka Arab, mulai 1.
+\clearpage
+\pagenumbering{arabic}
+```
+
+# PENDAHULUAN {#sec-pendahuluan}
+
+## Latar Belakang
+
+<!-- Gambaran permasalahan/kebutuhan dan hal-hal yang mendasari pentingnya penelitian. -->
+
+Uraian tentang gambaran permasalahan atau kebutuhan dan alasan mengapa penelitian ini
+penting untuk dilakukan [@iea2015; @oecd2017; @den2016].
+
+## Perumusan Masalah
+
+<!-- (1) identifikasi akar permasalahan/kebutuhan, (2) pendekatan penyelesaiannya. -->
+
+Perumusan masalah berisi:
+
+1) identifikasi akar permasalahan atau kebutuhan, dan
+2) pendekatan (*approach*) penyelesaiannya.
+
+### Batasan Masalah
+
+Batasan masalah yang digunakan dalam penelitian ini adalah sebagai berikut.
+
+1) Analisis dibatasi pada parameter neutronik.
+2) Analisis dibatasi pada lingkup teras reaktor.
+3) Data teknis dibatasi pada data teknis resmi reaktor yang dilengkapi dengan penelitian terkait.
+
+## Tujuan Penelitian
+
+Tujuan yang akan dicapai dalam penelitian ini diuraikan di sini.
+
+## Manfaat Penelitian
+
+Manfaat yang dapat diperoleh bila tujuan penelitian tercapai diuraikan di sini.

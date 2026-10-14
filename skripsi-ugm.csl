@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never" default-locale="id-ID">
+  <!-- Gaya sitasi numerik sesuai Panduan TA/Skripsi DTNTF UGM:
+       - nama penulis lengkap (nama_depan nama_belakang), semua penulis ditulis, "dan" sebelum penulis terakhir
+       - tiga blok dipisah titik: penulis. judul. informasi.
+       - urutan sesuai kemunculan acuan di naskah -->
+  <info>
+    <title>Skripsi DTNTF UGM (numerik)</title>
+    <id>http://www.zotero.org/styles/skripsi-dtntf-ugm</id>
+    <link href="http://www.zotero.org/styles/skripsi-dtntf-ugm" rel="self"/>
+    <category citation-format="numeric"/>
+    <category field="engineering"/>
+    <summary>Numerik [n], nama lengkap tanpa et al., format blok sesuai panduan DTNTF UGM</summary>
+    <updated>2026-10-14T00:00:00+00:00</updated>
+  </info>
+
+  <!-- Titik penutup berada di luar tanda kutip: “Judul Artikel”. -->
+  <locale xml:lang="id">
+    <style-options punctuation-in-quote="false"/>
+  </locale>
+
+  <macro name="author">
+    <names variable="author">
+      <name and="text" delimiter=", " delimiter-precedes-last="never" initialize="false"/>
+    </names>
+  </macro>
+
+  <macro name="title">
+    <choose>
+      <if type="article-journal paper-conference article-magazine article-newspaper chapter" match="any">
+        <text variable="title" quotes="true"/>
+      </if>
+      <else>
+        <text variable="title"/>
+      </else>
+    </choose>
+  </macro>
+
+  <macro name="year">
+    <date variable="issued">
+      <date-part name="year"/>
+    </date>
+  </macro>
+
+  <macro name="info">
+    <choose>
+      <!-- Artikel jurnal: Jurnal, volume:halaman, tahun -->
+      <if type="article-journal" match="any">
+        <group delimiter=", ">
+          <text variable="container-title"/>
+          <group delimiter=":">
+            <text variable="volume"/>
+            <text variable="page"/>
+          </group>
+          <text macro="year"/>
+        </group>
+      </if>
+      <!-- Prosiding: Prosiding, hal. xx, kota, waktu -->
+      <else-if type="paper-conference" match="any">
+        <group delimiter=", ">
+          <text variable="container-title"/>
+          <group delimiter=" ">
+            <text value="hal."/>
+            <text variable="page"/>
+          </group>
+          <text variable="event-place"/>
+          <date variable="issued" form="text"/>
+        </group>
+      </else-if>
+      <!-- Majalah / surat kabar: Nama, hal. xx, waktu -->
+      <else-if type="article-magazine article-newspaper" match="any">
+        <group delimiter=", ">
+          <text variable="container-title"/>
+          <group delimiter=" ">
+            <text value="hal."/>
+            <text variable="page"/>
+          </group>
+          <date variable="issued" form="text"/>
+        </group>
+      </else-if>
+      <!-- Skripsi/tesis/disertasi, laporan, dokumen teknis -->
+      <else-if type="thesis report" match="any">
+        <group delimiter=", ">
+          <text variable="genre"/>
+          <text variable="number"/>
+          <text variable="publisher"/>
+          <text variable="publisher-place"/>
+          <text macro="year"/>
+        </group>
+      </else-if>
+      <!-- Internet: Diakses dari URL, tanggal akses -->
+      <else-if type="webpage post-weblog" match="any">
+        <group delimiter=", ">
+          <group delimiter=" ">
+            <text value="Diakses dari"/>
+            <text variable="URL"/>
+          </group>
+          <date variable="accessed" form="text"/>
+        </group>
+      </else-if>
+      <!-- Komunikasi pribadi -->
+      <else-if type="personal_communication" match="any">
+        <date variable="issued" form="text"/>
+      </else-if>
+      <!-- Buku dan lainnya: Penerbit, Kota, tahun -->
+      <else>
+        <group delimiter=", ">
+          <text variable="publisher"/>
+          <text variable="publisher-place"/>
+          <text macro="year"/>
+        </group>
+      </else>
+    </choose>
+  </macro>
+
+  <citation collapse="citation-number">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
+    <layout prefix="[" suffix="]" delimiter=", ">
+      <text variable="citation-number"/>
+    </layout>
+  </citation>
+
+  <bibliography entry-spacing="1" second-field-align="flush">
+    <layout>
+      <text variable="citation-number" prefix="[" suffix="]"/>
+      <group delimiter=". " suffix=".">
+        <text macro="author"/>
+        <text macro="title"/>
+        <text macro="info"/>
+      </group>
+    </layout>
+  </bibliography>
+</style>

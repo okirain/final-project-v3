@@ -1,0 +1,22 @@
+
+# PELAKSANAAN PENELITIAN {#sec-pelaksanaan}
+
+## Alat dan Bahan Penelitian
+
+Perangkat lunak simulasi yang digunakan adalah *Serpent* [@leppanen2015]. Spesifikasi dan
+jangkauan kemampuan alat diuraikan secara rinci di sini. Penelitian bersifat empirik
+perlu menyertakan rancangan sistem alat.
+
+## Tata Laksana Penelitian
+
+Rangkaian logis penyelesaian masalah menurut tahap analisis pada bab Dasar Teori,
+berupa langkah kerja dan/atau algoritma penelitian.
+
+## Rencana Analisis Hasil Penelitian
+
+Pengolahan hasil dilakukan melalui proses berikut.
+
+a) Perangkuman hasil dalam tabel, gambar, statistik, atau besaran khusus.
+b) Pengujian perbedaan statistik variabel penelitian.
+c) Pengujian keterkaitan (korelasi) statistik variabel penelitian.
+d) Pengolahan lain yang relevan dengan tujuan penelitian.

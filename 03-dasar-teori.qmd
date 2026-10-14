@@ -1,0 +1,23 @@
+
+# DASAR TEORI {#sec-dasar-teori}
+
+## Isi Dasar Teori
+
+Bab ini menjembatani permasalahan penelitian dan tujuan penelitian, yaitu menjabarkan
+pendekatan teoretik penyelesaian permasalahan untuk mencapai tujuan penelitian
+[@stacey2007].
+
+Pendekatan teoretik mengungkapkan rangkaian logis pemikiran dengan bekal teori ilmiah yang
+relevan, yang meliputi:
+
+1) hukum-hukum alam,
+2) relasi-relasi empirik,
+3) sarana berpikir deduktif (matematika), dan
+4) sarana berpikir induktif (statistika).
+
+## Hipotesis
+
+<!-- Hanya bila perlu; tidak semua penelitian memiliki hipotesis. -->
+
+Hipotesis, bila ada, diturunkan dari uraian teoretik dan dibuktikan melalui observasi
+empirik.

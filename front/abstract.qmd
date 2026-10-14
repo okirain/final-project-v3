@@ -1,0 +1,41 @@
+```{=latex}
+\phantomsection\addcontentsline{toc}{chapter}{ABSTRACT}
+\thispagestyle{plain}
+\begin{singlespace}
+\begin{center}
+{\bfseries\MakeUppercase{\judulinggris}}\\[0.5cm]
+by\\
+\nama\\
+\nim\\[0.5cm]
+Submitted to the Department of Nuclear Engineering and Engineering Physics\\
+Faculty of Engineering Universitas Gadjah Mada on \tglujianinggris\\
+in partial fulfillment of the requirement for the Degree of\\
+Bachelor of Engineering in \prodien\\[0.8cm]
+{\bfseries ABSTRACT}
+\end{center}
+\selectlanguage{english}
+```
+
+<!-- Abstract = Intisari dalam bahasa Inggris. Periksa tata bahasa (mis. Grammarly) dan
+similarity (mis. Turnitin). -->
+
+First paragraph: background and objective, briefly.
+
+Second paragraph: methodology, briefly.
+
+Third paragraph: key results and conclusion, briefly.
+
+```{=latex}
+\selectlanguage{indonesian}
+\vspace{0.3cm}
+\noindent\textbf{Keywords:} keyword 1, keyword 2, keyword 3, keyword 4
+
+\medskip
+\noindent
+\begin{tabular}{@{}l@{\hspace{0.3cm}}l@{\hspace{0.3cm}}l}
+Supervisor    & : & \pembimbingutama \\
+Co-supervisor & : & \pembimbingpendamping \\
+\end{tabular}
+\end{singlespace}
+\clearpage
+```

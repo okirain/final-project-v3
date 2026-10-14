@@ -1,0 +1,42 @@
+```{=latex}
+\phantomsection\addcontentsline{toc}{chapter}{HALAMAN PENGESAHAN}
+\begin{singlespace}
+\begin{center}
+{\bfseries HALAMAN PENGESAHAN}\\[0.5cm]
+{\bfseries SKRIPSI}\\[0.5cm]
+{\bfseries\MakeUppercase{\judul}}
+\end{center}
+\vspace{0.5cm}
+
+\begin{tabular}{@{}l@{\hspace{0.3cm}}l@{\hspace{0.3cm}}l}
+Nama Mahasiswa         & : & \nama \\
+Nomor Mahasiswa        & : & \nim \\
+Pembimbing Utama       & : & \pembimbingutama \\
+Pembimbing Pendamping  & : & \pembimbingpendamping \\
+\end{tabular}
+
+\vspace{0.5cm}
+Skripsi ini telah dipertahankan di depan Tim Penguji\\
+pada tanggal \tglujian
+
+\vspace{0.3cm}
+\begin{tabular}{@{}l@{\hspace{0.3cm}}l@{\hspace{0.3cm}}l}
+Ketua Sidang    & : & \ketuasidang \\
+Penguji Utama   & : & \pengujiutama \\
+Anggota Penguji & : & \anggotapenguji \\
+\end{tabular}
+
+\vspace{0.5cm}
+Skripsi ini telah diterima dan dinyatakan memenuhi\\
+syarat kelulusan pada tanggal \tglpengesahan
+
+\vspace{0.8cm}
+\begin{center}
+Ketua Departemen Teknik Nuklir dan Teknik Fisika\\
+Fakultas Teknik UGM\\[2.2cm]
+\ketuadepartemen\\
+NIP. \nipketua
+\end{center}
+\end{singlespace}
+\clearpage
+```

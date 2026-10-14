@@ -1,0 +1,43 @@
+# DAFTAR LAMBANG DAN SINGKATAN {.unnumbered}
+
+```{=latex}
+\begin{singlespace}
+```
+
+**Lambang Romawi**
+
+| Lambang | Kuantitas | Satuan |
+|:--|:--|:--|
+| $a$ | Luas | m$^2$ |
+| $c$ | Kecepatan cahaya, $3\times10^{8}$ | m/s |
+| $E$ | Energi | J |
+| $p$ | Probabilitas neutron lolos resonansi | - |
+| $X$ | Ketebalan materi | m |
+
+**Lambang Yunani**
+
+| Lambang | Kuantitas | Satuan |
+|:--|:--|:--|
+| $\varepsilon$ | Faktor fisi cepat | - |
+| $\sigma$ | Tampang lintang mikroskopik | barn ($10^{-24}$ cm$^2$) |
+| $\Sigma$ | Tampang lintang makroskopik | cm$^{-1}$ |
+
+**Subskrip**
+
+| Lambang | Deskripsi |
+|:--|:--|
+| ext | eksternal |
+| in | masukan (*inlet*) |
+
+**Singkatan**
+
+| Singkatan | Kepanjangan |
+|:--|:--|
+| BATAN | Badan Tenaga Nuklir Nasional |
+| BWR | *Boiling Water Reactor* |
+| VVER | *Vodo-Vodyanoi Energetichesky Reactor* |
+
+```{=latex}
+\end{singlespace}
+\clearpage
+```

@@ -1,0 +1,35 @@
+```{=latex}
+% Bagian Awal memakai angka Romawi kecil (i, ii, ...). Halaman ini = i (nomor tidak dicetak).
+\pagenumbering{roman}
+\thispagestyle{empty}
+\phantomsection\addcontentsline{toc}{chapter}{HALAMAN JUDUL}
+\begin{singlespace}
+\begin{center}
+\vspace*{0.5cm}
+{\bfseries\MakeUppercase{\judul}\par}
+\vspace{1.2cm}
+{\bfseries SKRIPSI\par}
+\vspace{1cm}
+untuk memenuhi sebagian persyaratan\\
+untuk memperoleh derajat Sarjana\\
+Program Studi \prodi
+\vspace{1.2cm}
+
+\logougm
+
+\vspace{1.2cm}
+Diajukan oleh\\
+\MakeUppercase{\nama}\\
+\nim
+\vspace{1.2cm}
+
+Kepada\\
+{\bfseries DEPARTEMEN TEKNIK NUKLIR DAN TEKNIK FISIKA}\\
+{\bfseries FAKULTAS TEKNIK}\\
+{\bfseries UNIVERSITAS GADJAH MADA}\\
+{\bfseries YOGYAKARTA}\\
+{\bfseries \tahun}
+\end{center}
+\end{singlespace}
+\clearpage
+```

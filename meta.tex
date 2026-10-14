@@ -1,0 +1,40 @@
+% ============================================================
+% meta.tex  --  SATU-SATUNYA tempat mengisi data diri & skripsi.
+% Dipakai oleh halaman judul, pernyataan, pengesahan, intisari, abstract.
+% ============================================================
+\usepackage{graphicx}
+
+\newcommand{\judul}{Judul Skripsi dalam Bahasa Indonesia, Diusahakan Tidak Melebihi Lima Belas Kata}
+\newcommand{\judulinggris}{Thesis Title in English}
+
+\newcommand{\nama}{Nama Lengkap Mahasiswa}
+\newcommand{\nim}{xx/yyyyyy/TK/zzzzz}
+\newcommand{\tahundaftar}{20xx}
+\newcommand{\tahun}{2026}
+
+% Teknik Nuklir / Teknik Fisika
+\newcommand{\prodi}{Teknik Nuklir}
+% Nuclear Engineering / Engineering Physics
+\newcommand{\prodien}{Nuclear Engineering}
+
+\newcommand{\kotatanggal}{Yogyakarta, tanggal-bulan-tahun}
+\newcommand{\tglujian}{tanggal bulan tahun ujian}
+\newcommand{\tglpengesahan}{DD BULAN TAHUN}
+\newcommand{\tglujianinggris}{Month Date, year}
+
+\newcommand{\pembimbingutama}{Nama Lengkap Pembimbing Utama}
+\newcommand{\pembimbingpendamping}{Nama Lengkap Pembimbing Pendamping}
+\newcommand{\ketuasidang}{Nama Lengkap Ketua Sidang}
+\newcommand{\pengujiutama}{Nama Lengkap Penguji Utama}
+\newcommand{\anggotapenguji}{Nama Lengkap Anggota Penguji}
+
+% Data Ketua Departemen (sesuai templat 2023; periksa apakah masih berlaku)
+\newcommand{\ketuadepartemen}{Dr. Ir. Alexander Agung, S.T., M.Sc., IPU}
+\newcommand{\nipketua}{19720916 199803 1002}
+
+% Logo UGM berdiameter 5,5 cm. Simpan sebagai fig/logo-ugm.png
+\newcommand{\logougm}{%
+  \IfFileExists{fig/logo-ugm.png}%
+    {\includegraphics[width=5.5cm]{fig/logo-ugm.png}}%
+    {\fbox{\parbox[c][5.5cm][c]{5.5cm}{\centering\small Letakkan logo UGM\\(fig/logo-ugm.png)}}}%
+}

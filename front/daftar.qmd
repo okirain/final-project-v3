@@ -1,0 +1,18 @@
+```{=latex}
+% Urutan: Daftar Isi, Daftar Tabel, Daftar Gambar (lalu Daftar Lambang & Singkatan).
+\begin{singlespace}
+\renewcommand{\contentsname}{DAFTAR ISI}
+\tableofcontents
+\clearpage
+
+\phantomsection\addcontentsline{toc}{chapter}{DAFTAR TABEL}
+\renewcommand{\listtablename}{DAFTAR TABEL}
+\listoftables
+\clearpage
+
+\phantomsection\addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
+\renewcommand{\listfigurename}{DAFTAR GAMBAR}
+\listoffigures
+\clearpage
+\end{singlespace}
+```

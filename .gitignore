@@ -1,0 +1,15 @@
+_output/
+.quarto/
+*.aux
+*.log
+*.lof
+*.lot
+*.toc
+*.out
+*.tex
+!meta.tex
+!header.tex
+skripsi_files/
+
+/.quarto/
+**/*.quarto_ipynb

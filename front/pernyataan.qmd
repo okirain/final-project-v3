@@ -1,0 +1,42 @@
+```{=latex}
+\phantomsection\addcontentsline{toc}{chapter}{PERNYATAAN BEBAS PLAGIARISME}
+\begin{center}
+{\bfseries PERNYATAAN BEBAS PLAGIASI}
+\end{center}
+\vspace{0.5cm}
+
+Saya yang bertanda tangan di bawah ini:
+
+\begin{tabular}{@{}l@{\hspace{1.2cm}}l@{\hspace{0.3cm}}l}
+Nama            & : & \nama \\
+NIM             & : & \nim \\
+Tahun terdaftar & : & \tahundaftar \\
+Program Studi   & : & \prodi \\
+Fakultas        & : & Teknik \\
+\end{tabular}
+
+\medskip
+menyatakan bahwa dokumen ilmiah skripsi ini tidak terdapat bagian dari karya
+ilmiah lain yang telah diajukan untuk memperoleh gelar akademik di suatu lembaga
+Pendidikan Tinggi, dan juga tidak terdapat karya atau pendapat yang pernah ditulis
+atau diterbitkan oleh orang/lembaga lain, kecuali yang secara tertulis disitasi dalam
+dokumen ini dan disebutkan sumbernya secara lengkap dalam daftar pustaka.
+
+Dengan demikian saya menyatakan bahwa dokumen ilmiah ini bebas dari unsur-unsur
+plagiasi dan apabila dokumen ilmiah skripsi ini di kemudian hari terbukti merupakan
+plagiasi dari hasil karya penulis lain dan/atau dengan sengaja mengajukan karya atau
+pendapat yang merupakan hasil karya penulis lain, maka penulis bersedia menerima
+sanksi akademik dan/atau sanksi hukum yang berlaku.
+
+\vspace{1cm}
+\begin{flushright}
+\begin{minipage}{6.5cm}
+\kotatanggal\\[0.3cm]
+Yang menyatakan,\\[0.3cm]
+\fbox{\parbox[c][3cm][c]{3.4cm}{\centering\small Materai ASLI\\(e-Meterai)\\Rp 10.000\\dan tanda tangan}}\\[0.3cm]
+\nama\\
+NIM. \nim
+\end{minipage}
+\end{flushright}
+\clearpage
+```

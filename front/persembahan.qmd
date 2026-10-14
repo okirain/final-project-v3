@@ -1,0 +1,17 @@
+```{=latex}
+% OPSIONAL (ada di templat 2023, tidak ada di panduan 2018). Hapus berkas ini dan
+% baris include-nya di skripsi.qmd bila tidak dipakai.
+\phantomsection\addcontentsline{toc}{chapter}{HALAMAN PERSEMBAHAN}
+\vspace*{6cm}
+\begin{center}
+\itshape Karya ini dipersembahkan untuk \ldots{}
+\end{center}
+\clearpage
+
+\phantomsection\addcontentsline{toc}{chapter}{MOTTO}
+\vspace*{6cm}
+\begin{center}
+\itshape \ldots{} isi motto \ldots{}
+\end{center}
+\clearpage
+```

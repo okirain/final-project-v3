@@ -1,0 +1,50 @@
+
+# HASIL DAN PEMBAHASAN {#sec-hasil}
+
+## Hasil Penelitian
+
+Hasil yang disajikan bukan data mentah, melainkan data yang telah diolah sesuai rencana
+analisis pada bab Pelaksanaan Penelitian.
+
+## Pembahasan
+
+Pembahasan menguraikan bagaimana hasil penelitian mengarah kepada kesimpulan yang terkait
+dengan tujuan penelitian.
+
+## Contoh Penulisan Persamaan
+
+Persamaan ditulis rata tengah dan nomor persamaan ditulis rata kanan, dengan format
+(nomor_bab.nomor_persamaan). Contoh dapat dilihat pada @eq-turunan.
+
+$$
+\frac{Dv}{Dt} = \frac{\partial v}{\partial t} + \nabla \cdot \mathbf{u}\mathbf{u}
+$$ {#eq-turunan}
+
+## Contoh Penulisan Gambar dan Acuannya
+
+Gambar dan judul gambar diletakkan simetris kiri-kanan, dengan judul di bawah gambar.
+Contoh dapat dilihat pada @fig-contoh.
+
+![Contoh penulisan judul gambar dan peletakan gambar. Gambar harus dilengkapi informasi yang
+memadai sehingga mudah ditafsirkan tanpa harus membaca isi teks (*self-contained*).
+Sumber gambar dari sumber eksternal harus dituliskan [@kessides2012].](fig/contoh-gambar.png){#fig-contoh fig-scap="Contoh penulisan judul gambar dan peletakan gambar." width=60%}
+
+## Contoh Penulisan Tabel dan Acuannya
+
+Tabel dan judul tabel diletakkan simetris kiri-kanan, dengan judul di atas tabel.
+Contoh dapat dilihat pada @tbl-contoh.
+
+| Header 1 | Header 2 | Header 3 |
+|:--------:|:--------:|:--------:|
+| Isi      | Isi      | Isi      |
+| Isi      | Isi      | Isi      |
+
+: Contoh penulisan tabel dan peletakan tabel. {#tbl-contoh}
+
+\noindent Sumber: [@sunaryo2015]
+
+## Contoh Penulisan Acuan ke Pustaka yang Digunakan
+
+Acuan ke pustaka pada Daftar Pustaka ditulis dengan angka di dalam kurung siku, seperti
+ini [@stacey2007]. Jika kalimat mengacu lebih dari satu pustaka, penulisannya seperti
+ini [@iea2015; @oecd2017; @den2016; @caballero2015; @wna2017].

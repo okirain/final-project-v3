@@ -1,0 +1,39 @@
+```{=latex}
+\phantomsection\addcontentsline{toc}{chapter}{INTISARI}
+\thispagestyle{plain}
+\begin{singlespace}
+\begin{center}
+{\bfseries\MakeUppercase{\judul}}\\[0.5cm]
+Oleh\\
+\nama\\
+\nim\\[0.5cm]
+Diajukan kepada Departemen Teknik Nuklir dan Teknik Fisika Fakultas Teknik\\
+Universitas Gadjah Mada pada tanggal \tglujian\\
+untuk memenuhi sebagian persyaratan untuk memperoleh derajat\\
+Sarjana Program Studi \prodi\\[0.8cm]
+{\bfseries INTISARI}
+\end{center}
+```
+
+<!-- Intisari: maksimum 200 kata, 1 halaman, 3 alinea (latar belakang; metodologi; hasil
+dan kesimpulan). Spasi 1. -->
+
+Alinea pertama berisi latar belakang secara ringkas dan tujuan penelitian.
+
+Alinea kedua berisi metodologi secara ringkas: alat, bahan, dan cara penelitian.
+
+Alinea ketiga berisi hasil dan kesimpulan secara ringkas, dengan angka-angka kunci.
+
+```{=latex}
+\vspace{0.3cm}
+\noindent\textbf{Kata kunci:} kata kunci 1, kata kunci 2, kata kunci 3, kata kunci 4
+
+\medskip
+\noindent
+\begin{tabular}{@{}l@{\hspace{0.3cm}}l@{\hspace{0.3cm}}l}
+Pembimbing Utama      & : & \pembimbingutama \\
+Pembimbing Pendamping & : & \pembimbingpendamping \\
+\end{tabular}
+\end{singlespace}
+\clearpage
+```
