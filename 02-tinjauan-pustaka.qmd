@@ -1,18 +1,21 @@
 
-# TINJAUAN PUSTAKA {#sec-tinjauan-pustaka}
+# TINJAUAN PUSTAKA
 
 ## Isi Tinjauan Pustaka
 
-<!-- Apa yang sudah diteliti sebelumnya, dan apa yang perlu diteliti lebih lanjut.
-Hanya acuan berisi data/fakta yang boleh dikutip, bukan opini. -->
+Ilmu pengetahuan merupakan produk budaya yang bersifat kumulatif, artinya ia merupakan karya dari banyak orang yang didokumentasikan dalam pustaka (misal buku teks, jurnal ilmiah, prosiding, laporan teknis/penelitian, majalah ilmiah dan dokumen paten) [@caballero2015; @sunaryo2015; @kessides2012]. Sebelum melakukan penelitian sebaiknya dilakukan studi terhadap pustaka yang terkait dengan tema yang akan diteliti untuk memperoleh data/fakta tentang:
 
-Tinjauan pustaka memaparkan penelitian terdahulu beserta hasil-hasilnya dan celah yang
-masih perlu diteliti. Penelitian mengenai kondisi energi nuklir di kawasan telah dilaporkan
-[@caballero2015], sedangkan pembahasan reaktor modular kecil dapat dilihat pada
-[@kessides2012]. Contoh acuan berupa skripsi adalah [@putra2008].
+- apa-apa yang sudah dilakukan oleh ilmuwan atau peneliti sebelumnya dengan sudut pandang atau aspek penelitian yang beragam beserta hasil-hasil yang diperolehnya, dan
+- apa-apa yang perlu diteliti lebih lanjut: (1) karena adanya pembatasan-pembatasan pada penelitian sebelumnya, atau (2) dengan sudut pandang atau aspek penelitian yang berbeda.
+
+Dari hasil studi pustaka tersebut akan diperoleh gambaran mengenai langkah yang tepat untuk melaksanakan penelitian baik dari sisi sasaran/tujuan maupun metodologinya.
+
+`\underline{Perlu diperhatikan}`{=latex}, pustaka yang diacu harus dipastikan berasal dari sumber yang terpercaya. Peneliti harus bisa membedakan antara data/fakta dan opini/pendapat.
+
+Hanya sumber yang memberikan informasi/fakta/data sajalah yang boleh diacu, sedangkan sumber yang hanya menyampaikan opini/pendapat tidak boleh diacu. Dengan demikian informasi yang diperoleh dari sumber manapun, termasuk internet, harus dipilah-pilah dan diambil hanya yang menyajikan data/fakta dengan benar didukung oleh penelitian, bukan sekedar opini/pendapat.
 
 ## Penulisan Acuan
 
-Penulisan acuan sangat disarankan dikelola dengan aplikasi manajemen pustaka, misalnya
-Zotero atau Mendeley. Pustaka yang diacu sebaiknya baru, misalnya dengan tahun
-penerbitan paling lama 20 tahun terakhir.
+Sangat disarankan penulisan acuan (pustaka) dikelola menggunakan aplikasi manajemen pustaka, misalnya Zotero, Mendeley atau lainnya.
+
+Kebaruan pustaka yang digunakan sebaiknya diperhatikan. Pustaka yang diacu sangat disarankan memiliki kebaruan, misalnya dengan memilih tahun penerbitan paling tua 20 tahun.

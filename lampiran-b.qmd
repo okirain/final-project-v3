@@ -1,7 +1,5 @@
 
-# TABEL DENSITAS MATERIAL {#sec-lampiran-b}
-
-## Densitas Zona Blanket
+# TABEL DENSITAS MATERIAL
 
 Contoh tabel pada lampiran dirujuk dengan @tbl-densitas.
 

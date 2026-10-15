@@ -1,39 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never" default-locale="id-ID">
-  <!-- Gaya sitasi numerik sesuai Panduan TA/Skripsi DTNTF UGM:
-       - nama penulis lengkap (nama_depan nama_belakang), semua penulis ditulis, "dan" sebelum penulis terakhir
-       - tiga blok dipisah titik: penulis. judul. informasi.
-       - urutan sesuai kemunculan acuan di naskah -->
+  <!-- Gaya sitasi numerik mengikuti Template Skripsi 2023/2025 DTNTF UGM:
+         [n] / [2-4, 6, 10]; urutan = kemunculan di naskah.
+         Penulis: inisial depan + nama belakang ("G. R. Sunaryo"), semua penulis ditulis, "dan" sebelum penulis terakhir.
+         Buku/laporan/web : Penulis. *Judul*. Kota, Penerbit, Tahun.
+         Artikel jurnal   : Penulis. "Judul" *Jurnal*, vol. X, no. Y, pp. a-b, Tahun.
+         Prosiding        : Penulis. *Judul*. Kota, Nama Seminar, Tahun.
+         Web              : Penulis. *Judul*. Diakses dari URL, tanggal akses. -->
   <info>
-    <title>Skripsi DTNTF UGM (numerik)</title>
-    <id>http://www.zotero.org/styles/skripsi-dtntf-ugm</id>
-    <link href="http://www.zotero.org/styles/skripsi-dtntf-ugm" rel="self"/>
+    <title>Skripsi DTNTF UGM 2023/2025 (numerik)</title>
+    <id>http://www.zotero.org/styles/skripsi-dtntf-ugm-2023</id>
+    <link href="http://www.zotero.org/styles/skripsi-dtntf-ugm-2023" rel="self"/>
     <category citation-format="numeric"/>
     <category field="engineering"/>
-    <summary>Numerik [n], nama lengkap tanpa et al., format blok sesuai panduan DTNTF UGM</summary>
-    <updated>2026-10-14T00:00:00+00:00</updated>
+    <summary>Numerik [n], inisial penulis, format blok sesuai templat DTNTF UGM 2023/2025</summary>
+    <updated>2026-10-15T00:00:00+00:00</updated>
   </info>
 
-  <!-- Titik penutup berada di luar tanda kutip: “Judul Artikel”. -->
   <locale xml:lang="id">
     <style-options punctuation-in-quote="false"/>
+    <terms>
+      <term name="page-range-delimiter">-</term>
+      <term name="citation-range-delimiter">-</term>
+    </terms>
   </locale>
 
   <macro name="author">
     <names variable="author">
-      <name and="text" delimiter=", " delimiter-precedes-last="never" initialize="false"/>
+      <name and="text" delimiter=", " delimiter-precedes-last="never"
+            initialize="true" initialize-with=". "/>
     </names>
-  </macro>
-
-  <macro name="title">
-    <choose>
-      <if type="article-journal paper-conference article-magazine article-newspaper chapter" match="any">
-        <text variable="title" quotes="true"/>
-      </if>
-      <else>
-        <text variable="title"/>
-      </else>
-    </choose>
   </macro>
 
   <macro name="year">
@@ -42,72 +38,88 @@
     </date>
   </macro>
 
-  <macro name="info">
+  <macro name="pubinfo">
+    <!-- Kota, Penerbit, Tahun (buku, laporan, skripsi, dll.) -->
+    <group delimiter=", ">
+      <text variable="genre"/>
+      <text variable="publisher-place"/>
+      <text variable="publisher"/>
+      <text macro="year"/>
+    </group>
+  </macro>
+
+  <macro name="rest">
     <choose>
-      <!-- Artikel jurnal: Jurnal, volume:halaman, tahun -->
+      <!-- Artikel jurnal: "Judul" Jurnal, vol. 39, no. 4, pp. 695-723, 2015 -->
       <if type="article-journal" match="any">
-        <group delimiter=", ">
-          <text variable="container-title"/>
-          <group delimiter=":">
-            <text variable="volume"/>
-            <text variable="page"/>
+        <group delimiter=" ">
+          <text variable="title" quotes="true"/>
+          <group delimiter=", ">
+            <text variable="container-title" font-style="italic"/>
+            <group delimiter=" ">
+              <text value="vol."/>
+              <text variable="volume"/>
+            </group>
+            <group delimiter=" ">
+              <text value="no."/>
+              <text variable="issue"/>
+            </group>
+            <group delimiter=" ">
+              <text value="pp."/>
+              <text variable="page"/>
+            </group>
+            <text macro="year"/>
           </group>
-          <text macro="year"/>
         </group>
       </if>
-      <!-- Prosiding: Prosiding, hal. xx, kota, waktu -->
+      <!-- Prosiding: Judul. Kota, Nama Seminar, Tahun -->
       <else-if type="paper-conference" match="any">
-        <group delimiter=", ">
-          <text variable="container-title"/>
-          <group delimiter=" ">
-            <text value="hal."/>
-            <text variable="page"/>
+        <group delimiter=". ">
+          <text variable="title" font-style="italic"/>
+          <group delimiter=", ">
+            <text variable="event-place"/>
+            <text variable="publisher-place"/>
+            <text variable="container-title"/>
+            <text macro="year"/>
           </group>
-          <text variable="event-place"/>
-          <date variable="issued" form="text"/>
         </group>
       </else-if>
-      <!-- Majalah / surat kabar: Nama, hal. xx, waktu -->
+      <!-- Surat kabar / majalah -->
       <else-if type="article-magazine article-newspaper" match="any">
-        <group delimiter=", ">
-          <text variable="container-title"/>
-          <group delimiter=" ">
-            <text value="hal."/>
-            <text variable="page"/>
+        <group delimiter=" ">
+          <text variable="title" quotes="true"/>
+          <group delimiter=", ">
+            <text variable="container-title" font-style="italic"/>
+            <group delimiter=" ">
+              <text value="hal."/>
+              <text variable="page"/>
+            </group>
+            <date variable="issued" form="text"/>
           </group>
-          <date variable="issued" form="text"/>
         </group>
       </else-if>
-      <!-- Skripsi/tesis/disertasi, laporan, dokumen teknis -->
-      <else-if type="thesis report" match="any">
-        <group delimiter=", ">
-          <text variable="genre"/>
-          <text variable="number"/>
-          <text variable="publisher"/>
-          <text variable="publisher-place"/>
-          <text macro="year"/>
-        </group>
-      </else-if>
-      <!-- Internet: Diakses dari URL, tanggal akses -->
+      <!-- Internet: Judul. Diakses dari URL, tanggal -->
       <else-if type="webpage post-weblog" match="any">
-        <group delimiter=", ">
-          <group delimiter=" ">
-            <text value="Diakses dari"/>
-            <text variable="URL"/>
+        <group delimiter=". ">
+          <text variable="title" font-style="italic"/>
+          <group delimiter=", ">
+            <group delimiter=" ">
+              <text value="Diakses dari"/>
+              <text variable="URL"/>
+            </group>
+            <date variable="accessed" form="text"/>
           </group>
-          <date variable="accessed" form="text"/>
         </group>
       </else-if>
       <!-- Komunikasi pribadi -->
       <else-if type="personal_communication" match="any">
         <date variable="issued" form="text"/>
       </else-if>
-      <!-- Buku dan lainnya: Penerbit, Kota, tahun -->
+      <!-- Buku, laporan, skripsi/tesis, lainnya: Judul. Kota, Penerbit, Tahun -->
       <else>
-        <group delimiter=", ">
-          <text variable="publisher"/>
-          <text variable="publisher-place"/>
-          <text macro="year"/>
+        <group delimiter=". ">
+          <text variable="title" font-style="italic"/>
+          <text macro="pubinfo"/>
         </group>
       </else>
     </choose>
@@ -123,12 +135,11 @@
   </citation>
 
   <bibliography entry-spacing="1" second-field-align="flush">
-    <layout>
+    <layout suffix=".">
       <text variable="citation-number" prefix="[" suffix="]"/>
-      <group delimiter=". " suffix=".">
+      <group delimiter=". ">
         <text macro="author"/>
-        <text macro="title"/>
-        <text macro="info"/>
+        <text macro="rest"/>
       </group>
     </layout>
   </bibliography>

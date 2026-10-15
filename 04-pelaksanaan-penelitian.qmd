@@ -1,22 +1,23 @@
 
-# PELAKSANAAN PENELITIAN {#sec-pelaksanaan}
+# PELAKSANAAN PENELITIAN
 
 ## Alat dan Bahan Penelitian
 
-Perangkat lunak simulasi yang digunakan adalah *Serpent* [@leppanen2015]. Spesifikasi dan
-jangkauan kemampuan alat diuraikan secara rinci di sini. Penelitian bersifat empirik
-perlu menyertakan rancangan sistem alat.
+Pada bagian ini:
+
+1. Uraikan secara rinci spesifikasi dan jangkauan kemampuan alat yang digunakan. Alat bisa berupa perangkat keras (*hardware*) maupun perangkat lunak (*software*), misalnya *Serpent* [@leppanen2015].
+2. Jika penelitian melibatkan penggunaan bahan-bahan (kimiawi, fisik, dll.), uraikan spesifikasi bahan yang digunakan.
+3. Jika penelitian bersifat empirik, gambarkan rancangan sistem alat untuk penelitian.
 
 ## Tata Laksana Penelitian
 
-Rangkaian logis penyelesaian masalah menurut tahap analisis pada bab Dasar Teori,
-berupa langkah kerja dan/atau algoritma penelitian.
+Uraikan rangkaian logis penyelesaian masalah menurut tahap-tahap analisis yang dipaparkan dalam bagian **Dasar Teori**, yaitu berupa langkah-langkah kerja dan/atau algoritma penelitian.
 
 ## Rencana Analisis Hasil Penelitian
 
-Pengolahan hasil dilakukan melalui proses berikut.
+Kemukakan bagaimana, **menurut rencana**, hasil-hasil yang akan diperoleh dari penelitian akan diolah. Cara bagaimana pengolahan ini akan dilakukan sudah tentu disesuaikan/dikaitkan dengan tujuan penelitian. Secara umum, pengolahan bisa dilakukan melalui proses:
 
-a) Perangkuman hasil dalam tabel, gambar, statistik, atau besaran khusus.
-b) Pengujian perbedaan statistik variabel penelitian.
-c) Pengujian keterkaitan (korelasi) statistik variabel penelitian.
+a) **Perangkuman** hasil penelitian dalam format tabel, gambar, statistik (rata-rata, koefisien korelasi, dlsb.), atau dalam bentuk besaran khusus tertentu sesuai dengan parameter atau variabel yang dilibatkan dalam penelitian.
+b) Pengujian **perbedaan** statistik (rata-rata, korelasi, dlsb) variabel penelitian.
+c) Pengujian **keterkaitan** (korelasi) statistik variabel penelitian.
 d) Pengolahan lain yang relevan dengan tujuan penelitian.

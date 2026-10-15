@@ -1,20 +1,17 @@
 
-# HASIL DAN PEMBAHASAN {#sec-hasil}
+# HASIL DAN PEMBAHASAN
 
 ## Hasil Penelitian
 
-Hasil yang disajikan bukan data mentah, melainkan data yang telah diolah sesuai rencana
-analisis pada bab Pelaksanaan Penelitian.
+Hasil-hasil yang disajikan bukan data mentah, melainkan data yang telah diolah dengan proses sebagaimana tercantum dalam pasal "Rencana analisis hasil" Bab IV tentang "Pelaksanaan Penelitian".
 
 ## Pembahasan
 
-Pembahasan menguraikan bagaimana hasil penelitian mengarah kepada kesimpulan yang terkait
-dengan tujuan penelitian.
+Pembahasan mengungkapkan atau menjelaskan atau menguraikan dengan panjang-lebar bagaimana hasil penelitian akan mengarah kepada kesimpulan yang terkait dengan tujuan penelitian [@cengel2006; @tsoulfanidis1995; @wna2017].
 
 ## Contoh Penulisan Persamaan
 
-Persamaan ditulis rata tengah dan nomor persamaan ditulis rata kanan, dengan format
-(nomor_bab.nomor_persamaan). Contoh dapat dilihat pada @eq-turunan.
+Persamaan ditulis rata tengah dan nomor persamaan ditulis rata kanan. Nomor persamaan diurutkan dengan format (nomor_bab.nomor_persamaan). Contoh dapat dilihat pada Persamaan ([-@eq-turunan]).
 
 $$
 \frac{Dv}{Dt} = \frac{\partial v}{\partial t} + \nabla \cdot \mathbf{u}\mathbf{u}
@@ -22,29 +19,23 @@ $$ {#eq-turunan}
 
 ## Contoh Penulisan Gambar dan Acuannya
 
-Gambar dan judul gambar diletakkan simetris kiri-kanan, dengan judul di bawah gambar.
-Contoh dapat dilihat pada @fig-contoh.
+Gambar dan judul gambar diletakkan simetris kiri-kanan. Judul gambar ditulis di bawah gambar. Contoh dapat dilihat pada @fig-contoh.
 
-![Contoh penulisan judul gambar dan peletakan gambar. Gambar harus dilengkapi informasi yang
-memadai sehingga mudah ditafsirkan tanpa harus membaca isi teks (*self-contained*).
-Sumber gambar dari sumber eksternal harus dituliskan [@kessides2012].](fig/contoh-gambar.png){#fig-contoh fig-scap="Contoh penulisan judul gambar dan peletakan gambar." width=60%}
+![Contoh penulisan judul gambar dan peletakkan gambar. Gambar harus dilengkapi dengan informasi yang memadai sehingga mudah ditafsirkan tanpa harus membaca isi teks (*self-contained*). Tuliskan pula sumber gambar jika diambil dari sumber eksternal [@kessides2012].](fig/contoh-gambar.png){#fig-contoh fig-scap="Contoh penulisan judul gambar dan peletakkan gambar." width=60%}
 
 ## Contoh Penulisan Tabel dan Acuannya
 
-Tabel dan judul tabel diletakkan simetris kiri-kanan, dengan judul di atas tabel.
-Contoh dapat dilihat pada @tbl-contoh.
+Tabel dan judul tabel diletakkan simetris kiri-kanan. Judul tabel ditulis di atas tabel. Contoh dapat dilihat pada @tbl-contoh.
 
 | Header 1 | Header 2 | Header 3 |
 |:--------:|:--------:|:--------:|
 | Isi      | Isi      | Isi      |
 | Isi      | Isi      | Isi      |
 
-: Contoh penulisan tabel dan peletakan tabel. {#tbl-contoh}
+: Contoh penulisan tabel dan peletakkan tabel. {#tbl-contoh}
 
 \noindent Sumber: [@sunaryo2015]
 
 ## Contoh Penulisan Acuan ke Pustaka yang Digunakan
 
-Acuan ke pustaka pada Daftar Pustaka ditulis dengan angka di dalam kurung siku, seperti
-ini [@stacey2007]. Jika kalimat mengacu lebih dari satu pustaka, penulisannya seperti
-ini [@iea2015; @oecd2017; @den2016; @caballero2015; @wna2017].
+Acuan ke pustaka yang terdapat pada Daftar Pustaka ditulis dengan angka di dalam kurung seperti ini [@iea2015]. Jika kalimat atau paragraf mengacu kepada lebih dari satu acuan, penulisannya adalah seperti ini [@oecd2017; @den2016; @caballero2015; @kessides2012; @tsoulfanidis1995].

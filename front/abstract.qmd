@@ -3,37 +3,35 @@
 \thispagestyle{plain}
 \begin{singlespace}
 \begin{center}
-{\bfseries\MakeUppercase{\judulinggris}}\\[0.5cm]
-by\\
-\nama\\
+{\bfseries\MakeUppercase{\judulinggris}}\\[0.4cm]
+\nama\\[0.2cm]
 \nim\\[0.5cm]
 Submitted to the Department of Nuclear Engineering and Engineering Physics\\
-Faculty of Engineering Universitas Gadjah Mada on \tglujianinggris\\
+Faculty of Engineering Universitas Gadjah Mada on \textit{\tglujianinggris}\\
 in partial fulfillment of the requirement for the Degree of\\
-Bachelor of Engineering in \prodien\\[0.8cm]
+Bachelor of Engineering in \prodien\\[0.6cm]
 {\bfseries ABSTRACT}
 \end{center}
 \selectlanguage{english}
 ```
 
-<!-- Abstract = Intisari dalam bahasa Inggris. Periksa tata bahasa (mis. Grammarly) dan
-similarity (mis. Turnitin). -->
+Teks dalam bahasa Inggris sangat disarankan dicek tata bahasanya misalnya dengan grammarly.com dan cek similarity misalnya dengan aplikasi TURNITIN.
 
-First paragraph: background and objective, briefly.
+First paragraph: background, briefly.
 
 Second paragraph: methodology, briefly.
 
-Third paragraph: key results and conclusion, briefly.
+Third paragraph: results and conclusion, briefly.
 
 ```{=latex}
 \selectlanguage{indonesian}
 \vspace{0.3cm}
-\noindent\textbf{Keywords:} keyword 1, keyword 2, keyword 3, keyword 4
+\noindent\textbf{\textit{Keywords:}} \textit{Keyword 1, keyword 2, keyword 3, keyword 4}
 
-\medskip
+\bigskip
 \noindent
 \begin{tabular}{@{}l@{\hspace{0.3cm}}l@{\hspace{0.3cm}}l}
-Supervisor    & : & \pembimbingutama \\
+Supervisor    & : & \pembimbingutama \\[4pt]
 Co-supervisor & : & \pembimbingpendamping \\
 \end{tabular}
 \end{singlespace}

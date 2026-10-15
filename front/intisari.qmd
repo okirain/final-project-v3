@@ -3,35 +3,32 @@
 \thispagestyle{plain}
 \begin{singlespace}
 \begin{center}
-{\bfseries\MakeUppercase{\judul}}\\[0.5cm]
-Oleh\\
-\nama\\
+{\bfseries\MakeUppercase{\judul}}\\[0.4cm]
+\nama\\[0.2cm]
 \nim\\[0.5cm]
 Diajukan kepada Departemen Teknik Nuklir dan Teknik Fisika Fakultas Teknik\\
 Universitas Gadjah Mada pada tanggal \tglujian\\
 untuk memenuhi sebagian persyaratan untuk memperoleh derajat\\
-Sarjana Program Studi \prodi\\[0.8cm]
+Sarjana Program Studi \prodi\\[0.6cm]
 {\bfseries INTISARI}
 \end{center}
+\setlength{\parindent}{1.27cm}
 ```
 
-<!-- Intisari: maksimum 200 kata, 1 halaman, 3 alinea (latar belakang; metodologi; hasil
-dan kesimpulan). Spasi 1. -->
+Abstrak ditulis dengan maksimum 200 kata yang disusun dalam tiga alinea. Alinea pertama berisi tentang latar belakang secara ringkas.
 
-Alinea pertama berisi latar belakang secara ringkas dan tujuan penelitian.
+Alinea kedua berisi tentang metodologi secara ringkas.
 
-Alinea kedua berisi metodologi secara ringkas: alat, bahan, dan cara penelitian.
-
-Alinea ketiga berisi hasil dan kesimpulan secara ringkas, dengan angka-angka kunci.
+Alinea ketiga berisi tentang hasil dan kesimpulan secara ringkas.
 
 ```{=latex}
 \vspace{0.3cm}
-\noindent\textbf{Kata kunci:} kata kunci 1, kata kunci 2, kata kunci 3, kata kunci 4
+\noindent\textbf{\textit{Kata kunci:}} \textit{kata kunci 1, kata kunci 2, kata kunci 3, kata kunci 4}
 
-\medskip
+\bigskip
 \noindent
 \begin{tabular}{@{}l@{\hspace{0.3cm}}l@{\hspace{0.3cm}}l}
-Pembimbing Utama      & : & \pembimbingutama \\
+Pembimbing Utama      & : & \pembimbingutama \\[4pt]
 Pembimbing Pendamping & : & \pembimbingpendamping \\
 \end{tabular}
 \end{singlespace}

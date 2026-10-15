@@ -1,7 +1,14 @@
 ```{=latex}
-% Mulai Lampiran: bab berganti huruf (LAMPIRAN A), gambar/tabel jadi A.1 dst.
+% Halaman pembatas "LAMPIRAN" (masuk Daftar Isi), seperti pada templat.
+\clearpage
+\phantomsection\addcontentsline{toc}{chapter}{LAMPIRAN}
+\begin{center}\bfseries LAMPIRAN\end{center}
+\clearpage
+% Mulai Lampiran A, B, ...: bab berganti huruf (LAMPIRAN A); Gambar/Tabel menjadi A.1 dst.;
+% entri Daftar Isi menjorok di bawah "LAMPIRAN".
 \clearpage
 \appendix
+\appendixtoc
 \renewcommand{\thechapter}{LAMPIRAN~\Alph{chapter}}
 \renewcommand{\thesection}{\Alph{chapter}.\arabic{section}}
 \renewcommand{\thefigure}{\Alph{chapter}.\arabic{figure}}
@@ -9,20 +16,16 @@
 \renewcommand{\theequation}{\Alph{chapter}.\arabic{equation}}
 ```
 
-# CONTOH LISTING PROGRAM INPUT SERPENT {#sec-lampiran-a}
-
-## Berkas Masukan
-
-Lampiran bukan bagian wajib; isinya informasi tambahan yang tidak esensial untuk memahami
-skripsi.
+# CONTOH LISTING PROGRAM INPUT SERPENT
 
 ```
-% --- Perakitan bahan bakar ---
-set title "Contoh"
+% --- KLT-40S Assembly --------------------------------------
+set title "KLT-40S"
 
+% --- Fuel pin UO2 18.6wt% with Silumin Matrix:
 surf 11 cyl 0.000 0.000 0.290 -60.00 60.00
 surf 12 cyl 0.000 0.000 0.340 -60.00 60.00
-cell 11 1 fuel -11
-cell 12 1 clad 11 -12
+cell 11 1 fuel -11     % fuel UO2 18.6wt% with Silumin Matrix
+cell 12 1 clad 11 -12  % cladding zircaloy 0.5 mm
 cell 13 1 water 12
 ```

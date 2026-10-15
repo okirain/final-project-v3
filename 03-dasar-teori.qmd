@@ -1,23 +1,31 @@
 
-# DASAR TEORI {#sec-dasar-teori}
+# DASAR TEORI
 
 ## Isi Dasar Teori
 
-Bab ini menjembatani permasalahan penelitian dan tujuan penelitian, yaitu menjabarkan
-pendekatan teoretik penyelesaian permasalahan untuk mencapai tujuan penelitian
-[@stacey2007].
+Bagian ini menjembatani permasalahan penelitian dan tujuan penelitian. Dengan kata lain di sini dijabarkan pendekatan teoretik penyelesaian permasalahan penelitian untuk mencapai tujuan penelitian [@stacey2007].
 
-Pendekatan teoretik mengungkapkan rangkaian logis pemikiran dengan bekal teori ilmiah yang
-relevan, yang meliputi:
+<!-- Templat memuat sebuah gambar "Posisi Teori dalam kerangka penelitian" di sini. Pasang dengan:
+![Posisi Teori dalam kerangka penelitian](fig/posisi-teori.png){#fig-posisi}
+Penomorannya Gambar 3.1 (Arab per bab; templat sendiri tidak konsisten: "Gambar III.1" di Bab III,
+tetapi "Gambar 5.1" pada Bab V dan Daftar Gambar). -->
+
+Pendekatan teoretik mengungkapkan rangkaian logis pemikiran untuk menyelesaikan masalah dengan berbekal teori-teori ilmiah yang relevan. Bekal teori tersebut meliputi:
 
 1) hukum-hukum alam,
-2) relasi-relasi empirik,
-3) sarana berpikir deduktif (matematika), dan
+2) relasi-relasi empirik, dan
+3) sarana berpikir deduktif (matematika) serta
 4) sarana berpikir induktif (statistika).
 
-## Hipotesis
+Secara umum, rangkaian logis penyelesaian masalah dapat dirumuskan sebagai berikut:
 
-<!-- Hanya bila perlu; tidak semua penelitian memiliki hipotesis. -->
+1) Mendeskripsikan obyek penelitian yang berkaitan dengan masalah yang diteliti. Deskripsi ini secara rinci menjelaskan: ruang lingkup penelitian, aspek-aspek yang dikaji, cara pandang terhadap masalah dan penyederhanaan cara pandang.
+2) Menganalisis obyek penelitian secara teoritik dengan menerapkan hukum-hukum alam, relasi-relasi empirik, metode-metode matematik, atau metode-metode statistik. Analisis harus bisa menunjukkan bagaimana suatu permasalahan bisa diselesaikan secara sistematis sehingga tujuan penelitian dapat dicapai. Langkah-langkah yang ditempuh dalam analisis inilah yang kemudian dituangkan dalam bentuk langkah-langkah kerja atau algoritma penelitian.
 
-Hipotesis, bila ada, diturunkan dari uraian teoretik dan dibuktikan melalui observasi
-empirik.
+Jika sifat penelitian yang dilakukan meliputi tahap sintesis (misal perancangan) atau evaluasi, maka langkah-langkah analisis ini bisa diteruskan lebih lanjut untuk tujuan sintesis maupun evaluasi.
+
+## Hipotesis (*bila perlu*)
+
+Dari uraian teoritik yang dilakukan dalam pasal Dasar Teori boleh jadi bisa diturunkan suatu perkiraan atau prediksi tentang hasil penelitian. Perkiraan ini disebut hipotesis. Hipotesis, karena sifatnya sebagai perkiraan, maka ia harus dibuktikan kebenarannya melalui observasi empirik.
+
+Namun, tidak selalu suatu perkiraan diperoleh dari uraian teoritik. Oleh karena itu, hipotesis tidak selalu ada dalam penelitian.

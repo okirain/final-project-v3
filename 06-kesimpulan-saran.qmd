@@ -1,15 +1,13 @@
 
-# KESIMPULAN DAN SARAN {#sec-kesimpulan}
+# KESIMPULAN DAN SARAN
 
 ## Kesimpulan
 
-Kesimpulan merupakan rekapitulasi butir-butir pemikiran utama peneliti, yang
-mencerminkan:
+Kesimpulan merupakan rekapitulasi atau rangkuman dari butir-butir pemikiran utama peneliti. Kesimpulan mencerminkan:
 
-1) nilai dari penelitian yang dilakukan (sumbangan orisinal peneliti), dan
-2) pemahaman peneliti tentang apa yang ditulis.
+- nilai dari penelitian yang dilakukan (sebagai wujud sumbangan orisinal peneliti), dan
+- pemahaman peneliti tentang apa yang ditulis.
 
 ## Saran
 
-Bagian ini memuat evaluasi terhadap butir-butir pemikiran utama, misalnya kelemahan
-metode yang digunakan, disertai saran penyempurnaan.
+Dalam bagian ini juga bisa disampaikan evaluasi terhadap butir-butir pemikiran utama, misalnya terkait dengan kelemahan metode penelitian yang telah digunakan disertai dengan saran-saran untuk penyempurnaan.

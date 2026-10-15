@@ -27,8 +27,10 @@ format:
     # Times New Roman bila terpasang; TeX Gyre Termes punya metrik hampir identik
     # dan selalu ada di TeX Live. Ganti ke "Times New Roman" di komputer sendiri.
     mainfont: "TeX Gyre Termes"
-    linestretch: 1.5
-    indent: true                    # paragraf menjorok (diatur di header.tex: 1 cm)
+    # Templat memakai spasi 1,5 Word (baris ~20,7 pt untuk Times 12 pt). Baris dasar LaTeX
+    # 12 pt = 14,5 pt, sehingga 1,43 memberi jarak baris yang sama dengan templat.
+    linestretch: 1.43
+    indent: true                    # paragraf menjorok (diatur di header.tex: 1,27 cm)
     geometry:
       - top=4cm
       - bottom=3cm

@@ -4,36 +4,43 @@
 \pagenumbering{arabic}
 ```
 
-# PENDAHULUAN {#sec-pendahuluan}
+# PENDAHULUAN
 
 ## Latar Belakang
 
-<!-- Gambaran permasalahan/kebutuhan dan hal-hal yang mendasari pentingnya penelitian. -->
+Eksplorasi antariksa yang semakin masif, baik untuk misi penjelajahan antariksa dalam maupun pembangunan pangkalan di bulan dan planet lain, membutuhkan sumber energi yang andal dan berkapasitas besar. Sumber daya konvensional seperti panel surya memiliki keterbatasan karena ketersediaan berselang dan kinerjanya yang menurun drastis saat berada jauh dari matahari, sedangkan Radioisotope Thermoelectric Generators (RTG) yang menggunakan isotop seperti Plutonium-238 memiliki kendala pada daya keluaran yang relatif kecil, biasanya di bawah 500 W. Oleh karena itu, reaktor fisi nuklir antariksa, seperti proyek Kilopower yang dikembangkan oleh NASA, hadir sebagai solusi menjanjikan untuk mengisi kesenjangan kebutuhan daya antara 1 hingga 10 kWe (atau lebih) untuk misi jangka panjang [1]. Reaktor antariksa menawarkan kepadatan daya yang tinggi, sistem yang sangat kompak, serta kemampuan beroperasi secara terus-menerus hingga puluhan tahun tanpa bergantung pada kondisi lingkungan luar.
 
-Uraian tentang gambaran permasalahan atau kebutuhan dan alasan mengapa penelitian ini
-penting untuk dilakukan [@iea2015; @oecd2017; @den2016].
+Dalam merancang desain reaktor mikro antariksa, sistem pendingin dan transfer kalor yang efisien sekaligus aman merupakan tantangan teknis yang krusial. Pipa kalor (heat pipe) logam alkali suhu tinggi, seperti yang menggunakan natrium cair, telah menjadi teknologi pemindah kalor pasif utama untuk aplikasi reaktor antariksa. Perangkat termodinamika tertutup ini beroperasi dengan memanfaatkan kalor laten penguapan dari fluida kerjanya untuk memindahkan jumlah energi kalor yang signifikan dengan gradien suhu yang sangat minimal. Proses aliran balik cairan murni digerakkan oleh tekanan kapiler yang dihasilkan di dalam struktur sumbu (wick) berpori, sehingga menghilangkan kebutuhan akan pompa mekanis aktif. Pengoperasian pasif ini tidak hanya sangat andal, tetapi juga mencegah kemungkinan kegagalan komponen mekanik tunggal dan sangat ideal untuk beroperasi di lingkungan gravitasi mikro di luar angkasa [2].
+
+Meskipun memiliki efisiensi transfer kalor yang sangat tinggi, operasi pipa kalor sangat dibatasi oleh batasan-batasan fisik yang nonlinier. Batasan ini meliputi batas sonik saat aliran uap tercekik (choked flow), batas entrainment karena gesekan uap berkecepatan tinggi, batas viskositas pada saat suhu awal rendah, batas pendidihan (boiling limit), dan batas kapiler. Secara khusus, batas kapiler sering kali menjadi pembatas utama kapasitas perpindahan kalor pada keadaan tunak (steady-state); batas ini tercapai apabila tekanan kapiler tidak lagi mampu mengatasi total penurunan tekanan (pressure drop) yang timbul dari aliran cairan di dalam sumbu, gesekan uap, dan gaya gravitasi. Apabila beban kalor atau tekanan hidrolik melebihi kemampuan desainnya, sirkulasi akan terputus dan pipa kalor akan mengalami kekeringan pada bagian evaporator (dryout), yang berpotensi memicu lonjakan suhu ekstrem yang membahayakan inti reaktor [3].
+
+Mengingat kompleksitas operasi tersebut, diperlukan model komputasi yang tangguh bagi desainer termal-hidrolik untuk mengevaluasi parameter desain pipa kalor. Secara historis, analisis pipa kalor konvensional sering kali mengandalkan kode-kode lawas berbasis Fortran seperti HTPIPE dari Los Alamos National Laboratory, atau kode berskala rekayasa modern yang membutuhkan komputasi masif seperti Sockeye berbasis MOOSE. Akan tetapi, fleksibilitas bahasa pemrograman Python memberikan peluang untuk mengembangkan alat pemodelan komputasi yang mandiri (self-contained), efisien, dan komprehensif. Melalui skrip Python, perhitungan distribusi tekanan, profil suhu uap, dan penyelesaian batas operasi fisik (operational limits) dapat diprediksi secara otomatis, memungkinkan optimalisasi desain pipa kalor yang lebih terintegrasi untuk berbagai variasi reaktor antariksa
+
+Prototipe eksperimental Kilopower Reactor Using Stirling TechnologY (KRUSTY) telah secara sukses mendemonstrasikan keandalan pendinginan pipa kalor natrium pada uji daya penuh untuk reaktor antariksa. Konsep sukses ini dapat diaplikasikan dan dioptimalkan lebih lanjut pada desain-desain reaktor masa depan, termasuk desain konseptual Reaktor Antariksa Indonesia atau Indonesian Space Reactor (ISR) yang dirancang menggunakan spektrum cepat untuk menghasilkan daya 500 kWth secara kontinu. Konfigurasi pendinginan pasif pada ISR ditujukan untuk memastikan distribusi termal yang merata, memitigasi titik panas lokal, serta menjamin reaktor tetap kritis dan aman dari kegagalan mekanis. 
 
 ## Perumusan Masalah
 
-<!-- (1) identifikasi akar permasalahan/kebutuhan, (2) pendekatan penyelesaiannya. -->
+Berisi uraian tentang:
 
-Perumusan masalah berisi:
+1. identifikasi akar permasalahan/kebutuhan, dan
+2. pendekatan (*approach*) penyelesaiannya.
 
-1) identifikasi akar permasalahan atau kebutuhan, dan
-2) pendekatan (*approach*) penyelesaiannya.
+Identifikasi akar permasalahan/kebutuhan perlu dilakukan karena apa yang tampak di permukaan sebagai permasalahan/kebutuhan belum tentu merupakan akar permasalahan/kebutuhan yang sesungguhnya. Ia bisa jadi muncul sebagai efek dari sebab yang lebih mendasar. Padahal, penyelesaian terhadap masalah/kebutuhan yang dirumuskan secara tidak tepat tidak akan menyelesaikan masalah atau menjawab kebutuhan. Oleh karena itu, agar diperoleh penyelesaian efektif, maka masalah/kebutuhan harus dirumuskan dengan tepat.
+
+Pendekatan penyelesaian masalah menggambarkan secara singkat cara atau metode yang akan ditempuh untuk menyelesaikan akar permasalahan yang telah berhasil diidentifikasi. Cakupan permasalahan bisa sangat luas, karena ia bisa dilihat dari berbagai sudut pandang, dan boleh jadi tidak bisa dilakukan pelaksanaannya dalam kerangka Tugas Akhir. Oleh karena itu, pendekatan yang diusulkan perlu dibatasi menurut cara pandang tertentu yang dianggap memadai atau layak.
 
 ### Batasan Masalah
 
-Batasan masalah yang digunakan dalam penelitian ini adalah sebagai berikut.
+Berikut batasan masalah yang digunakan dalam penelitian ini:
 
-1) Analisis dibatasi pada parameter neutronik.
-2) Analisis dibatasi pada lingkup teras reaktor.
-3) Data teknis dibatasi pada data teknis resmi reaktor yang dilengkapi dengan penelitian terkait.
+1. Analisis terbatas pada parameter neutronik.
+2. Analisis terbatas pada lingkup teras reaktor.
+3. Data teknis analisis terbatas pada data teknis resmi reaktor KLT-40S yang dilengkapi dengan penelitian-penelitian terkait.
 
 ## Tujuan Penelitian
 
-Tujuan yang akan dicapai dalam penelitian ini diuraikan di sini.
+Berisi uraian tentang tujuan yang akan dicapai dalam penelitian.
 
 ## Manfaat Penelitian
 
-Manfaat yang dapat diperoleh bila tujuan penelitian tercapai diuraikan di sini.
+Berisi uraian tentang manfaat yang dapat diperoleh bila tujuan penelitian tercapai.
