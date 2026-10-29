@@ -110,4 +110,10 @@ direproduksi.
 
 ## Manfaat Penelitian
 
-Berisi uraian tentang manfaat yang dapat diperoleh bila tujuan penelitian tercapai.
+Penelitian ini diharapkan memberikan model pembelajaran yang menghubungkan
+persamaan pipa kalor dengan implementasi komputasi. Bagi penelitian lanjutan,
+kode dapat digunakan sebagai titik awal untuk studi sensitivitas sebelum
+pemodelan berdimensi lebih tinggi. Bagi pembaca, pemisahan yang tegas antara
+asumsi, verifikasi, dan validasi membantu mencegah penafsiran berlebihan
+terhadap hasil numerik. Dokumen Quarto juga memungkinkan persamaan, gambar,
+tabel, dan listing program dikelola dalam satu proyek yang dapat diperbarui.
