@@ -37,3 +37,4 @@ lang: id
 {{< include lampiran-a.qmd >}}
 
 {{< include lampiran-b.qmd >}}
+ 
