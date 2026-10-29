@@ -70,11 +70,28 @@ dan pendidihan digunakan sebagai penyaringan tambahan.
 
 ### Batasan Masalah
 
-Berikut batasan masalah yang digunakan dalam penelitian ini:
+Penelitian dibatasi oleh asumsi dan ruang lingkup berikut.
 
-1. Analisis terbatas pada parameter neutronik.
-2. Analisis terbatas pada lingkup teras reaktor.
-3. Data teknis analisis terbatas pada data teknis resmi reaktor KLT-40S yang dilengkapi dengan penelitian-penelitian terkait.
+1. Analisis hanya untuk satu pipa kalor natrium dan tidak menghitung neutronik,
+perpindahan kalor bahan bakar, atau konversi daya reaktor.
+2. Model bersifat tunak, satu dimensi aksial, dan menggunakan temperatur uap
+jenuh seragam.
+3. Evaporator dan kondenser menerima atau melepas fluks kalor merata; bagian
+adiabatik tidak kehilangan kalor.
+4. Sumbu kapiler homogen, jenuh sempurna, memiliki permeabilitas dan jari-jari
+pori efektif konstan, serta membasahi sempurna pada kasus acuan.
+5. Uap dimodelkan sebagai gas ideal dan cairan di dalam sumbu mengikuti hukum
+Darcy.
+6. Rugi tekanan uap menggunakan korelasi faktor gesek aliran internal;
+kompresibilitas hanya diperiksa melalui bilangan Mach, bukan diselesaikan dengan
+persamaan aliran kompresibel penuh.
+7. Batas sonik, entrainment, dan pendidihan merupakan model penyaringan
+rekayasa. Batas viskosit saat start-up beku, gas takterkondensasi, dan perubahan
+geometri tidak dimodelkan.
+8. Kasus acuan bersifat representatif untuk studi metode dan bukan spesifikasi
+desain reaktor tertentu.
+9. Verifikasi dilakukan terhadap sifat referensi dan konsistensi numerik;
+validasi terhadap data eksperimen belum dilakukan.
 
 ## Tujuan Penelitian
 
