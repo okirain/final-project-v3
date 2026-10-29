@@ -95,7 +95,18 @@ validasi terhadap data eksperimen belum dilakukan.
 
 ## Tujuan Penelitian
 
-Berisi uraian tentang tujuan yang akan dicapai dalam penelitian.
+Tujuan penelitian ini adalah sebagai berikut.
+
+1. Mengembangkan simulator Python yang modular dan terdokumentasi untuk analisis
+aliran dua fase pipa kalor natrium.
+2. Menghitung profil aksial, neraca tekanan, dan batas kapiler, sonik,
+entrainment, serta pendidihan pada kasus acuan mikrogravitasi.
+3. Menganalisis pengaruh temperatur, beban kalor, jari-jari pori, dan percepatan
+efektif terhadap kemampuan transportasi kalor.
+4. Memverifikasi implementasi melalui pengujian otomatis dan studi konvergensi
+grid.
+5. Menyajikan kode, data, dan dokumen skripsi dalam struktur Quarto yang dapat
+direproduksi.
 
 ## Manfaat Penelitian
 
