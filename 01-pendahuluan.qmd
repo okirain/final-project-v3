@@ -47,37 +47,26 @@ dan batas operasi dalam konteks mikrogravitasi.
 
 ## Perumusan Masalah
 
-Pipa kalor (heat pipe) logam alkali suhu tinggi merupakan teknologi pendingin
-pasif utama yang krusial untuk aplikasi reaktor mikro terestrial maupun tenaga
-nuklir antariksa. Namun, operasi pipa kalor sangat dibatasi oleh lima batasan
-fisik yang ketat, yaitu batas sonik, batas viskos, batas kapiler, batas
-entrainment, dan batas pendidihan. Jika beban termal melampaui batasan ini pada
-suhu operasi tertentu, pipa kalor akan gagal berfungsi, yang berujung pada
-lonjakan suhu secara cepat dan fenomena kekeringan pada evaporator (dryout).
-Secara historis, desainer termal-hidrolik sangat bergantung pada kode lawas
-berbasis Fortran (seperti HTPIPE) atau framework modern yang membutuhkan
-komputasi masif (seperti Sockeye berbasis MOOSE) untuk menganalisis batas-batas
-ini. Di sisi lain, desain konseptual Reaktor Antariksa Indonesia (ISR) yang
-dirancang menghasilkan daya 500 kWth memerlukan sistem pendingin pasif yang
-tangguh agar terhindar dari titik panas lokal dan kegagalan komponen. Oleh
-karena itu, diperlukan sebuah alat pemodelan komputasi yang mandiri
-(self-contained), efisien, dan presisi menggunakan bahasa pemrograman Python
-untuk menganalisis batasan kinerja tersebut sebelum diaplikasikan pada desain
-reaktor masa depan. Berdasarkan uraian tersebut, dapat disusun rumusan masalah
-penelitian sebagai berikut:
+Permasalahan utama yang dibahas adalah bagaimana menentukan kemampuan
+transportasi kalor pipa kalor natrium tanpa menggunakan model dua fase yang
+terlalu kompleks, tetapi tetap mempertahankan hubungan fisis utama antara aliran
+uap dan aliran balik cairan. Pertanyaan penelitian dirumuskan sebagai berikut.
 
-1. Bagaimana cara membangun dan mengembangkan model komputasi berbasis bahasa
-pemrograman Python untuk memprediksi secara akurat penurunan tekanan (pressure
-drop), profil transfer kalor, serta lima batas operasional fisik (batas sonik,
-batas viskos, batas kapiler, batas entrainment, dan batas pendidihan) pada pipa
-kalor logam alkali suhu tinggi?
-2. Seberapa akurat algoritma komputasi Python yang dikembangkan tersebut apabila
-divalidasi terhadap data batas performa dan titik operasi nominal (suhu 1000 K)
-dari pipa kalor natrium pada purwarupa eksperimental Kilopower Reactor Using
-Stirling TechnologY (KRUSTY)?
-3. Bagaimana cara mengaplikasikan model komputasi yang telah tervalidasi untuk
-mengevaluasi kinerja dan mengoptimalkan desain konfigurasi pipa kalor pada
-Reaktor Antariksa Indonesia (ISR)?
+1. Bagaimana merumuskan dan mengimplementasikan model tunak satu dimensi yang
+mengkopelkan neraca energi, aliran uap, aliran cairan Darcy, dan tekanan
+kapiler?
+2. Berapa rugi tekanan, kecepatan uap, bilangan Reynolds, bilangan Mach, dan
+batas transportasi kalor pada kasus acuan?
+3. Bagaimana temperatur operasi, ukuran pori, dan percepatan efektif memengaruhi
+batas operasi?
+4. Apakah implementasi numerik memenuhi pengujian konsistensi sifat fluida,
+neraca profil energi, kondisi batas kapiler, dan konvergensi grid?
+
+Pendekatan yang dipilih adalah model jaringan tereduksi dengan sifat fluida
+jenuh pada satu temperatur operasi. Panjang pipa dibagi menjadi evaporator,
+bagian adiabatik, dan kondenser. Rugi tekanan dihitung melalui integrasi aksial,
+sedangkan batas kapiler dicari dengan metode biseksi. Batas sonik, entrainment,
+dan pendidihan digunakan sebagai penyaringan tambahan.
 
 ### Batasan Masalah
 
