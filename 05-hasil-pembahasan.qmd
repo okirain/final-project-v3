@@ -69,7 +69,7 @@ Tabel @tbl-batas dan Gambar @fig-batas memperlihatkan perubahan mekanisme pengat
 \end{scriptsize}
 ```
 
-![Peta batas operasi terhadap temperatur. Panel atas menampilkan batas kapiler, sonik, entrainment, dan beban acuan; panel bawah menampilkan batas pendidihan dalam skala logaritmik.](../figures/batas-operasi.png){#fig-batas width=92%}
+![Peta batas operasi terhadap temperatur. Panel atas menampilkan batas kapiler, sonik, entrainment, dan beban acuan; panel bawah menampilkan batas pendidihan dalam skala logaritmik.](./figures/batas-operasi.png){#fig-batas width=92%}
 
 Batas kapiler meningkat dari 800 K hingga sekitar 1050–1100 K kemudian menurun. Perilaku nonmonoton tersebut muncul dari kompetisi beberapa sifat: kenaikan kalor laten atau densitas uap memengaruhi rugi tekanan dan laju massa, sedangkan viskositas cairan serta tegangan permukaan menurun. Model tidak mendukung kesimpulan bahwa temperatur yang lebih tinggi selalu meningkatkan kapasitas. Selain itu, hasil di bawah rentang rekomendasi sifat atau di dekat kondisi sonik harus diperlakukan dengan kehati-hatian.
 
@@ -109,7 +109,7 @@ Gambar @fig-gravitasi dan Tabel @tbl-gravitasi menunjukkan batas kapiler pada 10
 
 : Pengaruh percepatan efektif pada batas kapiler pada 1000 K. {#tbl-gravitasi}
 
-![Perbandingan batas kapiler pada mikrogravitasi, beberapa akselerasi, dan kondisi Bumi dengan orientasi merugikan.](../figures/pengaruh-gravitasi.png){#fig-gravitasi width=92%}
+![Perbandingan batas kapiler pada mikrogravitasi, beberapa akselerasi, dan kondisi Bumi dengan orientasi merugikan.](./figures/pengaruh-gravitasi.png){#fig-gravitasi width=92%}
 
 Hasil kasus Bumi tidak berarti pipa kalor natrium secara umum tidak dapat bekerja pada orientasi vertikal. Kesimpulan hanya berlaku untuk geometri, sumbu, dan orientasi acuan. Pipa dengan pori lebih kecil, permeabilitas lebih tinggi, panjang lebih pendek, atau orientasi menguntungkan dapat memiliki perilaku berbeda. Di sisi lain, hasil mikrogravitasi memperlihatkan alasan kapilaritas penting: sirkulasi tetap dimungkinkan tanpa kontribusi gravitasi selama neraca Persamaan @eq-balance terpenuhi.
 
