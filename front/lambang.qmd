@@ -1,12 +1,3 @@
-```{=latex}
-\newpage
-\tableofcontents
-\newpage
-\listoftables
-\newpage
-\listoffigures
-\newpage
-```
 
 # DAFTAR LAMBANG DAN SINGKATAN {-}
 
