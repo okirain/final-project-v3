@@ -3,21 +3,81 @@
 
 ## Alat dan Bahan Penelitian
 
-Pada bagian ini:
+Penelitian menggunakan perangkat lunak dan data sifat fluida; tidak dilakukan eksperimen laboratorium. Simulator ditulis dalam Python 3.12. NumPy 2.2.5 digunakan untuk larik dan operasi numerik, sedangkan Matplotlib 3.10.3 digunakan untuk grafik [14, 15]. Pustaka standar `dataclasses`, `csv`, `json`, `argparse`, dan `unittest` digunakan untuk struktur parameter, keluaran, antarmuka perintah, dan pengujian. Dokumen disusun dalam format Quarto Markdown dengan keluaran PDF berbasis LaTeX.
 
-1. Uraikan secara rinci spesifikasi dan jangkauan kemampuan alat yang digunakan. Alat bisa berupa perangkat keras (*hardware*) maupun perangkat lunak (*software*), misalnya *Serpent* [@leppanen2015].
-2. Jika penelitian melibatkan penggunaan bahan-bahan (kimiawi, fisik, dll.), uraikan spesifikasi bahan yang digunakan.
-3. Jika penelitian bersifat empirik, gambarkan rancangan sistem alat untuk penelitian.
+Struktur proyek dipisahkan menjadi sumber pada `src/`, pengujian pada `tests/`, bab pada `chapters/`, lampiran pada `appendices/`, data pada `data/`, dan gambar pada `figures/`. Pemisahan tersebut mencegah pencampuran antara persamaan, keluaran numerik, dan naskah. Nama berkas keluaran menggunakan bahasa Indonesia agar mudah dikenali dalam pembahasan.
+
+Parameter geometri dan kondisi acuan diberikan pada Tabel @tbl-parameter. Geometri bukan salinan pipa kalor reaktor tertentu, melainkan kasus representatif yang dipilih agar model memperlihatkan mekanisme kapiler, uap, dan gravitasi dalam satu rangkaian perhitungan.
+
+| Parameter | Simbol | Nilai | Satuan |
+|:----------|:------:|------:|:------:|
+| Panjang evaporator | $L_e$ | 0,25 | m |
+| Panjang adiabatik | $L_a$ | 0,15 | m |
+| Panjang kondenser | $L_c$ | 0,60 | m |
+| Diameter ruang uap | $D_v$ | 0,012 | m |
+| Tebal sumbu | $t_w$ | 0,001 | m |
+| Jari-jari pori efektif | $r_c$ | 75 | µm |
+| Permeabilitas | $K$ | $5\times10^{-10}$ | m² |
+| Sudut kontak | $\theta_c$ | 0 | ° |
+| Konduktivitas efektif sumbu | $k_{eff}$ | 10 | W/(m·K) |
+| Jari-jari nukleasi | $r_b$ | 5 | µm |
+| Daya masukan | $Q$ | 800 | W |
+| Temperatur sink | $T_{sink}$ | 700 | K |
+| Resistansi kondenser | $R_c$ | 0,375 | K/W |
+| Percepatan efektif | $g_{eff}$ | 0 | m/s² |
+| Jumlah sel | $N$ | 400 | – |
+
+: Parameter geometri, sumbu, dan kondisi batas kasus acuan. {#tbl-parameter}
+
+Nilai turunan yang digunakan adalah panjang total 1,00 m, panjang efektif 0,575 m, luas ruang uap $1{,}13097\times10^{-4}$ m², dan luas sumbu $4{,}08407\times10^{-5}$ m². Sifat natrium dihitung pada setiap temperatur operasi, bukan diambil sebagai konstanta.
 
 ## Tata Laksana Penelitian
 
-Uraikan rangkaian logis penyelesaian masalah menurut tahap-tahap analisis yang dipaparkan dalam bagian **Dasar Teori**, yaitu berupa langkah-langkah kerja dan/atau algoritma penelitian.
+Tahapan penelitian dilaksanakan sebagai berikut.
+
+1. Menurunkan neraca energi, profil kalor aksial, laju aliran massa, rugi tekanan uap, rugi tekanan cairan, dan neraca kapiler.
+2. Mengimplementasikan korelasi sifat natrium pada kelas `SodiumProperties` dengan pemeriksaan rentang temperatur.
+3. Menyusun parameter pada kelas data `HeatPipeGeometry` dan `OperatingConditions` agar masukan dapat divalidasi dan diubah tanpa mengedit persamaan.
+4. Membentuk profil kalor aksial sesuai Persamaan @eq-axialheat dan menghitung kecepatan, Reynolds, serta Mach.
+5. Mengintegrasikan rugi tekanan dengan aturan trapesium dan mengevaluasi margin kapiler.
+6. Menghitung batas sonik, entrainment, dan pendidihan pada temperatur operasi.
+7. Mencari batas kapiler melalui bracketing dan biseksi pada temperatur tetap.
+8. Menjalankan kasus acuan, peta batas pada 800–1200 K, studi beban, studi percepatan, studi pori, dan konvergensi grid.
+9. Menyimpan data dalam CSV/JSON dan membuat gambar langsung dari hasil perhitungan.
+10. Menjalankan pengujian otomatis dan memeriksa konsistensi antara angka dalam naskah dan berkas keluaran.
+
+Perintah reproduksi dari direktori utama proyek adalah sebagai berikut.
+
+```bash
+python -m pip install -r requirements.txt
+python src/heatpipe_simulator.py
+python -m unittest discover -s tests -v
+quarto render Skripsi.qmd --to pdf
+```
+
+Program tidak membutuhkan koneksi internet pada saat simulasi. Instalasi paket dan renderer hanya diperlukan pada penyiapan awal. Seluruh keluaran menggunakan satuan SI secara internal; pemformatan desimal pada naskah dilakukan ketika hasil disajikan.
 
 ## Rencana Analisis Hasil Penelitian
 
-Kemukakan bagaimana, **menurut rencana**, hasil-hasil yang akan diperoleh dari penelitian akan diolah. Cara bagaimana pengolahan ini akan dilakukan sudah tentu disesuaikan/dikaitkan dengan tujuan penelitian. Secara umum, pengolahan bisa dilakukan melalui proses:
+Hasil utama dirangkum dalam enam kelompok. Pertama, sifat fluida pada 1000 K diperiksa terhadap nilai acuan. Kedua, kasus acuan dianalisis melalui laju massa maksimum, kecepatan, Reynolds, Mach, rugi tekanan, margin kapiler, dan empat batas operasi. Ketiga, peta batas terhadap temperatur digunakan untuk mengidentifikasi mekanisme pengatur.
 
-a) **Perangkuman** hasil penelitian dalam format tabel, gambar, statistik (rata-rata, koefisien korelasi, dlsb.), atau dalam bentuk besaran khusus tertentu sesuai dengan parameter atau variabel yang dilibatkan dalam penelitian.
-b) Pengujian **perbedaan** statistik (rata-rata, korelasi, dlsb) variabel penelitian.
-c) Pengujian **keterkaitan** (korelasi) statistik variabel penelitian.
-d) Pengolahan lain yang relevan dengan tujuan penelitian.
+Keempat, studi beban dilakukan dengan mempertahankan $T_{sink}$ dan $R_c$, sehingga temperatur operasi berubah mengikuti Persamaan @eq-temperature. Analisis ini tidak sama dengan peta pada temperatur tetap. Kelima, studi percepatan dilakukan pada 1000 K untuk $g_{eff}=0$, 0,01, 0,1, 1, dan 9,81 m/s². Orientasi 90° digunakan untuk kasus nonnol agar seluruh komponen aksial bekerja merugikan. Keenam, jari-jari pori divariasikan dengan permeabilitas tetap untuk mengisolasi pengaruh tekanan kapiler dan entrainment.
+
+Konvergensi grid dinilai dari jumlah rugi tekanan uap dan cairan pada $N=50$ sampai 1600. Grid 1600 digunakan sebagai pembanding relatif. Karena profil kalor aksial merupakan fungsi linear per bagian, integrasi trapesium diperkirakan menjadi sangat tepat ketika batas bagian berimpit dengan titik grid.
+
+Verifikasi program dilakukan melalui sepuluh pengujian yang tercantum pada Tabel @tbl-verifikasi. Pengujian ini memeriksa implementasi dan konsistensi fisik, tetapi tidak menggantikan validasi eksperimental.
+
+| Kelompok | Hal yang diuji | Kriteria |
+|:---------|:---------------|:---------|
+| Sifat fluida | Tekanan jenuh pada titik didih normal | Sekitar 1 atm pada 1156 K |
+| Sifat fluida | $\sigma$, $\mu_l$, $h_{fg}$, dan $\rho_l$ pada 1000 K | Sesuai nilai acuan/toleransi |
+| Sifat fluida | Semua sifat pada 1000 K | Positif dan berhingga |
+| Profil energi | Nilai ujung, maksimum, dan arah gradien | Nol–maksimum–nol sesuai geometri |
+| Mikrogravitasi | Tekanan hidrostatik | Nol ketika $g_{eff}=0$ |
+| Kasus acuan | Mekanisme pengatur dan Mach | Kapiler dan $Ma<0,3$ |
+| Batas kapiler | Margin pada $Q=Q_{cap}$ | Mendekati nol |
+| Percepatan | Kapasitas pada orientasi merugikan | Menurun; kasus Bumi acuan tidak feasible |
+| Grid | Rugi tekanan grid 100 dan 1600 | Selisih relatif <0,5% |
+| Validasi masukan | Permeabilitas nol | Ditolak oleh program |
+
+: Rancangan verifikasi perangkat lunak. {#tbl-verifikasi}
