@@ -26,3 +26,29 @@ tetapi sering diikuti permeabilitas rendah. Oleh sebab itu, perubahan jari-jari
 pori tidak selalu dapat ditafsirkan terpisah dari permeabilitas pada desain
 nyata. Model penelitian ini memperlakukan keduanya sebagai parameter independen
 agar pengaruh masing-masing dapat dipelajari secara terkontrol.
+
+## Pipa Kalor untuk Reaktor Antariksa
+
+Reaktor berpendingin pipa kalor menggunakan sejumlah pipa yang tertanam atau
+terhubung secara termal dengan teras. Arsitektur ini dapat mengurangi kebutuhan
+pompa dan pipa utama, serta memberikan redundansi apabila kegagalan satu pipa
+tidak langsung menghentikan seluruh sistem. Yan dan rekan-rekannya membahas
+perkembangan mikroreaktor berpendingin pipa kalor beserta tantangan kegagalan
+berantai, integritas struktur, dan kualifikasi [8]. Tinjauan Wang, Ren, dan Li
+menunjukkan bahwa berbagai konsep menggunakan natrium, kalium, atau litium
+sesuai temperatur operasi dan arsitektur sistem [9].
+
+Dalam konteks antariksa, kondisi mikrogravitasi menghilangkan gaya apung dan
+tekanan hidrostatik berskala besar. Pipa kalor bersumbu tetap dapat bekerja
+karena pengembalian cairan didorong oleh kapilaritas. Sebaliknya, termosifon
+tanpa sumbu sangat bergantung pada gravitasi sehingga tidak menjadi pilihan
+utama dalam model ini. Keunggulan pasif tersebut tetap disertai tantangan
+start-up dari kondisi beku, keberadaan gas takterkondensasi, kompatibilitas
+material, dan pembuangan kalor dari kondenser ke radiator [8-10].
+
+Pemilihan natrium dalam penelitian ini didasarkan pada penggunaannya pada pipa
+kalor temperatur tinggi dan tersedianya korelasi sifat yang dievaluasi secara
+termodinamika. Fink dan Leibowitz menyajikan persamaan tekanan uap, entalpi 
+penguapan, densitas, tegangan permukaan, viskositas, dan konduktivitas natrium
+[7]. Ketersediaan sumber tersebut memungkinkan implementasi diperiksa terhadap
+nilai tabel, bukan hanya terhadap keluaran program itu sendiri.
