@@ -80,3 +80,19 @@ menyebabkan batas sonik dan viskositas menjadi penting. Pada temperatur lebih
 tinggi, batas kapiler atau entrainment dapat menjadi lebih menonjol. Urutan
 batas bergantung pada geometri dan kondisi batas sehingga harus dihitung, bukan
 ditetapkan sebelumnya [3-6].
+
+## Posisi dan Kebaruan Penelitian
+
+Penelitian ini berada pada tingkat model analitik–numerik tereduksi. Kebaruannya
+tidak diklaim sebagai penemuan persamaan baru, melainkan pada integrasi paket
+tugas akhir yang menghubungkan empat komponen: korelasi sifat natrium yang dapat
+diuji, profil aksial uap–cair, pencarian batas kapiler melalui biseksi, serta
+keluaran Quarto yang dapat direproduksi. Parameter percepatan efektif digunakan
+untuk membandingkan mikrogravitasi dengan orientasi dan percepatan lain.
+
+Kebaruan pada tingkat tugas akhir juga terletak pada keterbukaan implementasi.
+Setiap rumus utama memiliki padanan fungsi, keluaran disimpan dalam format CSV
+dan JSON, dan pengujian otomatis disertakan. Dengan demikian, pembaca dapat
+mengubah parameter serta menilai konsekuensinya tanpa bergantung pada tabel
+statis. Model ini tetap merupakan penyederhanaan dan tidak dimaksudkan
+menggantikan kode tervalidasi untuk desain reaktor.
