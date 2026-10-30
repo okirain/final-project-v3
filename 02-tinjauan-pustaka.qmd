@@ -1,21 +1,28 @@
 
 # TINJAUAN PUSTAKA
 
-## Isi Tinjauan Pustaka
+## Perkembangan Pipa Kalor
 
-Ilmu pengetahuan merupakan produk budaya yang bersifat kumulatif, artinya ia merupakan karya dari banyak orang yang didokumentasikan dalam pustaka (misal buku teks, jurnal ilmiah, prosiding, laporan teknis/penelitian, majalah ilmiah dan dokumen paten) [@caballero2015; @sunaryo2015; @kessides2012]. Sebelum melakukan penelitian sebaiknya dilakukan studi terhadap pustaka yang terkait dengan tema yang akan diteliti untuk memperoleh data/fakta tentang:
+Prinsip perangkat berkonduktansi termal tinggi yang menggunakan perubahan fasa
+diperkenalkan melalui karya awal Gaugler dan kemudian Grover. Publikasi Grover,
+Cotter, dan Erickson pada 1964 memperlihatkan struktur berkonduktansi termal
+sangat tinggi yang menjadi dasar pipa kalor modern [1]. Cotter selanjutnya
+merumuskan teori awal mengenai hubungan kapiler, aliran cairan, dan aliran uap
+[2]. Buku acuan Chi serta Faghri kemudian menyusun persamaan batas transportasi
+dan metode analisis yang banyak digunakan dalam perancangan pipa kalor [3, 4].
 
-- apa-apa yang sudah dilakukan oleh ilmuwan atau peneliti sebelumnya dengan sudut pandang atau aspek penelitian yang beragam beserta hasil-hasil yang diperolehnya, dan
-- apa-apa yang perlu diteliti lebih lanjut: (1) karena adanya pembatasan-pembatasan pada penelitian sebelumnya, atau (2) dengan sudut pandang atau aspek penelitian yang berbeda.
+Pipa kalor terdiri atas evaporator, bagian adiabatik, dan kondenser. Fluida
+menerima kalor laten pada evaporator dan melepaskannya pada kondenser. Perbedaan
+tekanan kapiler pada antarmuka cair–uap memungkinkan cairan kembali melalui
+struktur pori. Kemampuan operasi tanpa pompa ini menjadikan pipa kalor berbeda
+dari loop dua fase konvensional. Namun, kapasitasnya tidak tak terbatas. Tekanan
+kapiler harus mengatasi rugi tekanan cairan, rugi tekanan uap, dan tekanan
+akibat percepatan eksternal [4-6].
 
-Dari hasil studi pustaka tersebut akan diperoleh gambaran mengenai langkah yang tepat untuk melaksanakan penelitian baik dari sisi sasaran/tujuan maupun metodologinya.
-
-`\underline{Perlu diperhatikan}`{=latex}, pustaka yang diacu harus dipastikan berasal dari sumber yang terpercaya. Peneliti harus bisa membedakan antara data/fakta dan opini/pendapat.
-
-Hanya sumber yang memberikan informasi/fakta/data sajalah yang boleh diacu, sedangkan sumber yang hanya menyampaikan opini/pendapat tidak boleh diacu. Dengan demikian informasi yang diperoleh dari sumber manapun, termasuk internet, harus dipilah-pilah dan diambil hanya yang menyajikan data/fakta dengan benar didukung oleh penelitian, bukan sekedar opini/pendapat.
-
-## Penulisan Acuan
-
-Sangat disarankan penulisan acuan (pustaka) dikelola menggunakan aplikasi manajemen pustaka, misalnya Zotero, Mendeley atau lainnya.
-
-Kebaruan pustaka yang digunakan sebaiknya diperhatikan. Pustaka yang diacu sangat disarankan memiliki kebaruan, misalnya dengan memilih tahun penerbitan paling tua 20 tahun.
+Struktur sumbu dapat berupa anyaman kawat, serbuk tersinter, atau alur. Setiap
+struktur memiliki hubungan berbeda antara jari-jari pori, permeabilitas,
+porositas, dan konduktivitas efektif. Pori kecil meningkatkan tekanan kapiler,
+tetapi sering diikuti permeabilitas rendah. Oleh sebab itu, perubahan jari-jari
+pori tidak selalu dapat ditafsirkan terpisah dari permeabilitas pada desain
+nyata. Model penelitian ini memperlakukan keduanya sebagai parameter independen
+agar pengaruh masing-masing dapat dipelajari secara terkontrol.
