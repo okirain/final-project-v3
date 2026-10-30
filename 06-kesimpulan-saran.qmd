@@ -3,11 +3,17 @@
 
 ## Kesimpulan
 
-Kesimpulan merupakan rekapitulasi atau rangkuman dari butir-butir pemikiran utama peneliti. Kesimpulan mencerminkan:
+Berdasarkan pengembangan model dan hasil perhitungan, diperoleh kesimpulan sebagai berikut.
 
-- nilai dari penelitian yang dilakukan (sebagai wujud sumbangan orisinal peneliti), dan
-- pemahaman peneliti tentang apa yang ditulis.
+1. Simulator aliran dua fase tunak satu dimensi telah berhasil disusun dalam Python dengan menggabungkan neraca energi, profil laju massa, aliran uap, aliran balik cairan Darcy, dan tekanan kapiler. Struktur kelas data, keluaran CSV/JSON, gambar otomatis, serta dokumen Quarto memungkinkan perhitungan direproduksi.
+2. Pada kasus acuan 800 W dan 1000 K dalam mikrogravitasi, rugi tekanan uap dan cairan masing-masing adalah 103,02 Pa dan 1296,43 Pa. Tekanan kapiler 3612,13 Pa memberikan margin 2212,68 Pa. Kecepatan uap maksimum adalah 31,87 m/s dan Mach maksimum 0,04105.
+3. Batas kapiler sebesar 2064,88 W menjadi batas pengatur kasus acuan. Batas sonik, entrainment, dan pendidihan masing-masing adalah 7155,53 W, 3212,10 W, dan 24.232,80 W. Utilisasi daya terhadap batas pengatur adalah 38,74%.
+4. Peta temperatur menunjukkan batas sonik mengatur pada 800 K, entrainment sedikit mengatur pada 900 K, dan kapiler mengatur pada 1000–1200 K. Kapasitas kapiler mencapai sekitar 2066 W di dekat 1100 K kemudian menurun menjadi 1969,78 W pada 1200 K.
+5. Pada orientasi merugikan dan temperatur 1000 K, percepatan 1 m/s² menurunkan batas kapiler menjadi 1618,53 W. Kondisi Bumi 9,81 m/s² menghasilkan tekanan hidrostatik yang melampaui kapiler untuk geometri acuan, sedangkan mikrogravitasi ideal menghilangkan rugi tekanan tersebut.
+6. Sepuluh pengujian otomatis berhasil dan perbedaan rugi tekanan antara grid 50 dan 1600 sel hanya 0,03478%. Hasil ini memverifikasi konsistensi implementasi, tetapi belum merupakan validasi eksperimental.
 
 ## Saran
 
-Dalam bagian ini juga bisa disampaikan evaluasi terhadap butir-butir pemikiran utama, misalnya terkait dengan kelemahan metode penelitian yang telah digunakan disertai dengan saran-saran untuk penyempurnaan.
+Pengembangan selanjutnya perlu diarahkan pada validasi terhadap data eksperimen pipa kalor natrium dengan geometri dan kondisi batas yang terdokumentasi. Model sifat uap sebaiknya ditingkatkan dengan korelasi yang sesuai untuk campuran monomer dan dimer, sedangkan aliran kompresibel perlu digunakan pada kasus bermach tinggi. Hubungan eksperimen antara pori, permeabilitas, porositas, dan konduktivitas efektif juga diperlukan agar studi desain lebih realistis.
+
+Model dapat dikembangkan menjadi jaringan termal transien yang mencakup kapasitas panas dinding, start-up beku, gas takterkondensasi, dan radiator. Untuk analisis reaktor, kopling dengan model teras dan umpan balik reaktivitas harus dilakukan setelah model pipa tervalidasi. Analisis ketidakpastian dan sensitivitas global disarankan sebelum hasil digunakan untuk menetapkan margin desain. Terakhir, studi kegagalan satu pipa dan propagasinya pada tingkat sistem merupakan kelanjutan penting yang tidak dapat dijawab oleh model satu pipa ini.
