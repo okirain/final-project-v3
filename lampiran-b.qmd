@@ -1,11 +1,157 @@
+# PENGUJIAN DAN PANDUAN PENGGUNAAN
 
-# TABEL DENSITAS MATERIAL
+## Listing Pengujian
 
-Contoh tabel pada lampiran dirujuk dengan @tbl-densitas.
+Berkas `tests/test_simulator.py` berisi sepuluh pengujian berbasis `unittest`.
 
-| Unsur  | A (g/mol) | N ($10^{24}$/cm$^3$) |
-|:-------|----------:|---------------------:|
-| Th-232 | 232,038   | 0,021                |
-| O-16   | 15,995    | 0,042                |
+```{.python filename="tests/test_simulator.py"}
+"""Regression and physical-consistency tests for the heat-pipe model."""
+from __future__ import annotations
 
-: Densitas ThO$_2$ pada zona blanket aksial. {#tbl-densitas}
+import math
+import sys
+import unittest
+from dataclasses import replace
+from pathlib import Path
+
+import numpy as np
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
+from heatpipe_simulator import (  # noqa: E402
+    HeatPipeGeometry,
+    OperatingConditions,
+    SodiumProperties,
+    axial_heat_profile,
+    capillary_limit_at_temperature,
+    simulate,
+)
+
+
+class TestSodiumProperties(unittest.TestCase):
+    def test_normal_boiling_point(self) -> None:
+        # Recommended correlation gives approximately 1 atm at 1156 K.
+        pressure = SodiumProperties(1156.0).pressure
+        self.assertAlmostEqual(pressure / 101325.0, 1.0, delta=0.03)
+
+    def test_property_values_at_1000_k(self) -> None:
+        fluid = SodiumProperties(1000.0)
+        self.assertAlmostEqual(fluid.surface_tension, 0.1354, delta=0.0002)
+        self.assertAlmostEqual(fluid.liquid_viscosity, 1.81e-4, delta=2.0e-6)
+        self.assertGreater(fluid.latent_heat, 3.8e6)
+        self.assertLess(fluid.latent_heat, 4.3e6)
+        self.assertGreater(fluid.liquid_density, 750.0)
+        self.assertLess(fluid.liquid_density, 810.0)
+
+    def test_positive_properties(self) -> None:
+        fluid = SodiumProperties(1000.0)
+        for value in fluid.summary().values():
+            self.assertTrue(math.isfinite(value) and value > 0.0)
+
+
+class TestHeatPipeModel(unittest.TestCase):
+    def setUp(self) -> None:
+        self.geometry = HeatPipeGeometry()
+        self.conditions = OperatingConditions()
+
+    def test_axial_energy_profile(self) -> None:
+        x = np.linspace(0.0, self.geometry.total_length, 1001)
+        heat = axial_heat_profile(x, 800.0, self.geometry)
+        self.assertAlmostEqual(heat[0], 0.0)
+        self.assertAlmostEqual(heat[-1], 0.0)
+        self.assertAlmostEqual(float(np.max(heat)), 800.0)
+        # Heat is generated only in the evaporator and removed in the condenser.
+        derivative = np.diff(heat) / np.diff(x)
+        self.assertGreater(float(np.max(derivative[:250])), 0.0)
+        self.assertLess(float(np.min(derivative[-600:])), 0.0)
+
+    def test_microgravity_removes_hydrostatic_term(self) -> None:
+        result = simulate(self.geometry, self.conditions)
+        self.assertEqual(result.summary["gravity_pressure_drop_Pa"], 0.0)
+        self.assertTrue(result.summary["is_capillary_feasible"])
+
+    def test_reference_case_is_capillary_limited(self) -> None:
+        result = simulate(self.geometry, self.conditions)
+        self.assertEqual(result.summary["governing_limit"], "capillary")
+        self.assertLess(float(result.summary["limit_utilization"]), 1.0)
+        self.assertLess(float(result.summary["max_mach"]), 0.3)
+
+    def test_capillary_limit_has_zero_margin(self) -> None:
+        q_cap = capillary_limit_at_temperature(self.geometry, self.conditions, 1000.0)
+        local = replace(
+            self.conditions,
+            heat_input=q_cap,
+            sink_temperature=1000.0 - self.conditions.condenser_resistance * q_cap,
+        )
+        result = simulate(self.geometry, local)
+        self.assertAlmostEqual(
+            float(result.summary["temperature_K"]), 1000.0, delta=1e-8,
+        )
+        self.assertAlmostEqual(
+            float(result.summary["capillary_margin_Pa"]) / 3612.0,
+            0.0, delta=1e-6,
+        )
+
+    def test_adverse_gravity_reduces_capacity(self) -> None:
+        q_micro = capillary_limit_at_temperature(self.geometry, self.conditions, 1000.0)
+        adverse = replace(self.conditions, gravity=1.0, tilt_deg=90.0)
+        q_adverse = capillary_limit_at_temperature(self.geometry, adverse, 1000.0)
+        self.assertLess(q_adverse, q_micro)
+        earth = replace(self.conditions, gravity=9.81, tilt_deg=90.0)
+        self.assertEqual(
+            capillary_limit_at_temperature(self.geometry, earth, 1000.0), 0.0,
+        )
+
+    def test_grid_convergence(self) -> None:
+        coarse = simulate(self.geometry, replace(self.conditions, cells=100))
+        fine = simulate(self.geometry, replace(self.conditions, cells=1600))
+        dp_coarse = (
+            float(coarse.summary["vapor_pressure_drop_Pa"])
+            + float(coarse.summary["liquid_pressure_drop_Pa"])
+        )
+        dp_fine = (
+            float(fine.summary["vapor_pressure_drop_Pa"])
+            + float(fine.summary["liquid_pressure_drop_Pa"])
+        )
+        self.assertLess(abs(dp_coarse - dp_fine) / dp_fine, 0.005)
+
+    def test_invalid_geometry_rejected(self) -> None:
+        with self.assertRaises(ValueError):
+            HeatPipeGeometry(permeability=0.0)
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+```
+
+## Menjalankan Program
+
+Dari direktori proyek, gunakan perintah berikut.
+
+```bash
+python -m pip install -r requirements.txt
+python src/heatpipe_simulator.py
+python -m unittest discover -s tests -v
+```
+
+Keluaran konsol merangkum kasus acuan dalam JSON. Berkas ringkasan kasus pada direktori data menyimpan masukan, sifat fluida, geometri turunan, dan hasil. Berkas CSV lain menyimpan profil aksial serta studi parameter. Jika parameter pada dataclass diubah, seluruh data dan gambar harus dihasilkan ulang sebelum angka dalam naskah diperbarui.
+
+## Interpretasi Status Program
+
+`is_capillary_feasible`  
+: Margin kapiler tidak negatif.
+
+`is_within_all_screening_limits`  
+: Daya berada di bawah batas pengatur dan kapiler layak menurut model.
+
+`is_incompressible_screening_ok`  
+: Mach maksimum lebih kecil dari 0,3.
+
+`governing_limit`  
+: Batas yang bernilai minimum pada kasus tersebut.
+
+`limit_utilization`  
+: Rasio daya terhadap batas pengatur.
+
+Status bernilai benar tidak berarti desain telah tervalidasi. Pengguna harus memeriksa rentang sifat, asumsi geometri, kondisi batas, dan ketidakpastian korelasi.
