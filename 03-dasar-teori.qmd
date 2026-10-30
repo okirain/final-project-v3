@@ -5,7 +5,7 @@
 
 Pipa kalor dipandang sebagai volume kontrol satu dimensi dengan koordinat $x$ dari ujung tertutup evaporator menuju ujung kondenser. Panjang total $L$ merupakan jumlah panjang evaporator $L_e$, bagian adiabatik $L_a$, dan kondenser $L_c$. Ruang uap memiliki luas $A_v$, sedangkan luas annulus sumbu cair adalah $A_w$. Gambar @fig-skema memperlihatkan arah aliran yang berlawanan: uap bergerak dari evaporator ke kondenser dan cairan kembali melalui sumbu.
 
-![Skema volume kontrol dan jalur aliran uap–cair yang digunakan dalam model. Garis putus-putus menunjukkan batas evaporator, adiabatik, dan kondenser.](../figures/skema-model.png){#fig-skema width=95%}
+![Skema volume kontrol dan jalur aliran uap–cair yang digunakan dalam model. Garis putus-putus menunjukkan batas evaporator, adiabatik, dan kondenser.](./figures/skema-model.png){#fig-skema width=95%}
 
 Asumsi kesetimbangan jenuh memungkinkan sifat cairan dan uap dievaluasi pada temperatur operasi $T_v$. Model tidak menyelesaikan distribusi temperatur dinding atau antarmuka, sehingga $T_v$ adalah temperatur efektif untuk perhitungan hidraulik. Resistansi kondenser menghubungkan temperatur tersebut dengan temperatur sink.
 

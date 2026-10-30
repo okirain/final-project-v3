@@ -42,7 +42,7 @@ Bilangan Reynolds maksimum berada dalam rentang laminar pada model dan bilangan 
 
 Gambar @fig-profil menunjukkan kalor aksial meningkat linear di evaporator, konstan pada bagian adiabatik, lalu menurun linear di kondenser. Kecepatan uap mengikuti bentuk yang sama karena sifat fluida dan luas penampang konstan pada satu perhitungan. Nilai maksimum terjadi di sepanjang bagian adiabatik, yaitu antara $x=0,25$ m dan $x=0,40$ m.
 
-![Profil kalor aksial, kecepatan uap, dan rugi tekanan kumulatif untuk kasus acuan. Posisi $x=0$ adalah ujung evaporator; garis batas berada pada 0,25 m dan 0,40 m.](../figures/profil-aksial.png){#fig-profil width=88%}
+![Profil kalor aksial, kecepatan uap, dan rugi tekanan kumulatif untuk kasus acuan. Posisi $x=0$ adalah ujung evaporator; garis batas berada pada 0,25 m dan 0,40 m.](./figures/profil-aksial.png){#fig-profil width=88%}
 
 Rugi tekanan kumulatif bertambah paling cepat di bagian adiabatik karena laju massa berada pada nilai maksimum. Di evaporator dan kondenser, gradien berubah mengikuti profil laju massa. Rugi tekanan cairan memiliki bentuk serupa dengan skala yang lebih besar. Hasil ini menegaskan bahwa panjang efektif dalam Persamaan @eq-effectivelength bukan sekadar panjang total; distribusi pemanasan dan pendinginan ikut menentukan integrasi aliran.
 
