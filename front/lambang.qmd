@@ -1,57 +1,53 @@
-# DAFTAR LAMBANG DAN SINGKATAN {.unnumbered}
-
 ```{=latex}
-% Tabel tanpa garis, judul kolom miring (seperti templat). Raw LaTeX supaya tidak masuk
-% Daftar Tabel. Hapus baris yang tidak dipakai, tambah sesuai kebutuhan.
-\begin{singlespace}
-\noindent\textbf{Lambang Romawi}\\[4pt]
-\noindent\begin{tabular}{@{}>{\centering\arraybackslash}p{2.2cm}p{7.6cm}l@{}}
-\textit{Lambang} & \textit{Kuantitas} & \textit{Satuan}\\[3pt]
-$a$    & Luas                                 & m$^2$\\[2pt]
-$c$    & Kecepatan cahaya                     & $3\times10^{8}$ m/s\\[2pt]
-$E$    & Energi                               & J\\[2pt]
-$p$    & Probabilitas neutron lolos resonansi & -\\[2pt]
-$P(t)$ & Laju produksi neutron                & neutron/s\\[2pt]
-$X$    & Ketebalan materi                     & m\\
-\end{tabular}
-
-\bigskip
-\noindent\textbf{Lambang Yunani}\\[4pt]
-\noindent\begin{tabular}{@{}>{\centering\arraybackslash}p{2.2cm}p{7.6cm}l@{}}
-\textit{Lambang} & \textit{Kuantitas} & \textit{Satuan}\\[3pt]
-$\varepsilon$ & Faktor fisi cepat & -\\[2pt]
-$\sigma$      & Tampang lintang mikroskopik & barn ($10^{-24}$ cm$^2$)\\[2pt]
-$\Sigma$      & Tampang lintang makroskopik & cm$^{-1}$\\[2pt]
-$\sigma_f$    & Tampang lintang mikroskopik reaksi fisi & barn ($10^{-24}$ cm$^2$)\\
-\end{tabular}
-
-\bigskip
-\noindent\textbf{Subskrip}\\[4pt]
-\noindent\begin{tabular}{@{}>{\centering\arraybackslash}p{2.2cm}p{7.6cm}@{}}
-\textit{Lambang} & \textit{Deskripsi}\\[3pt]
-ext & eksternal\\[2pt]
-in  & \textit{inlet}\\
-\end{tabular}
-
-\bigskip
-\noindent\textbf{Superskrip}\\[4pt]
-\noindent\begin{tabular}{@{}>{\centering\arraybackslash}p{2.2cm}p{7.6cm}@{}}
-\textit{Lambang} & \textit{Deskripsi}\\[3pt]
-$F$ & \textit{fuel}\\[2pt]
-$j$ & Indeks koordinat\\
-\end{tabular}
-
-\bigskip
-\noindent\textbf{Singkatan}\\[4pt]
-\noindent\begin{tabular}{@{}p{2.8cm}p{10cm}@{}}
-ASEAN & \textit{Association of Southeast Asian Nations}\\[2pt]
-BATAN & Badan Tenaga Nuklir Nasional\\[2pt]
-BWR   & \textit{Boiling Water Reactor}\\[2pt]
-CAAGR & \textit{Compound Average Annual Growth Rate}\\[2pt]
-ET    & Energi Terbarukan\\[2pt]
-VVER  & \textit{Vodo-Vodyanoi Energetichesky Reactor}\\[2pt]
-W     & Watt\\
-\end{tabular}
-\end{singlespace}
-\clearpage
+\newpage
+\tableofcontents
+\newpage
+\listoftables
+\newpage
+\listoffigures
+\newpage
 ```
+
+# DAFTAR LAMBANG DAN SINGKATAN {-}
+
+**Lambang Romawi**
+
+| Lambang | Kuantitas | Satuan |
+|:-------:|:----------|:------:|
+| $A$ | Luas penampang | m² |
+| $D_v$ | Diameter ruang uap | m |
+| $f$ | Faktor gesek Darcy | – |
+| $g_{\mathrm{eff}}$ | Percepatan efektif | m/s² |
+| $h_{fg}$ | Kalor laten penguapan | J/kg |
+| $K$ | Permeabilitas sumbu kapiler | m² |
+| $L$ | Panjang pipa kalor | m |
+| $\dot m$ | Laju aliran massa | kg/s |
+| $P$ | Tekanan | Pa |
+| $Q$ | Laju transportasi kalor | W |
+| $r_c$ | Jari-jari pori efektif | m |
+| $R_c$ | Resistansi termal kondenser | K/W |
+| $T$ | Temperatur | K |
+| $u$ | Kecepatan uap | m/s |
+| $x$ | Koordinat aksial | m |
+
+**Lambang Yunani**
+
+| Lambang | Kuantitas | Satuan |
+|:-------:|:----------|:------:|
+| $\theta$ | Sudut kontak atau kemiringan, sesuai konteks | ° |
+| $\mu$ | Viskositas dinamis | Pa·s |
+| $\rho$ | Densitas | kg/m³ |
+| $\sigma$ | Tegangan permukaan | N/m |
+
+**Subskrip dan Singkatan**
+
+| Lambang | Deskripsi |
+|:-------:|:----------|
+| $c$ | Kondenser atau kapiler, sesuai konteks |
+| $e$ | Evaporator |
+| $l$ | Fasa cair |
+| $v$ | Fasa uap |
+| CFD | *Computational Fluid Dynamics* |
+| HPCR | *Heat Pipe Cooled Reactor* |
+| NIM | Nomor Induk Mahasiswa |
+| UGM | Universitas Gadjah Mada |
