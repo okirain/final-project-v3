@@ -1,31 +1,721 @@
-```{=latex}
-% Halaman pembatas "LAMPIRAN" (masuk Daftar Isi), seperti pada templat.
-\clearpage
-\phantomsection\addcontentsline{toc}{chapter}{LAMPIRAN}
-\begin{center}\bfseries LAMPIRAN\end{center}
-\clearpage
-% Mulai Lampiran A, B, ...: bab berganti huruf (LAMPIRAN A); Gambar/Tabel menjadi A.1 dst.;
-% entri Daftar Isi menjorok di bawah "LAMPIRAN".
-\clearpage
-\appendix
-\appendixtoc
-\renewcommand{\thechapter}{LAMPIRAN~\Alph{chapter}}
-\renewcommand{\thesection}{\Alph{chapter}.\arabic{section}}
-\renewcommand{\thefigure}{\Alph{chapter}.\arabic{figure}}
-\renewcommand{\thetable}{\Alph{chapter}.\arabic{table}}
-\renewcommand{\theequation}{\Alph{chapter}.\arabic{equation}}
-```
+# LISTING PROGRAM SIMULATOR
 
-# CONTOH LISTING PROGRAM INPUT SERPENT
+Lampiran ini memuat sumber lengkap `src/heatpipe_simulator.py`. Program menggunakan satuan SI dan menghasilkan ulang seluruh data serta gambar yang dibahas pada Bab V.
 
-```
-% --- KLT-40S Assembly --------------------------------------
-set title "KLT-40S"
+```{.python filename="src/heatpipe_simulator.py"}
+#!/usr/bin/env python3
+"""Reduced-order, steady 1-D sodium heat-pipe simulator.
 
-% --- Fuel pin UO2 18.6wt% with Silumin Matrix:
-surf 11 cyl 0.000 0.000 0.290 -60.00 60.00
-surf 12 cyl 0.000 0.000 0.340 -60.00 60.00
-cell 11 1 fuel -11     % fuel UO2 18.6wt% with Silumin Matrix
-cell 12 1 clad 11 -12  % cladding zircaloy 0.5 mm
-cell 13 1 water 12
+The model couples axial vapor flow, Darcy liquid return through a homogeneous
+wick, and capillary pressure. It is intended for transparent thesis case
+studies, not design certification or transient/CFD analysis.
+
+Sodium correlations follow Fink and Leibowitz (1995), ANL/RE-95/2.
+All internal calculations use SI units.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import math
+import warnings
+from dataclasses import asdict, dataclass, replace
+from pathlib import Path
+from typing import Iterable
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+
+R_UNIVERSAL = 8.314462618  # J mol-1 K-1
+MOLAR_MASS_NA = 22.98976928e-3  # kg mol-1
+K_BOLTZMANN = 1.380649e-23  # J K-1
+
+
+@dataclass(frozen=True)
+class SodiumProperties:
+    """Saturated-sodium properties; recommended thesis range: 800--1400 K."""
+
+    temperature: float
+
+    def __post_init__(self) -> None:
+        if not 371.0 <= self.temperature < 2503.7:
+            raise ValueError("Temperature must be in [371, 2503.7) K.")
+        if not 800.0 <= self.temperature <= 1400.0:
+            warnings.warn(
+                f"T={self.temperature:.1f} K is outside the thesis validation "
+                "target of 800--1400 K; check extrapolation.",
+                stacklevel=2,
+            )
+
+    @property
+    def pressure(self) -> float:
+        """Saturation pressure (Pa), Browning--Potter correlation."""
+        ln_p_mpa = (
+            11.9463 - 12633.73 / self.temperature
+            - 0.4672 * math.log(self.temperature)
+        )
+        return math.exp(ln_p_mpa) * 1.0e6
+
+    @property
+    def latent_heat(self) -> float:
+        """Specific enthalpy of vaporization (J kg-1)."""
+        tau = 1.0 - self.temperature / 2503.7
+        h_fg_kj_kg = 393.37 * tau + 4398.6 * tau**0.29302
+        return h_fg_kj_kg * 1000.0
+
+    @property
+    def liquid_density(self) -> float:
+        """Saturated liquid density (kg m-3)."""
+        tau = 1.0 - self.temperature / 2503.7
+        return 219.0 + 275.32 * tau + 511.58 * math.sqrt(tau)
+
+    @property
+    def vapor_density(self) -> float:
+        """Ideal-gas approximation to saturated vapor density (kg m-3)."""
+        return (
+            self.pressure * MOLAR_MASS_NA
+            / (R_UNIVERSAL * self.temperature)
+        )
+
+    @property
+    def liquid_viscosity(self) -> float:
+        """Dynamic viscosity of liquid sodium (Pa s)."""
+        return math.exp(
+            -6.4406 - 0.3958 * math.log(self.temperature)
+            + 556.835 / self.temperature
+        )
+
+    @property
+    def vapor_viscosity(self) -> float:
+        """Hard-sphere dilute-gas estimate of vapor viscosity (Pa s).
+
+        A 4.0 Angstrom collision diameter is used because the recommended
+        liquid-property report does not provide a sodium-vapor viscosity
+        correlation. Replace this approximation for high-fidelity studies.
+        """
+        mass = MOLAR_MASS_NA / 6.02214076e23
+        diameter = 4.0e-10
+        return (
+            5.0 / (16.0 * diameter**2)
+            * math.sqrt(mass * K_BOLTZMANN * self.temperature / math.pi)
+        )
+
+    @property
+    def surface_tension(self) -> float:
+        """Liquid surface tension (N m-1), Van der Waals correlation."""
+        return (
+            240.5e-3 * (1.0 - self.temperature / 2503.7)**1.126
+        )
+
+    @property
+    def liquid_conductivity(self) -> float:
+        """Liquid thermal conductivity (W m-1 K-1)."""
+        t = self.temperature
+        return (
+            124.67 - 0.11381 * t + 5.5226e-5 * t**2
+            - 1.1842e-8 * t**3
+        )
+
+    @property
+    def specific_gas_constant(self) -> float:
+        return R_UNIVERSAL / MOLAR_MASS_NA
+
+    @property
+    def sound_speed(self) -> float:
+        """Monatomic ideal-gas sound-speed estimate (m s-1)."""
+        return math.sqrt((5.0 / 3.0) * self.specific_gas_constant * self.temperature)
+
+    def summary(self) -> dict[str, float]:
+        return {
+            "temperature_K": self.temperature,
+            "saturation_pressure_Pa": self.pressure,
+            "latent_heat_J_kg": self.latent_heat,
+            "liquid_density_kg_m3": self.liquid_density,
+            "vapor_density_kg_m3": self.vapor_density,
+            "liquid_viscosity_Pa_s": self.liquid_viscosity,
+            "vapor_viscosity_Pa_s": self.vapor_viscosity,
+            "surface_tension_N_m": self.surface_tension,
+            "liquid_conductivity_W_mK": self.liquid_conductivity,
+            "sound_speed_m_s": self.sound_speed,
+        }
+
+
+@dataclass(frozen=True)
+class HeatPipeGeometry:
+    evaporator_length: float = 0.25
+    adiabatic_length: float = 0.15
+    condenser_length: float = 0.60
+    vapor_diameter: float = 0.012
+    wick_thickness: float = 0.001
+    pore_radius: float = 75.0e-6
+    permeability: float = 5.0e-10
+    contact_angle_deg: float = 0.0
+    effective_wick_conductivity: float = 10.0
+    bubble_radius: float = 5.0e-6
+
+    def __post_init__(self) -> None:
+        positive = {
+            key: value for key, value in asdict(self).items()
+            if key != "contact_angle_deg"
+        }
+        if any(value <= 0.0 for value in positive.values()):
+            raise ValueError("All geometry and wick properties must be positive.")
+        if not 0.0 <= self.contact_angle_deg < 90.0:
+            raise ValueError("Contact angle must be in [0, 90) degrees.")
+
+    @property
+    def total_length(self) -> float:
+        return self.evaporator_length + self.adiabatic_length + self.condenser_length
+
+    @property
+    def effective_length(self) -> float:
+        return (
+            self.evaporator_length / 2.0 + self.adiabatic_length
+            + self.condenser_length / 2.0
+        )
+
+    @property
+    def vapor_area(self) -> float:
+        return math.pi * self.vapor_diameter**2 / 4.0
+
+    @property
+    def wick_area(self) -> float:
+        r_v = self.vapor_diameter / 2.0
+        return math.pi * ((r_v + self.wick_thickness)**2 - r_v**2)
+
+    @property
+    def capillary_pressure(self) -> float:
+        raise AttributeError("Capillary pressure also requires fluid temperature.")
+
+
+@dataclass(frozen=True)
+class OperatingConditions:
+    heat_input: float = 800.0
+    sink_temperature: float = 700.0
+    condenser_resistance: float = 0.375
+    gravity: float = 0.0
+    tilt_deg: float = 0.0
+    cells: int = 400
+
+    def __post_init__(self) -> None:
+        if self.heat_input < 0.0 or self.sink_temperature <= 0.0:
+            raise ValueError(
+                "Heat input must be nonnegative and sink temperature positive."
+            )
+        if self.condenser_resistance <= 0.0 or self.gravity < 0.0:
+            raise ValueError(
+                "Condenser resistance must be positive and gravity nonnegative."
+            )
+        if self.cells < 20:
+            raise ValueError("Use at least 20 axial cells.")
+
+    @property
+    def operating_temperature(self) -> float:
+        return self.sink_temperature + self.condenser_resistance * self.heat_input
+
+
+@dataclass
+class SimulationResult:
+    x: np.ndarray
+    section: np.ndarray
+    axial_heat_flow: np.ndarray
+    mass_flow: np.ndarray
+    vapor_velocity: np.ndarray
+    reynolds: np.ndarray
+    mach: np.ndarray
+    vapor_pressure_drop: np.ndarray
+    liquid_pressure_drop: np.ndarray
+    summary: dict[str, float | str | bool]
+
+
+def capillary_pressure(geometry: HeatPipeGeometry, fluid: SodiumProperties) -> float:
+    return (
+        2.0 * fluid.surface_tension
+        * math.cos(math.radians(geometry.contact_angle_deg))
+        / geometry.pore_radius
+    )
+
+
+def axial_heat_profile(
+    x: np.ndarray, heat_input: float, geometry: HeatPipeGeometry,
+) -> np.ndarray:
+    """Heat carried by vapor; x=0 is the closed evaporator end."""
+    le, la, lc = (
+        geometry.evaporator_length,
+        geometry.adiabatic_length,
+        geometry.condenser_length,
+    )
+    q = np.empty_like(x)
+    evap = x <= le
+    adiab = (x > le) & (x <= le + la)
+    cond = x > le + la
+    q[evap] = heat_input * x[evap] / le
+    q[adiab] = heat_input
+    q[cond] = heat_input * (1.0 - (x[cond] - le - la) / lc)
+    return np.maximum(q, 0.0)
+
+
+def _cumulative_trapezoid(y: np.ndarray, x: np.ndarray) -> np.ndarray:
+    result = np.zeros_like(y)
+    result[1:] = np.cumsum(0.5 * (y[1:] + y[:-1]) * np.diff(x))
+    return result
+
+
+def simulate_at_temperature(
+    geometry: HeatPipeGeometry,
+    conditions: OperatingConditions,
+    temperature: float,
+) -> SimulationResult:
+    """Solve the steady axial profile at a prescribed saturation temperature."""
+    fluid = SodiumProperties(temperature)
+    x = np.linspace(0.0, geometry.total_length, conditions.cells + 1)
+    q = axial_heat_profile(x, conditions.heat_input, geometry)
+    mdot = q / fluid.latent_heat
+    velocity = mdot / (fluid.vapor_density * geometry.vapor_area)
+    reynolds = (
+        fluid.vapor_density * velocity * geometry.vapor_diameter
+        / fluid.vapor_viscosity
+    )
+    mach = velocity / fluid.sound_speed
+    friction = np.where(
+        reynolds < 2300.0,
+        64.0 / np.maximum(reynolds, 1.0e-12),
+        0.3164 / np.maximum(reynolds, 1.0e-12)**0.25,
+    )
+    friction = np.where(reynolds < 1.0e-12, 0.0, friction)
+    dpv_dx = (
+        friction / geometry.vapor_diameter
+        * 0.5 * fluid.vapor_density * velocity**2
+    )
+    dpl_dx = (
+        fluid.liquid_viscosity * mdot
+        / (fluid.liquid_density * geometry.permeability * geometry.wick_area)
+    )
+    dpv = _cumulative_trapezoid(dpv_dx, x)
+    dpl = _cumulative_trapezoid(dpl_dx, x)
+    dp_gravity = (
+        fluid.liquid_density * conditions.gravity * geometry.total_length
+        * math.sin(math.radians(conditions.tilt_deg))
+    )
+    p_cap = capillary_pressure(geometry, fluid)
+    margin = p_cap - dpv[-1] - dpl[-1] - dp_gravity
+
+    # Engineering screening limits (Faghri/Chi-style reduced-order expressions).
+    q_sonic = (
+        0.474 * geometry.vapor_area * fluid.latent_heat
+        * math.sqrt(fluid.vapor_density * fluid.pressure)
+    )
+    q_entrainment = (
+        geometry.vapor_area * fluid.latent_heat
+        * math.sqrt(
+            fluid.vapor_density * fluid.surface_tension
+            / (2.0 * geometry.pore_radius)
+        )
+    )
+    r_v = geometry.vapor_diameter / 2.0
+    r_i = r_v + geometry.wick_thickness
+    nucleation_pressure = max(
+        2.0 * fluid.surface_tension / geometry.bubble_radius
+        - (dpv[-1] + dpl[-1] + dp_gravity),
+        0.0,
+    )
+    q_boiling = (
+        2.0 * math.pi * geometry.evaporator_length
+        * geometry.effective_wick_conductivity * temperature
+        / (fluid.latent_heat * fluid.vapor_density * math.log(r_i / r_v))
+        * nucleation_pressure
+    )
+    limits = {
+        "capillary": capillary_limit_at_temperature(geometry, conditions, temperature),
+        "sonic": q_sonic,
+        "entrainment": q_entrainment,
+        "boiling": q_boiling,
+    }
+    governing = min(limits, key=limits.get)
+    utilization = conditions.heat_input / limits[governing]
+    section = np.select(
+        [x <= geometry.evaporator_length,
+         x <= geometry.evaporator_length + geometry.adiabatic_length],
+        ["Evaporator", "Adiabatic"], default="Condenser",
+    )
+    summary: dict[str, float | str | bool] = {
+        "temperature_K": temperature,
+        "heat_input_W": conditions.heat_input,
+        "max_mass_flow_kg_s": float(np.max(mdot)),
+        "max_vapor_velocity_m_s": float(np.max(velocity)),
+        "max_reynolds": float(np.max(reynolds)),
+        "max_mach": float(np.max(mach)),
+        "capillary_pressure_Pa": p_cap,
+        "vapor_pressure_drop_Pa": float(dpv[-1]),
+        "liquid_pressure_drop_Pa": float(dpl[-1]),
+        "gravity_pressure_drop_Pa": dp_gravity,
+        "capillary_margin_Pa": float(margin),
+        "capillary_limit_W": limits["capillary"],
+        "sonic_limit_W": q_sonic,
+        "entrainment_limit_W": q_entrainment,
+        "boiling_limit_W": q_boiling,
+        "governing_limit": governing,
+        "limit_utilization": utilization,
+        "is_capillary_feasible": bool(margin >= 0.0),
+        "is_within_all_screening_limits": bool(utilization <= 1.0 and margin >= 0.0),
+        "is_incompressible_screening_ok": bool(np.max(mach) < 0.3),
+        "gravity_m_s2": conditions.gravity,
+        "tilt_deg": conditions.tilt_deg,
+        "cells": conditions.cells,
+    }
+    return SimulationResult(
+        x, section, q, mdot, velocity, reynolds, mach, dpv, dpl, summary,
+    )
+
+
+def simulate(
+    geometry: HeatPipeGeometry, conditions: OperatingConditions,
+) -> SimulationResult:
+    return simulate_at_temperature(
+        geometry, conditions, conditions.operating_temperature,
+    )
+
+
+def capillary_limit_at_temperature(
+    geometry: HeatPipeGeometry,
+    conditions: OperatingConditions,
+    temperature: float,
+) -> float:
+    """Find Q for zero capillary margin using monotone bisection."""
+    base = replace(conditions, heat_input=1.0)
+
+    def margin(q: float) -> float:
+        # Inline the pressure calculation to avoid recursive limit evaluation.
+        fluid = SodiumProperties(temperature)
+        local = replace(base, heat_input=q)
+        x = np.linspace(0.0, geometry.total_length, local.cells + 1)
+        heat = axial_heat_profile(x, q, geometry)
+        mdot = heat / fluid.latent_heat
+        velocity = mdot / (fluid.vapor_density * geometry.vapor_area)
+        reynolds = (
+            fluid.vapor_density * velocity * geometry.vapor_diameter
+            / fluid.vapor_viscosity
+        )
+        friction = np.where(
+            reynolds < 2300.0,
+            64.0 / np.maximum(reynolds, 1.0e-12),
+            0.3164 / np.maximum(reynolds, 1.0e-12)**0.25,
+        )
+        friction = np.where(reynolds < 1.0e-12, 0.0, friction)
+        dpv_dx = (
+            friction / geometry.vapor_diameter
+            * 0.5 * fluid.vapor_density * velocity**2
+        )
+        dpl_dx = (
+            fluid.liquid_viscosity * mdot
+            / (fluid.liquid_density * geometry.permeability * geometry.wick_area)
+        )
+        dpv = np.trapezoid(dpv_dx, x)
+        dpl = np.trapezoid(dpl_dx, x)
+        dpg = (
+            fluid.liquid_density * local.gravity * geometry.total_length
+            * math.sin(math.radians(local.tilt_deg))
+        )
+        return capillary_pressure(geometry, fluid) - dpv - dpl - dpg
+
+    if margin(0.0) <= 0.0:
+        return 0.0
+    low, high = 0.0, 100.0
+    for _ in range(30):
+        if margin(high) < 0.0:
+            break
+        high *= 2.0
+    else:
+        raise RuntimeError("Could not bracket the capillary limit.")
+    for _ in range(55):
+        mid = 0.5 * (low + high)
+        if margin(mid) >= 0.0:
+            low = mid
+        else:
+            high = mid
+    return 0.5 * (low + high)
+
+
+def operating_limits(
+    geometry: HeatPipeGeometry,
+    conditions: OperatingConditions,
+    temperatures: Iterable[float],
+) -> list[dict[str, float | str]]:
+    rows = []
+    for temperature in temperatures:
+        # A small reference heat input makes boiling a property-based screening
+        # value; the other three limits are independent of the imposed load.
+        probe = replace(conditions, heat_input=1.0)
+        result = simulate_at_temperature(geometry, probe, float(temperature))
+        limits = {
+            "capillary": float(result.summary["capillary_limit_W"]),
+            "sonic": float(result.summary["sonic_limit_W"]),
+            "entrainment": float(result.summary["entrainment_limit_W"]),
+            "boiling": float(result.summary["boiling_limit_W"]),
+        }
+        governing = min(limits, key=limits.get)
+        rows.append({
+            "temperature_K": float(temperature),
+            **limits,
+            "maximum_transport_W": limits[governing],
+            "governing_limit": governing,
+        })
+    return rows
+
+
+def write_csv(
+    path: Path, rows: list[dict], fieldnames: list[str] | None = None,
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if not rows:
+        raise ValueError("No rows supplied.")
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames or list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def configure_plots() -> None:
+    plt.rcParams.update({
+        "font.size": 10,
+        "axes.grid": True,
+        "grid.alpha": 0.25,
+        "figure.dpi": 150,
+        "savefig.dpi": 300,
+        "savefig.bbox": "tight",
+    })
+
+
+def plot_axial(result: SimulationResult, path: Path) -> None:
+    configure_plots()
+    fig, axes = plt.subplots(3, 1, figsize=(7.0, 8.2), sharex=True)
+    axes[0].plot(result.x, result.axial_heat_flow, color="#9b2226")
+    axes[0].set_ylabel("Aliran kalor aksial (W)")
+    axes[1].plot(result.x, result.vapor_velocity, color="#005f73")
+    axes[1].set_ylabel("Kecepatan uap (m/s)")
+    axes[2].plot(result.x, result.vapor_pressure_drop, label="Uap", color="#ca6702")
+    axes[2].plot(result.x, result.liquid_pressure_drop, label="Cairan", color="#0a9396")
+    axes[2].set_ylabel("Rugi tekanan kumulatif (Pa)")
+    axes[2].set_xlabel("Posisi dari ujung evaporator, x (m)")
+    axes[2].legend()
+    for ax in axes:
+        for boundary in (0.25, 0.40):
+            ax.axvline(boundary, color="0.45", linestyle="--", linewidth=0.8)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def plot_limits(rows: list[dict], reference_q: float, path: Path) -> None:
+    configure_plots()
+    temperature = [row["temperature_K"] for row in rows]
+    fig, axes = plt.subplots(2, 1, figsize=(7.2, 6.4), sharex=True)
+    styles = {
+        "capillary": ("Kapiler", "#9b2226"),
+        "sonic": ("Sonik", "#005f73"),
+        "entrainment": ("Entrainment", "#ca6702"),
+    }
+    for key, (label, color) in styles.items():
+        axes[0].plot(temperature, [row[key] for row in rows], label=label, color=color)
+    axes[0].axhline(
+        reference_q, color="black", linestyle="--", label="Beban kasus acuan",
+    )
+    axes[0].set_ylabel("Batas kalor (W)")
+    axes[0].legend(ncol=2)
+    axes[1].plot(temperature, [row["boiling"] for row in rows], color="#0a9396")
+    axes[1].set_yscale("log")
+    axes[1].set(
+        xlabel="Temperatur operasi (K)",
+        ylabel="Batas pendidihan (W)",
+    )
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def plot_schematic(geometry: HeatPipeGeometry, path: Path) -> None:
+    """Draw the modeled control volume and counter-current phase paths."""
+    configure_plots()
+    fig, ax = plt.subplots(figsize=(8.0, 3.2))
+    le, la, lc = (
+        geometry.evaporator_length, geometry.adiabatic_length,
+        geometry.condenser_length,
+    )
+    length = geometry.total_length
+    ax.add_patch(plt.Rectangle((0, 0.25), length, 1.5, fill=False, linewidth=2.0))
+    ax.add_patch(plt.Rectangle((0, 0.25), length, 0.22, color="#0a9396", alpha=0.75))
+    ax.add_patch(plt.Rectangle((0, 1.53), length, 0.22, color="#0a9396", alpha=0.75))
+    ax.axvline(le, color="0.35", linestyle="--")
+    ax.axvline(le + la, color="0.35", linestyle="--")
+    ax.text(le / 2, 2.02, "Evaporator", ha="center", weight="bold")
+    ax.text(le + la / 2, 2.02, "Adiabatik", ha="center", weight="bold")
+    ax.text(le + la + lc / 2, 2.02, "Kondenser", ha="center", weight="bold")
+    ax.text(le / 2, 2.22, "Q masuk", ha="center", color="#9b2226")
+    ax.text(le + la + lc / 2, 2.22, "Q keluar", ha="center", color="#005f73")
+    for start in (0.04, 0.22):
+        ax.annotate("", xy=(le - 0.02, start + 0.65), xytext=(start, start + 0.65),
+                    arrowprops=dict(arrowstyle="->", color="#ca6702", lw=1.8))
+    ax.annotate("", xy=(le + la + lc - 0.05, 1.0), xytext=(le + 0.02, 1.0),
+                arrowprops=dict(arrowstyle="->", color="#ca6702", lw=1.8))
+    ax.annotate("", xy=(le + la + 0.05, 0.78), xytext=(length - 0.05, 0.78),
+                arrowprops=dict(arrowstyle="->", color="#ca6702", lw=1.8))
+    ax.annotate("", xy=(0.05, 0.36), xytext=(length - 0.05, 0.36),
+                arrowprops=dict(arrowstyle="->", color="white", lw=1.5))
+    ax.annotate("", xy=(0.05, 1.64), xytext=(length - 0.05, 1.64),
+                arrowprops=dict(arrowstyle="->", color="white", lw=1.5))
+    ax.text(length / 2, 1.18, "Uap jenuh", ha="center", color="#8c510a")
+    ax.text(
+        length / 2, 0.05,
+        "Kapiler: cairan kembali melalui wick (arah berlawanan)",
+        ha="center", color="#075b5d",
+    )
+    ax.text(0, -0.18, "x = 0", ha="center")
+    ax.text(length, -0.18, "x = L", ha="center")
+    ax.set(xlim=(-0.08, length + 0.08), ylim=(-0.3, 2.45))
+    ax.axis("off")
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def plot_gravity(rows: list[dict], path: Path) -> None:
+    configure_plots()
+    labels = [row["label"] for row in rows]
+    values = [row["capillary_limit_W"] for row in rows]
+    fig, ax = plt.subplots(figsize=(7.2, 4.2))
+    bars = ax.bar(
+        labels, values,
+        color=["#0a9396", "#0a9396", "#ca6702", "#ca6702", "#9b2226"],
+    )
+    ax.set_ylabel("Batas kapiler (W)")
+    ax.set_xlabel("Percepatan efektif dan orientasi")
+    ax.tick_params(axis="x", rotation=20)
+    ax.bar_label(bars, fmt="%.0f")
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def run_analysis(project_root: Path) -> dict:
+    geometry = HeatPipeGeometry()
+    conditions = OperatingConditions()
+    result = simulate(geometry, conditions)
+    data_dir = project_root / "data"
+    figure_dir = project_root / "figures"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    figure_dir.mkdir(parents=True, exist_ok=True)
+
+    axial_rows = []
+    for i in range(len(result.x)):
+        axial_rows.append({
+            "x_m": result.x[i], "section": result.section[i],
+            "axial_heat_flow_W": result.axial_heat_flow[i],
+            "mass_flow_kg_s": result.mass_flow[i],
+            "vapor_velocity_m_s": result.vapor_velocity[i],
+            "reynolds": result.reynolds[i], "mach": result.mach[i],
+            "vapor_pressure_drop_Pa": result.vapor_pressure_drop[i],
+            "liquid_pressure_drop_Pa": result.liquid_pressure_drop[i],
+        })
+    write_csv(data_dir / "profil_aksial.csv", axial_rows)
+
+    temperatures = np.arange(800.0, 1200.1, 25.0)
+    limit_rows = operating_limits(geometry, conditions, temperatures)
+    write_csv(data_dir / "batas_operasi.csv", limit_rows)
+
+    load_rows = []
+    for heat_input in (300, 400, 600, 800, 1000, 1200, 1400, 1600):
+        local = replace(conditions, heat_input=heat_input)
+        row = simulate(geometry, local).summary
+        load_rows.append(dict(row))
+    write_csv(data_dir / "studi_beban.csv", load_rows)
+
+    gravity_rows = []
+    for label, gravity, tilt in (
+        ("Mikrogravitasi\n0", 0.0, 0.0),
+        ("Akselerasi kecil\n0,01; 90°", 0.01, 90.0),
+        ("Akselerasi\n0,1; 90°", 0.1, 90.0),
+        ("Akselerasi\n1; 90°", 1.0, 90.0),
+        ("Bumi\n9,81; 90°", 9.81, 90.0),
+    ):
+        local = replace(conditions, gravity=gravity, tilt_deg=tilt)
+        q_cap = capillary_limit_at_temperature(geometry, local, 1000.0)
+        gravity_rows.append({
+            "label": label, "gravity_m_s2": gravity, "tilt_deg": tilt,
+            "capillary_limit_W": q_cap,
+        })
+    write_csv(data_dir / "studi_gravitasi.csv", gravity_rows)
+
+    mesh_rows = []
+    reference_dp = None
+    for cells in (50, 100, 200, 400, 800, 1600):
+        local = replace(conditions, cells=cells)
+        summary = simulate(geometry, local).summary
+        total_dp = (
+            float(summary["vapor_pressure_drop_Pa"])
+            + float(summary["liquid_pressure_drop_Pa"])
+        )
+        if cells == 1600:
+            reference_dp = total_dp
+        mesh_rows.append({"cells": cells, "total_pressure_drop_Pa": total_dp})
+    for row in mesh_rows:
+        row["relative_difference_percent"] = (
+            abs(row["total_pressure_drop_Pa"] - reference_dp)
+            / reference_dp * 100.0
+        )
+    write_csv(data_dir / "konvergensi_grid.csv", mesh_rows)
+
+    pore_rows = []
+    for pore_um in (25, 50, 75, 100, 150):
+        local_geometry = replace(geometry, pore_radius=pore_um * 1.0e-6)
+        pore_rows.append({
+            "pore_radius_um": pore_um,
+            "capillary_limit_W": capillary_limit_at_temperature(
+                local_geometry, conditions, 1000.0,
+            ),
+            "entrainment_limit_W": simulate_at_temperature(
+                local_geometry, replace(conditions, heat_input=1.0), 1000.0,
+            ).summary["entrainment_limit_W"],
+        })
+    write_csv(data_dir / "studi_pori.csv", pore_rows)
+
+    plot_schematic(geometry, figure_dir / "skema-model.png")
+    plot_axial(result, figure_dir / "profil-aksial.png")
+    plot_limits(limit_rows, conditions.heat_input, figure_dir / "batas-operasi.png")
+    plot_gravity(gravity_rows, figure_dir / "pengaruh-gravitasi.png")
+
+    output = {
+        "model": "Steady 1-D vapor/Darcy-wick capillary model",
+        "geometry": asdict(geometry),
+        "conditions": asdict(conditions),
+        "fluid": SodiumProperties(conditions.operating_temperature).summary(),
+        "results": result.summary,
+        "derived_geometry": {
+            "total_length_m": geometry.total_length,
+            "effective_length_m": geometry.effective_length,
+            "vapor_area_m2": geometry.vapor_area,
+            "wick_area_m2": geometry.wick_area,
+        },
+    }
+    with (data_dir / "ringkasan_kasus.json").open("w", encoding="utf-8") as handle:
+        json.dump(output, handle, indent=2, ensure_ascii=False)
+    return output
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output-dir", type=Path, default=Path(__file__).resolve().parents[1],
+        help="Project directory receiving data/ and figures/ (default: project root).",
+    )
+    args = parser.parse_args()
+    output = run_analysis(args.output_dir.resolve())
+    print(json.dumps(output["results"], indent=2, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
+
 ```
