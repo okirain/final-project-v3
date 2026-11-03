@@ -1,83 +1,206 @@
 
 # PELAKSANAAN PENELITIAN
 
-## Alat dan Bahan Penelitian
+## IV.1 Desain Penelitian
 
-Penelitian menggunakan perangkat lunak dan data sifat fluida; tidak dilakukan eksperimen laboratorium. Simulator ditulis dalam Python 3.12. NumPy 2.2.5 digunakan untuk larik dan operasi numerik, sedangkan Matplotlib 3.10.3 digunakan untuk grafik [14, 15]. Pustaka standar `dataclasses`, `csv`, `json`, `argparse`, dan `unittest` digunakan untuk struktur parameter, keluaran, antarmuka perintah, dan pengujian. Dokumen disusun dalam format Quarto Markdown dengan keluaran PDF berbasis LaTeX.
+Penelitian ini merupakan penelitian kuantitatif berbasis simulasi numerik dengan empat tahap yang saling bergantung, disusun mengikuti panduan penulisan skripsi departemen [42]. Tahap pertama adalah pengembangan model dan perangkat lunak: korelasi sifat termofisika, solver batas operasi, dan model transien jaringan termal. Tahap kedua adalah verifikasi dan validasi: pengujian unit, uji konvergensi, pemeriksaan neraca energi, dan perbandingan dengan data KRUSTY. Tahap ketiga adalah desain dan evaluasi ISR-V2: pemindaian array heat pipe, perhitungan suhu bahan bakar, analisis kegagalan, dan neraca massa. Tahap keempat adalah analisis dan penulisan: sensitivitas, keterbatasan, kesimpulan, dan rekomendasi.
 
-Struktur proyek dipisahkan menjadi sumber pada `src/`, pengujian pada `tests/`, bab pada `chapters/`, lampiran pada `appendices/`, data pada `data/`, dan gambar pada `figures/`. Pemisahan tersebut mencegah pencampuran antara persamaan, keluaran numerik, dan naskah. Nama berkas keluaran menggunakan bahasa Indonesia agar mudah dikenali dalam pembahasan.
+Pendekatan ini dipilih karena desain heat pipe ruang angkasa melibatkan banyak parameter yang saling terkait, seperti diameter, jumlah, jenis wick, suhu operasi, dan geometri inti. Studi parametrik dengan model analitik/ROM memungkinkan eksplorasi ruang desain secara cepat sebelum dilakukan analisis CFD atau eksperimen yang mahal. Model yang dikembangkan juga berfungsi sebagai alat verifikasi silang terhadap hasil CFD dan data eksperimen di masa depan.
 
-Parameter geometri dan kondisi acuan diberikan pada Tabel @tbl-parameter. Geometri bukan salinan pipa kalor reaktor tertentu, melainkan kasus representatif yang dipilih agar model memperlihatkan mekanisme kapiler, uap, dan gravitasi dalam satu rangkaian perhitungan.
+## IV.2 Arsitektur Perangkat Lunak
 
-| Parameter | Simbol | Nilai | Satuan |
-|:----------|:------:|------:|:------:|
-| Panjang evaporator | $L_e$ | 0,25 | m |
-| Panjang adiabatik | $L_a$ | 0,15 | m |
-| Panjang kondenser | $L_c$ | 0,60 | m |
-| Diameter ruang uap | $D_v$ | 0,012 | m |
-| Tebal sumbu | $t_w$ | 0,001 | m |
-| Jari-jari pori efektif | $r_c$ | 75 | µm |
-| Permeabilitas | $K$ | $5\times10^{-10}$ | m² |
-| Sudut kontak | $\theta_c$ | 0 | ° |
-| Konduktivitas efektif sumbu | $k_{eff}$ | 10 | W/(m·K) |
-| Jari-jari nukleasi | $r_b$ | 5 | µm |
-| Daya masukan | $Q$ | 800 | W |
-| Temperatur sink | $T_{sink}$ | 700 | K |
-| Resistansi kondenser | $R_c$ | 0,375 | K/W |
-| Percepatan efektif | $g_{eff}$ | 0 | m/s² |
-| Jumlah sel | $N$ | 400 | – |
+Perangkat lunak ISR-V2 ditulis dalam Python 3.10+ dan diorganisasi menjadi empat paket: thermophysical, solver, validation, dan isr_design. Tabel 4.1 merangkum tanggung jawab setiap modul. Pemisahan ini memungkinkan pengujian unit secara independen dan penggantian model fisika tanpa mengubah bagian lain.
 
-: Parameter geometri, sumbu, dan kondisi batas kasus acuan. {#tbl-parameter}
+**Tabel 4.1** Struktur modul perangkat lunak ISR-V2
 
-Nilai turunan yang digunakan adalah panjang total 1,00 m, panjang efektif 0,575 m, luas ruang uap $1{,}13097\times10^{-4}$ m², dan luas sumbu $4{,}08407\times10^{-5}$ m². Sifat natrium dihitung pada setiap temperatur operasi, bukan diambil sebagai konstanta.
+| Modul | Fungsi utama | Keluaran |
+|-------|--------------|----------|
+| thermophysical/properties.py | Korelasi sifat Na, K, dan NaK-78; inversi tekanan saturasi | Fungsi termofisika |
+| solver/limits.py | Batas kapiler, sonik, entrainment, viskos, didih | Q_max(T), komponen tekanan |
+| solver/transient_model.py | Jaringan termal nodal bahan bakar–dinding–uap–sink | Riwayat suhu, Q_hp(t) |
+| validation/krusty_benchmark.py | Data benchmark, jadwal daya/sink, metrik galat | CSV, JSON, gambar validasi |
+| isr_design/isr_core_coupling.py | Konduksi radial UN, desain array, evaluasi kegagalan | Parameter desain, T_fuel |
+| isr_design/comparison.py | Neraca massa, perbandingan, figur | CSV, JSON, gambar |
+| tests/ | Pengujian unit properti, batas, transien, ISR | Status lulus/gagal |
+| scripts/run_all.py | Menjalankan seluruh rantai analisis | Hasil lengkap |
 
-## Tata Laksana Penelitian
+Alur data dimulai dari parameter geometri dan material, kemudian properti termofisika dihitung pada setiap suhu. Solver batas operasi menghasilkan Q_max(T), yang digunakan oleh model transien untuk membatasi transport kalor. Model transien menghasilkan riwayat suhu dan daya, yang kemudian dibandingkan dengan data KRUSTY. Untuk ISR-V2, model konduksi radial dan desain array menggunakan Q_max pada suhu operasi untuk menentukan diameter dan jumlah heat pipe.
 
-Tahapan penelitian dilaksanakan sebagai berikut.
+Gambar 4.1 menunjukkan arsitektur perangkat lunak dalam bentuk diagram.
 
-1. Menurunkan neraca energi, profil kalor aksial, laju aliran massa, rugi tekanan uap, rugi tekanan cairan, dan neraca kapiler.
-2. Mengimplementasikan korelasi sifat natrium pada kelas `SodiumProperties` dengan pemeriksaan rentang temperatur.
-3. Menyusun parameter pada kelas data `HeatPipeGeometry` dan `OperatingConditions` agar masukan dapat divalidasi dan diubah tanpa mengedit persamaan.
-4. Membentuk profil kalor aksial sesuai Persamaan @eq-axialheat dan menghitung kecepatan, Reynolds, serta Mach.
-5. Mengintegrasikan rugi tekanan dengan aturan trapesium dan mengevaluasi margin kapiler.
-6. Menghitung batas sonik, entrainment, dan pendidihan pada temperatur operasi.
-7. Mencari batas kapiler melalui bracketing dan biseksi pada temperatur tetap.
-8. Menjalankan kasus acuan, peta batas pada 800–1200 K, studi beban, studi percepatan, studi pori, dan konvergensi grid.
-9. Menyimpan data dalam CSV/JSON dan membuat gambar langsung dari hasil perhitungan.
-10. Menjalankan pengujian otomatis dan memeriksa konsistensi antara angka dalam naskah dan berkas keluaran.
+~~~mermaid
+graph TD
+    A["Parameter geometri<br/>dan material"] --> B["properties.py<br/>Na, K, NaK-78"]
+    A --> C["limits.py<br/>Q_max(T)"]
+    B --> C
+    B --> D["transient_model.py<br/>ODE jaringan termal"]
+    C --> D
+    D --> E["krusty_benchmark.py<br/>validasi 28 jam"]
+    C --> F["isr_core_coupling.py<br/>desain array"]
+    A --> F
+    F --> G["comparison.py<br/>massa, kegagalan"]
+    E --> H["results/<br/>CSV, JSON, figur"]
+    G --> H
+~~~
 
-Perintah reproduksi dari direktori utama proyek adalah sebagai berikut.
+**Gambar 4.1** Arsitektur perangkat lunak simulator ISR-V2
 
-```bash
-python -m pip install -r requirements.txt
-python src/heatpipe_simulator.py
-python -m unittest discover -s tests -v
-quarto render Skripsi.qmd --to pdf
-```
+Gambar 4.2 menunjukkan diagram alir penelitian secara keseluruhan.
 
-Program tidak membutuhkan koneksi internet pada saat simulasi. Instalasi paket dan renderer hanya diperlukan pada penyiapan awal. Seluruh keluaran menggunakan satuan SI secara internal; pemformatan desimal pada naskah dilakukan ketika hasil disajikan.
+~~~mermaid
+flowchart TD
+    S["Mulai"] --> P1["Studi literatur<br/>KRUSTY, ISR, heat pipe"]
+    P1 --> P2["Pengembangan properti<br/>termofisika Na/K"]
+    P2 --> P3["Pengembangan solver<br/>batas operasi"]
+    P3 --> P4["Pengembangan model<br/>transien nodal"]
+    P4 --> P5["Pengujian unit dan<br/>verifikasi numerik"]
+    P5 --> P6["Validasi terhadap<br/>data KRUSTY 28 jam"]
+    P6 --> D1{"Galat ≤10%?"}
+    D1 -- Tidak --> P4
+    D1 -- Ya --> P7["Desain array heat pipe<br/>untuk ISR 500 kWth"]
+    P7 --> P8["Evaluasi suhu bahan bakar,<br/>kegagalan, dan massa"]
+    P8 --> P9["Analisis sensitivitas<br/>dan keterbatasan"]
+    P9 --> P10["Kesimpulan dan saran"]
+    P10 --> E["Selesai"]
+~~~
 
-## Rencana Analisis Hasil Penelitian
+**Gambar 4.2** Diagram alir penelitian
 
-Hasil utama dirangkum dalam enam kelompok. Pertama, sifat fluida pada 1000 K diperiksa terhadap nilai acuan. Kedua, kasus acuan dianalisis melalui laju massa maksimum, kecepatan, Reynolds, Mach, rugi tekanan, margin kapiler, dan empat batas operasi. Ketiga, peta batas terhadap temperatur digunakan untuk mengidentifikasi mekanisme pengatur.
+## IV.3 Diskretisasi dan Algoritma Numerik
 
-Keempat, studi beban dilakukan dengan mempertahankan $T_{sink}$ dan $R_c$, sehingga temperatur operasi berubah mengikuti Persamaan @eq-temperature. Analisis ini tidak sama dengan peta pada temperatur tetap. Kelima, studi percepatan dilakukan pada 1000 K untuk $g_{eff}=0$, 0,01, 0,1, 1, dan 9,81 m/s². Orientasi 90° digunakan untuk kasus nonnol agar seluruh komponen aksial bekerja merugikan. Keenam, jari-jari pori divariasikan dengan permeabilitas tetap untuk mengisolasi pengaruh tekanan kapiler dan entrainment.
+### IV.3.1 Diskretisasi Aksial
 
-Konvergensi grid dinilai dari jumlah rugi tekanan uap dan cairan pada $N=50$ sampai 1600. Grid 1600 digunakan sebagai pembanding relatif. Karena profil kalor aksial merupakan fungsi linear per bagian, integrasi trapesium diperkirakan menjadi sangat tepat ketika batas bagian berimpit dengan titik grid.
+Domain heat pipe dibagi menjadi N node aksial dengan panjang seragam Δz = L/N. Pada penelitian ini digunakan N = 30 untuk KRUSTY dan ISR-V2. Setiap node memiliki posisi z_i = (i + 0,5)Δz dan termasuk salah satu region: evaporator (z < L_ev), adiabatik (L_ev ≤ z < L_ev + L_ad), atau kondensor (z ≥ L_ev + L_ad). Jumlah node evaporator dan kondensor dihitung secara eksplisit untuk mendistribusikan konduktansi.
 
-Verifikasi program dilakukan melalui sepuluh pengujian yang tercantum pada Tabel @tbl-verifikasi. Pengujian ini memeriksa implementasi dan konsistensi fisik, tetapi tidak menggantikan validasi eksperimental.
+Kapasitas termal dinding per node dihitung dari massa dinding, wick, dan fluida kerja:
 
-| Kelompok | Hal yang diuji | Kriteria |
-|:---------|:---------------|:---------|
-| Sifat fluida | Tekanan jenuh pada titik didih normal | Sekitar 1 atm pada 1156 K |
-| Sifat fluida | $\sigma$, $\mu_l$, $h_{fg}$, dan $\rho_l$ pada 1000 K | Sesuai nilai acuan/toleransi |
-| Sifat fluida | Semua sifat pada 1000 K | Positif dan berhingga |
-| Profil energi | Nilai ujung, maksimum, dan arah gradien | Nol–maksimum–nol sesuai geometri |
-| Mikrogravitasi | Tekanan hidrostatik | Nol ketika $g_{eff}=0$ |
-| Kasus acuan | Mekanisme pengatur dan Mach | Kapiler dan $Ma<0,3$ |
-| Batas kapiler | Margin pada $Q=Q_{cap}$ | Mendekati nol |
-| Percepatan | Kapasitas pada orientasi merugikan | Menurun; kasus Bumi acuan tidak feasible |
-| Grid | Rugi tekanan grid 100 dan 1600 | Selisih relatif <0,5% |
-| Validasi masukan | Permeabilitas nol | Ditolak oleh program |
+$$ C_w = \frac{m_w c_{p,w} + m_{wick} c_{p,wick} + m_l c_{p,l}}{N}. \tag{4.1} $$
 
-: Rancangan verifikasi perangkat lunak. {#tbl-verifikasi}
+Massa wick kering dihitung dengan
+
+$$ m_{wick} = \rho_{Ni}(1-\varepsilon) A_{wick} L, \tag{4.2} $$
+
+sedangkan massa fluida kerja dalam wick adalah
+
+$$ m_l = \rho_l \varepsilon A_{wick} L. \tag{4.3} $$
+
+Konduktansi aksial dinding dihitung dengan persamaan (3.25), dengan A_cond = A_wall + 0,5 A_wick. Faktor 0,5 menunjukkan bahwa wick hanya memberikan kontribusi konduksi sebagian karena adanya fluida dan porositas.
+
+### IV.3.2 Diskretisasi Radial Bahan Bakar
+
+Untuk bahan bakar UN, domain radial dari r_i = 0,3825 cm hingga r_o = 1,63 cm dibagi menjadi 160 sel dengan batas sel yang berjarak seragam. Konduktansi antarsel dihitung dengan persamaan (3.31). Sistem persamaan linear diselesaikan dengan solver langsung NumPy, kemudian diiterasi karena k_UN bergantung pada T. Iterasi berhenti ketika perubahan suhu maksimum kurang dari 10⁻⁶ K atau setelah 25 iterasi.
+
+Pemilihan 160 sel didasarkan pada uji konvergensi: perbedaan suhu puncak antara 80, 160, dan 320 sel kurang dari 0,05 K. Dengan demikian, 160 sel memberikan akurasi yang memadai dengan biaya komputasi yang rendah.
+
+### IV.3.3 Integrasi Waktu
+
+Sistem ODE diselesaikan dengan metode BDF dari SciPy. Vektor keadaan terdiri atas suhu bahan bakar, suhu dinding pada N node, suhu uap, suhu sink, dan daya PCS terfilter. Jumlah keadaan untuk N = 30 adalah 34. Toleransi relatif 10⁻⁵ dan absolut 10⁻⁴ dipilih setelah uji sensitivitas: penurunan toleransi menjadi 10⁻⁶ mengubah suhu puncak kurang dari 0,1 K, tetapi meningkatkan waktu komputasi sekitar dua kali.
+
+Langkah waktu maksimum ditetapkan 20–60 detik. Untuk simulasi 87 jam dengan langkah 60 detik, jumlah titik keluaran sekitar 5.220 dan waktu komputasi sekitar 5 detik pada komputer biasa. Kecepatan ini memungkinkan studi parametrik dengan puluhan kasus dalam waktu singkat.
+
+### IV.3.4 Algoritma Transien
+
+Algoritma utama model transien adalah sebagai berikut.
+
+1. Inisialisasi suhu seragam pada 300 K dan daya PCS terfilter nol.
+2. Pada setiap langkah waktu, hitung daya fisi dan faktor beban sink dari fungsi profil.
+3. Hitung aktivasi uap berdasarkan suhu uap dan suhu startup.
+4. Hitung konduktansi evaporator, kondensor, dan sink.
+5. Hitung Q_max dari solver batas operasi.
+6. Hitung fluks kalor antarnode dan sumber/sink.
+7. Bentuk vektor turunan dan integrasikan dengan BDF.
+8. Setelah integrasi selesai, hitung diagnostik Q_hp, Q_limit, dan mode batas pada setiap titik keluaran.
+9. Simpan hasil ke CSV/JSON dan buat gambar.
+
+## IV.4 Protokol Benchmark KRUSTY
+
+### IV.4.1 Geometri dan Kondisi Awal
+
+Benchmark KRUSTY menggunakan geometri heat pipe 1,27 cm OD, tebal dinding 0,089 cm, wick nikel 0,05 cm, panjang total 100 cm, evaporator 25 cm, adiabatik 35 cm, dan kondensor 40 cm. Fluida kerja adalah natrium dengan massa 15 g. Model menggunakan delapan heat pipe paralel, massa bahan bakar efektif 42,9 kg (setara 6,0 kJ/K), massa sink 12 kg (6,0 kJ/K), dan kapasitas dinding 0,25 kg per heat pipe.
+
+Kondisi awal adalah suhu seragam 300 K, daya fisi nol, dan tekanan PCS nol. Daya fisi diberikan sebagai fungsi waktu yang direkonstruksi dari urutan peristiwa uji 28 jam: startup eksponensial, keadaan quasi-steady 2,75 kW, penurunan beban ke 2,05 kW, kenaikan ke 4,05 kW, kegagalan modul Stirling, kenaikan platen, kehilangan pendinginan aktif, restart konverter, dan scram pada 28,03 jam. Faktor beban sink juga diberikan sebagai fungsi waktu untuk merepresentasikan konverter dan simulator yang aktif atau stall.
+
+### IV.4.2 Titik Benchmark
+
+Tabel 4.2 merangkum titik benchmark yang digunakan. Titik-titik tersebut dipilih karena makalah KRUSTY menyatakan nilai suhu atau daya secara eksplisit, sehingga perbandingan dapat dilacak tanpa digitasi gambar.
+
+**Tabel 4.2** Titik benchmark KRUSTY yang digunakan
+
+| Kode | Waktu (jam) | Suhu bahan bakar (K) | Kondisi | Peran |
+|------|-------------|----------------------|---------|-------|
+| startup_500C | 0,63 | 773,15 | Inti mencapai 500 °C; heat pipe mulai bekerja | Waktu startup |
+| quasi_1p7h | 1,70 | 1073,15 | Quasi-steady setelah startup | Envelope |
+| nominal_8h | 8,00 | 1073,15 | Keadaan nominal 2,75 kW fisi | Envelope |
+| loss_20p5h | 20,50 | 1092,15 | Konverter stall, aliran simulator rendah | Envelope |
+| stalled_24h | 24,00 | 1092,15 | Konverter restart, quasi-steady | Envelope |
+| prescram_27h | 27,00 | 1092,15 | Seluruh pendinginan aktif dihentikan | Envelope |
+| cooldown_31h | 31,00 | 723,15 | Tiga jam setelah scram | Diagnostik |
+| cooldown_87h | 87,00 | 319,15 | Akhir rekaman cooldown | Envelope |
+
+Enam titik pertama dan titik 87 jam digunakan untuk menghitung metrik envelope. Titik 31 jam dilaporkan terpisah karena berada pada fase transisi shutdown heat pipe, di mana model lumped memiliki keterbatasan.
+
+### IV.4.3 Pemisahan Kalibrasi dan Validasi
+
+Untuk menghindari overfitting, parameter model dibagi menjadi dua kelompok. Kelompok pertama adalah parameter geometri dan material yang diambil langsung dari literatur: diameter, tebal dinding, panjang, massa bahan bakar, massa dinding, dan kalor jenis. Kelompok kedua adalah parameter kopling efektif yang tidak dapat diukur langsung, yaitu konduktansi bahan bakar–dinding, konduktansi uap, konduktansi sink, dan area MLI efektif. Parameter kelompok kedua dikalibrasi menggunakan neraca daya pada keadaan nominal 8 jam dan data kehilangan pendinginan, kemudian dibekukan sebelum perbandingan pada titik-titik lain dilakukan. Dengan cara ini, titik 1,7 jam, 24 jam, 27 jam, dan 87 jam berfungsi sebagai validasi independen terhadap kalibrasi, sedangkan titik 20,5 jam adalah uji konsistensi karena respons kehilangan pendinginan ikut digunakan dalam kalibrasi.
+
+Kalibrasi menghasilkan konduktansi bahan bakar–dinding 60 W/K per heat pipe, konduktansi uap 40 W/K, konduktansi sink 2,0 W/K, area MLI efektif 5,36 × 10⁻³ m², dan UA_rej 3,9 W/K. Nilai-nilai ini berada dalam rentang yang masuk akal untuk sistem KRUSTY dan tidak dipilih semata-mata untuk mencocokkan satu titik.
+
+## IV.5 Prosedur Desain ISR-V2
+
+### IV.5.1 Evaluasi Konfigurasi In-Channel
+
+Langkah pertama adalah mengevaluasi penggantian langsung kanal NaK-78 berdiameter 0,6 cm dengan heat pipe natrium. Konfigurasi ini disebut V2-A. Heat pipe memiliki diameter luar 0,6 cm, tebal dinding 0,05 cm, tebal wick 0,05 cm, panjang evaporator 25 cm, adiabatik 5 cm, dan kondensor 20 cm. Daya per pin adalah 500 kW/61 = 8,20 kW. Batas operasi dihitung pada suhu 1050 K, dan suhu bahan bakar dihitung dengan kondisi batas inner.
+
+### IV.5.2 Pemindaian Array Heat Pipe
+
+Langkah kedua adalah memindai ruang desain array heat pipe yang terpisah dari pin bahan bakar. Jumlah heat pipe divariasikan pada 13, 19, 37, dan 61; diameter luar pada 1,27, 2,0, 3,0, 4,0, dan 5,0 cm; serta jenis wick screen dan arterial. Setiap kandidat dievaluasi dengan kriteria:
+
+1. Q_max(T_op) ≥ 1,5 × Q_per_heat_pipe (margin transport minimum 1,5).
+2. Diameter inti ekuivalen ≤55 cm.
+3. Massa tambahan sistem minimum, dengan preferensi jumlah heat pipe ≥19 untuk redundansi.
+
+Daya per heat pipe dihitung dengan Q = 500 kW / N_hp. Suhu operasi acuan adalah 1050 K. Geometri heat pipe menggunakan panjang evaporator 30 cm, adiabatik 10 cm, dan kondensor 40 cm. Tebal dinding dan wick masing-masing 0,15 cm. Untuk wick screen, permeabilitas dihitung dengan persamaan Blake–Kozeny; untuk wick arterial, permeabilitas ditetapkan 1,0 × 10⁻⁹ m² sebagai asumsi desain.
+
+### IV.5.3 Neraca Massa
+
+Massa sistem pendingin aktif dihitung dari komponen pipa eksternal, pompa EM, penukar kalor, akumulator, inventaris NaK-78, isolasi, dan kontingensi 15%. Massa sistem heat pipe dihitung dari shell Haynes 230, wick nikel, natrium, header, penambahan massa blok inti, penambahan massa reflektor, dan kontingensi 10%. Penambahan massa reflektor dihitung dengan skala luas selimut silinder terhadap diameter inti:
+
+$$ \Delta m_{ref} = m_{ref,0}\left(\frac{D_{core}}{D_{core,0}} - 1\right). \tag{4.4} $$
+
+Penambahan massa blok inti dihitung dengan skala luas:
+
+$$ \Delta m_{block} = m_{block,0}\left[\left(\frac{D_{core}}{D_{core,0}}\right)^2 - 1\right]. \tag{4.5} $$
+
+### IV.5.4 Analisis Kegagalan
+
+Kegagalan satu heat pipe dimodelkan dengan menaikkan beban heat pipe tetangga sebesar Q/6 (enam tetangga terdekat) dan menggandakan panjang spreading termal di blok inti. Kegagalan tiga heat pipe berdekatan dimodelkan dengan faktor tiga. Suhu blok dan suhu puncak bahan bakar dihitung ulang dengan model konduksi radial. Kriteria keberterimaan adalah T_fuel,max < 2523 K.
+
+## IV.6 Asumsi Input dan Ketidakpastian
+
+Tabel 4.3 merangkum asumsi input utama beserta sumber dan ketidakpastiannya. Asumsi-asumsi ini dipilih secara konservatif atau berdasarkan data literatur. Ketidakpastian terbesar terletak pada permeabilitas wick arterial, konduktivitas blok Mo-30Re, dan distribusi daya antar-pin. Analisis sensitivitas pada Bab V membahas pengaruh asumsi-asumsi tersebut.
+
+**Tabel 4.3** Asumsi input utama simulasi
+
+| Parameter | Nilai acuan | Rentang | Sumber/ketidakpastian |
+|-----------|-------------|---------|------------------------|
+| Daya total ISR | 500 kWth | tetap | [1] |
+| Distribusi daya | merata 61 pin | ±10% antar-pin | asumsi |
+| Suhu heat pipe | 1050 K | 1000–1100 K | desain |
+| Suhu blok inti | T_hp + ΔT_spread | 1150–1350 K | model |
+| Konduktivitas blok Mo-30Re | 80 W/(m·K) | 50–120 W/(m·K) | literatur |
+| Konduktivitas UN | 21 W/(m·K) pada 800 K | 15–25 W/(m·K) | [18]–[20] |
+| Permeabilitas wick arterial | 1,0 × 10⁻⁹ m² | 5 × 10⁻¹⁰–5 × 10⁻⁹ m² | asumsi teknologi |
+| Jari-jari pori | 10 µm | 5–20 µm | desain wick |
+| Tebal dinding/wick | 1,5 mm | 1–2 mm | desain |
+| Faktor keamanan transport | 1,5 | 1,3–2,0 | praktik desain |
+| Kontingensi massa | 10–15% | 10–20% | praktik desain |
+
+## IV.7 Verifikasi dan Validasi
+
+Verifikasi dilakukan pada tiga tingkat. Pertama, pengujian unit memeriksa sifat termofisika pada titik didih, inversi tekanan saturasi, monotonisitas, dan rentang nilai. Kedua, pengujian batas operasi memeriksa bahwa semua komponen positif, bahwa gravitasi menurunkan batas kapiler, dan bahwa batas sonik meningkat dengan suhu. Ketiga, pengujian transien memeriksa fungsi profil daya, kenaikan suhu, dan pembatasan Q_hp oleh Q_max.
+
+Uji konvergensi mesh dilakukan dengan memvariasikan jumlah node aksial 20, 30, 40, dan 60. Perbedaan suhu puncak pada keadaan nominal kurang dari 0,5 K, sehingga 30 node dianggap memadai. Uji konvergensi radial dilakukan dengan 80, 160, dan 320 sel; perbedaan suhu puncak kurang dari 0,05 K.
+
+Validasi terhadap KRUSTY dilakukan dengan membandingkan suhu model dan suhu eksperimen pada titik-titik Tabel 4.2. Metrik yang digunakan adalah MAPE, RMSE, dan galat maksimum. Batas keberterimaan adalah 10% untuk titik quasi-steady. Titik transien yang dipengaruhi umpan balik neutronik, seperti kenaikan daya saat platen dinaikkan, tidak dimasukkan ke dalam metrik karena model termal tidak menyelesaikan kinetika neutronik.
+
+Validasi internal untuk ISR-V2 dilakukan dengan memeriksa neraca energi: daya 500 kWth harus sama dengan kalor yang dipindahkan heat pipe ditambah kehilangan pasif pada kondisi tunak. Selain itu, suhu bahan bakar diperiksa terhadap solusi analitik untuk konduktivitas konstan. Perbedaan antara solusi numerik dan analitik kurang dari 1 K, yang menunjukkan bahwa implementasi finite volume benar.
