@@ -1,98 +1,113 @@
 
 # TINJAUAN PUSTAKA
 
-## Perkembangan Pipa Kalor
+## II.1 Perkembangan Reaktor Ruang Angkasa dan Teknologi Pendinginnya
 
-Prinsip perangkat berkonduktansi termal tinggi yang menggunakan perubahan fasa
-diperkenalkan melalui karya awal Gaugler dan kemudian Grover. Publikasi Grover,
-Cotter, dan Erickson pada 1964 memperlihatkan struktur berkonduktansi termal
-sangat tinggi yang menjadi dasar pipa kalor modern [1]. Cotter selanjutnya
-merumuskan teori awal mengenai hubungan kapiler, aliran cairan, dan aliran uap
-[2]. Buku acuan Chi serta Faghri kemudian menyusun persamaan batas transportasi
-dan metode analisis yang banyak digunakan dalam perancangan pipa kalor [3, 4].
+Reaktor ruang angkasa telah dikembangkan sejak awal era atom untuk memenuhi kebutuhan daya misi yang tidak dapat dipenuhi oleh sumber energi kimia atau surya. Tabel 2.1 merangkum beberapa konsep yang paling berpengaruh, termasuk konfigurasi pendingin dan sistem konversi energinya. Perbandingan ini penting karena pilihan pendingin tidak dapat dipisahkan dari pilihan suhu operasi, sistem konversi, dan tingkat kematangan teknologi.
 
-Pipa kalor terdiri atas evaporator, bagian adiabatik, dan kondenser. Fluida
-menerima kalor laten pada evaporator dan melepaskannya pada kondenser. Perbedaan
-tekanan kapiler pada antarmuka cair–uap memungkinkan cairan kembali melalui
-struktur pori. Kemampuan operasi tanpa pompa ini menjadikan pipa kalor berbeda
-dari loop dua fase konvensional. Namun, kapasitasnya tidak tak terbatas. Tekanan
-kapiler harus mengatasi rugi tekanan cairan, rugi tekanan uap, dan tekanan
-akibat percepatan eksternal [4-6].
+**Tabel 2.1** Perbandingan teknologi reaktor ruang angkasa dan sistem pendinginnya
 
-Struktur sumbu dapat berupa anyaman kawat, serbuk tersinter, atau alur. Setiap
-struktur memiliki hubungan berbeda antara jari-jari pori, permeabilitas,
-porositas, dan konduktivitas efektif. Pori kecil meningkatkan tekanan kapiler,
-tetapi sering diikuti permeabilitas rendah. Oleh sebab itu, perubahan jari-jari
-pori tidak selalu dapat ditafsirkan terpisah dari permeabilitas pada desain
-nyata. Model penelitian ini memperlakukan keduanya sebagai parameter independen
-agar pengaruh masing-masing dapat dipelajari secara terkontrol.
+| Reaktor | Periode | Daya termal/listrik | Pendingin | Konversi | Status dan catatan |
+|---------|---------|---------------------|-----------|----------|--------------------|
+| SNAP-10A | 1965 | ~30 kWth / 500 W(e) | NaK-78 | Termoelektrik | Terbang 43 hari; kegagalan sistem non-nuklir [8] |
+| BUK | 1970-an | ~100 kWth / 3 kW(e) | NaK-78 | Termoelektrik | Operasional misi radar laut; pengalaman operasi terbatas [7], [8] |
+| TOPAZ-I | 1987 | ~150 kWth / 5–6 kW(e) | NaK-78 | Termoelektrik | Dua unit terbang; suhu operasi dibatasi titik didih NaK [7] |
+| TOPAZ-II | 1990-an | ~135 kWth / 6 kW(e) | NaK-78 | Termionik | Uji darat ekstensif; belum terbang [7] |
+| HOMER-15 | 2000-an | ~50 kWth / 15 kW(e) | Na heat pipe | Stirling | Konsep; heat pipe sebagai jalur kalor pasif [11] |
+| SAIR | 2004 | ~400 kWth / 100 kW(e) | Na heat pipe | AMTEC | Konsep; arsitektur heat pipe skala besar [9] |
+| S4 | 2006 | ~470 kWth / 100 kW(e) | Na heat pipe | Stirling | Konsep; fokus pada subkritisitas saat terendam [10] |
+| KRUSTY | 2018 | 5 kWth / ~1 kW(e) | Na heat pipe | Stirling | Uji nuklir 28 jam; benchmark utama penelitian ini [2]–[5] |
+| ISR | 2020 | 500 kWth | NaK-78 | Belum ditentukan | Konsep reaktor cepat Indonesia [1] |
 
-## Pipa Kalor untuk Reaktor Antariksa
+Konsep LEGO untuk daya permukaan Bulan [12], kajian bahan bakar LEU [13], [14], serta analisis keselamatan reaktor cepat [32], [39], [40] melengkapi gambaran perkembangan tersebut. SNAP-10A, BUK, dan TOPAZ menggunakan NaK-78 karena paduan tersebut berwujud cair pada suhu kamar, sehingga mudah diisi dan dioperasikan. Namun, titik didih NaK-78 yang relatif rendah, sekitar 1000 K, membatasi suhu keluaran reaktor. Selain itu, loop NaK-78 memerlukan pompa elektromagnetik, pipa, penukar kalor, dan sistem ekspansi yang menambah massa serta titik kegagalan. Pengalaman operasional SNAP-10A menunjukkan bahwa kegagalan sistem non-nuklir, bukan fisika reaktor, merupakan penyebab utama berakhirnya misi [8]. Pelajaran ini menegaskan pentingnya kesederhanaan dan redundansi pada sistem termal.
 
-Reaktor berpendingin pipa kalor menggunakan sejumlah pipa yang tertanam atau
-terhubung secara termal dengan teras. Arsitektur ini dapat mengurangi kebutuhan
-pompa dan pipa utama, serta memberikan redundansi apabila kegagalan satu pipa
-tidak langsung menghentikan seluruh sistem. Yan dan rekan-rekannya membahas
-perkembangan mikroreaktor berpendingin pipa kalor beserta tantangan kegagalan
-berantai, integritas struktur, dan kualifikasi [8]. Tinjauan Wang, Ren, dan Li
-menunjukkan bahwa berbagai konsep menggunakan natrium, kalium, atau litium
-sesuai temperatur operasi dan arsitektur sistem [9].
+HOMER, SAIR, dan S4 beralih ke heat pipe natrium karena natrium memiliki titik didih sekitar 1156 K, viskositas rendah, dan figure of merit yang tinggi. HOMER-15 menggunakan heat pipe untuk memindahkan kalor dari inti ke Stirling, sedangkan SAIR dan S4 mengeksplorasi arsitektur daya yang lebih besar dengan banyak heat pipe [9]–[11]. Namun, sebagian besar konsep tersebut belum diuji secara nuklir. Sebelum KRUSTY, eksperimen DUFF telah menunjukkan kopling heat pipe–Stirling dengan reaktor riset, tetapi belum pada konfigurasi daya penuh [35]. KRUSTY kemudian menjadi tonggak karena untuk pertama kalinya reaktor bertenaga heat pipe dioperasikan secara nuklir dan diuji pada kondisi daya penuh dalam waktu yang cukup lama untuk mengamati dinamika termal [2]–[5].
 
-Dalam konteks antariksa, kondisi mikrogravitasi menghilangkan gaya apung dan
-tekanan hidrostatik berskala besar. Pipa kalor bersumbu tetap dapat bekerja
-karena pengembalian cairan didorong oleh kapilaritas. Sebaliknya, termosifon
-tanpa sumbu sangat bergantung pada gravitasi sehingga tidak menjadi pilihan
-utama dalam model ini. Keunggulan pasif tersebut tetap disertai tantangan
-start-up dari kondisi beku, keberadaan gas takterkondensasi, kompatibilitas
-material, dan pembuangan kalor dari kondenser ke radiator [8-10].
+Pemilihan pendingin juga berkaitan dengan keselamatan. NaK-78 bersifat reaktif terhadap air dan udara, sehingga kebocoran dapat menimbulkan kebakaran dan kontaminasi. Natrium memiliki reaktivitas serupa, tetapi dapat dibiarkan membeku pada suhu kamar sehingga mobilitasnya berkurang saat terjadi kebocoran. Di sisi lain, pembekuan natrium menuntut sistem pemanasan awal (pre-heating) dan strategi startup yang hati-hati. KRUSTY memanfaatkan sifat ini untuk menjaga natrium tetap beku selama transportasi dan peluncuran [5]. Dengan demikian, pemilihan fluida kerja selalu merupakan kompromi antara kinerja termal, keselamatan, dan kompleksitas sistem.
 
-Pemilihan natrium dalam penelitian ini didasarkan pada penggunaannya pada pipa
-kalor temperatur tinggi dan tersedianya korelasi sifat yang dievaluasi secara
-termodinamika. Fink dan Leibowitz menyajikan persamaan tekanan uap, entalpi 
-penguapan, densitas, tegangan permukaan, viskositas, dan konduktivitas natrium
-[7]. Ketersediaan sumber tersebut memungkinkan implementasi diperiksa terhadap
-nilai tabel, bukan hanya terhadap keluaran program itu sendiri.
+## II.2 KRUSTY sebagai Benchmark Heat Pipe Logam Cair
 
-## Pemodelan Aliran Dua Fase Pipa Kalor
+KRUSTY adalah prototipe reaktor Kilopower 1 kW(e) yang dirancang untuk memberikan 5 kWth pada suhu bahan bakar sekitar 800 °C. Reaktor ini menggunakan bahan bakar U-8Mo dengan massa 32,2 kg, diameter luar 11 cm, dan panjang 25 cm. Inti dikelilingi reflektor BeO, drum kendali B4C, dan perisai SS316/B4C. Kalor dari inti dipindahkan oleh delapan heat pipe Haynes 230 berdiameter luar 1,27 cm dengan tebal dinding 0,089 cm, wick nikel, dan fluida kerja natrium sebanyak 15 g. Panjang total heat pipe sekitar 100 cm, dengan dua tekukan 45° di region adiabatik untuk menyesuaikan tata letak sistem konversi [3], [5].
 
-Model pipa kalor dapat dikelompokkan menjadi model analitik, model jaringan,
-dan model CFD. Model analitik menggunakan penyederhanaan untuk memperoleh batas
-transportasi dan neraca tekanan. Model jaringan membagi pipa menjadi elemen
-termal atau hidraulik yang saling berhubungan. Model CFD menyelesaikan medan
-kecepatan, tekanan, temperatur, dan dalam beberapa pendekatan antarmuka fasa.
-Ketiga tingkat model memiliki tujuan berbeda; model yang lebih rinci tidak
-selalu diperlukan untuk penyaringan parameter awal [4, 9].
+**Tabel 2.2** Parameter desain utama KRUSTY
 
-HTPIPE merupakan contoh program analisis pipa kalor tunak yang dikembangkan
-untuk membantu perhitungan kinerja dan batas operasi [11]. Perkembangan
-berikutnya mencakup model sistem reaktor seperti HEART yang menghubungkan
-analisis termal dan elektrik [12]. Pada tingkat eksperimen, Wahlquist dan
-rekan-rekannya menekankan pentingnya kualitas serta cakupan data untuk validasi
-pipa kalor pada aplikasi energi nuklir [13]. Literatur tersebut memperlihatkan
-bahwa kode tidak dapat dipisahkan dari pertanyaan mengenai kondisi batas, data
-material, dan validasi.
+| Parameter | Nilai | Sumber |
+|-----------|-------|--------|
+| Daya termal | 5 kWth (nominal uji 2,75–5,1 kWth) | [3], [4] |
+| Bahan bakar | U-8Mo, 32,2 kg, 27,7 kg U-235 | [3] |
+| Geometri inti | OD 11 cm, panjang 25 cm, lubang tengah 4 cm | [3] |
+| Heat pipe | 8 buah, Haynes 230, OD 1,27 cm, tebal 0,089 cm | [3], [5] |
+| Wick | Nikel, hanya di evaporator, ketebalan tipis | [3], [5] |
+| Fluida kerja | Natrium, 15 g per heat pipe | [3] |
+| Panjang heat pipe | ~100 cm, dua tekukan 45° | [3] |
+| Suhu operasi | 800 °C (1073 K) pada daya nominal | [4] |
+| Konversi | 2 konverter Stirling 80 W(e) + 6 simulator termal | [4], [5] |
+| Reflektor | BeO, tiga region (platen, shim, aksial) | [3] |
+| Bejana vakum | SS316, tebal 0,305 cm, OD 13,3 cm | [3] |
 
-Persamaan kapiler umum digunakan untuk menentukan apakah tekanan pendorong
-mencukupi. Batas lain muncul ketika kecepatan uap mendekati kondisi sonik,
-tetes cairan terbawa aliran uap, atau pendidihan di dalam sumbu menghalangi
-pengembalian cairan. Pada temperatur rendah, densitas uap yang kecil dapat
-menyebabkan batas sonik dan viskositas menjadi penting. Pada temperatur lebih
-tinggi, batas kapiler atau entrainment dapat menjadi lebih menonjol. Urutan
-batas bergantung pada geometri dan kondisi batas sehingga harus dihitung, bukan
-ditetapkan sebelumnya [3-6].
+Uji kritis komponen, cold critical, warm critical, dan analisis kecelakaan inserksi reaktivitas dilaporkan secara terpisah pada [6], [36]–[38], sedangkan pengujian elektrik pramanuklir dijelaskan pada [33]. Uji sistem nuklir KRUSTY berlangsung selama 28 jam pada 20 Maret 2018. Uji ini mencakup startup, pendekatan ke keadaan tunak, perubahan beban, kegagalan modul Stirling, perubahan reaktivitas melalui pergerakan platen, kehilangan pendinginan aktif, dan scram [4]. Hasil utama menunjukkan bahwa reaktor mampu mengikuti beban secara pasif: ketika daya yang diminta sistem konversi berubah, suhu bahan bakar bergeser sedikit dan reaktivitas umpan balik mengembalikan daya ke setpoint termostat. Periode osilasi sistem sekitar 17–20 menit pada daya 2,7 kW, dan sekitar 21 menit pada daya rendah [4].
 
-## Posisi dan Kebaruan Penelitian
+Dari sudut pandang validasi, KRUSTY memberikan beberapa besaran yang dapat digunakan. Pada keadaan tunak 8 jam, daya fisi sekitar 2,75 kW, daya termal total sekitar 2,90 kW, suhu bahan bakar sekitar 800 °C, dan daya per heat pipe sekitar 295 W. Kehilangan kalor melalui MLI diperkirakan 350–450 W, sedangkan sekitar 150 W keluar dari inti sebagai radiasi fisi [4]. Pada transient kehilangan pendinginan aktif (T = 20 jam), suhu bahan bakar naik sekitar 15 °C dan daya turun dari 2,6 menjadi 1,25 kW. Pada scram (T = 28,03 jam), suhu bahan bakar turun dari sekitar 820 °C menjadi 46 °C setelah 59 jam pendinginan [4].
 
-Penelitian ini berada pada tingkat model analitik–numerik tereduksi. Kebaruannya
-tidak diklaim sebagai penemuan persamaan baru, melainkan pada integrasi paket
-tugas akhir yang menghubungkan empat komponen: korelasi sifat natrium yang dapat
-diuji, profil aksial uap–cair, pencarian batas kapiler melalui biseksi, serta
-keluaran Quarto yang dapat direproduksi. Parameter percepatan efektif digunakan
-untuk membandingkan mikrogravitasi dengan orientasi dan percepatan lain.
+Namun, KRUSTY memiliki keterbatasan penting untuk aplikasi mikrogravitasi. Heat pipe KRUSTY hanya memiliki wick di bagian evaporator dan mengandalkan gravitasi untuk mengembalikan kondensat dari kondensor ke evaporator; dengan kata lain, perangkat tersebut beroperasi sebagai termosifon, bukan heat pipe kapiler penuh [5]. Oleh karena itu, data KRUSTY sangat berharga untuk validasi dinamika termal dan kopling inti–heat pipe, tetapi tidak dapat digunakan secara langsung untuk memvalidasi batas kapiler mikrogravitasi. Penelitian ini menggunakan KRUSTY untuk memvalidasi respons termal dan kesetimbangan energi, sedangkan batas kapiler mikrogravitasi divalidasi melalui formulasi analitik dan studi parametrik.
 
-Kebaruan pada tingkat tugas akhir juga terletak pada keterbukaan implementasi.
-Setiap rumus utama memiliki padanan fungsi, keluaran disimpan dalam format CSV
-dan JSON, dan pengujian otomatis disertakan. Dengan demikian, pembaca dapat
-mengubah parameter serta menilai konsekuensinya tanpa bergantung pada tabel
-statis. Model ini tetap merupakan penyederhanaan dan tidak dimaksudkan
-menggantikan kode tervalidasi untuk desain reaktor.
+## II.3 Indonesian Space Reactor (ISR) sebagai Kasus Dasar
+
+ISR adalah konsep reaktor cepat 500 kWth yang dirancang untuk memberikan daya selama lebih dari 10 tahun pada daya penuh. Reaktor ini menggunakan 61 pin bahan bakar UN dengan enrichment 55% U-235, tersusun dalam kisi heksagonal dengan pitch 3,4 cm. Setiap pin berbentuk annulus dengan jari-jari dalam 0,3825 cm, jari-jari luar 1,63 cm, dan panjang bahan bakar aktif 25 cm. Kanal pendingin terletak di pusat pin dan dialiri NaK-78. Tabel 2.3 merangkum parameter utama ISR [1].
+
+**Tabel 2.3** Parameter dasar Indonesian Space Reactor (ISR)
+
+| Parameter | Nilai |
+|-----------|-------|
+| Daya termal | ≥500 kWth |
+| Umur operasi | ≥10 tahun pada daya penuh (estimasi 28 tahun pada 0,5 MWth) |
+| Bahan bakar | UN, enrichment 55% U-235, massa total 155,65 kg |
+| Jumlah pin | 61, annulus, pitch heksagonal 3,4 cm |
+| Geometri pin | r_in = 0,3825 cm; r_out = 1,63 cm; L_fuel = 25 cm |
+| Cladding | Mo-30Re, tinggi 43,2 cm, lubang 3,265 cm |
+| Pendingin | NaK-78 (22% Na, 78% K), laju alir individual per pin |
+| Suhu masuk/keluar | 750 K / 950 K |
+| Reflektor | BeO |
+| Kendali | 6 drum B4C (80% B-10), worth total −8520 pcm |
+| SSA | Re dan Mo-30Re |
+| Massa reaktor | 447,12 kg (tanpa loop eksternal) |
+| Reaktivitas lebih | 4023 ± 9 pcm (cold clean) |
+| Shutdown margin | 4852 ± 9 pcm (cold clean) |
+| Koefisien suhu | −0,7872 pcm/K |
+| Koefisien void NaK | −0,0392 pcm/% void |
+
+Desain termal ISR pada kajian awal menggunakan pendekatan analitik satu pin dengan asumsi distribusi daya merata. Khandaq et al. memperoleh suhu rata-rata UN sekitar 950 K pada suhu pendingin rata-rata 850 K [1]. Namun, kajian tersebut tidak menyelesaikan distribusi suhu radial secara rinci, tidak menghitung batas operasi heat pipe, dan tidak mengevaluasi skenario kegagalan kanal dari sisi termal. Kebutuhan akan analisis termohidraulika yang lebih rinci, termasuk kemungkinan penggunaan heat pipe, dinyatakan secara eksplisit sebagai arah penelitian lanjut [1].
+
+Dari sisi neutronik, ISR memiliki karakteristik yang menguntungkan: koefisien suhu dan void bernilai negatif, reaktivitas lebih cukup untuk 28 tahun operasi pada 0,5 MWth, dan shutdown margin memenuhi target 4000 pcm. Drum kendali tunggal memiliki worth −1420 pcm, sedangkan seluruh enam drum memberikan −8520 pcm. SSA berbasis Re/Mo-30Re menjaga reaktor tetap subkritis saat terendam air laut, dengan reaktivitas −2905 pcm pada kondisi cold clean [1]. Karakteristik ini menunjukkan bahwa dari sisi neutronik, ISR relatif matang; tantangan utama terletak pada termohidraulika dan integrasi sistem.
+
+## II.4 Dasar Teori Heat Pipe dan Batas Operasinya
+
+Pembahasan teoritis yang lebih lengkap dapat ditemukan pada [23], [24], sedangkan analisis dua fase dan entrainment dibahas pada [29], [31]. Heat pipe adalah wadah tertutup yang berisi fluida kerja dan wick kapiler. Pada evaporator, kalor masuk dan menguapkan fluida. Uap mengalir menuju kondensor karena perbedaan tekanan, lalu mengembun dan melepaskan kalor. Kondensat kembali ke evaporator melalui wick akibat tekanan kapiler. Siklus ini berlangsung terus-menerus tanpa pompa, selama tekanan kapiler mampu mengatasi penurunan tekanan total di wick, uap, dan gravitasi [21], [22].
+
+Batas kapiler merupakan batas paling mendasar. Tekanan kapiler maksimum yang dapat dihasilkan wick adalah
+
+$$ \Delta P_{cap} = \frac{2\sigma \cos\theta}{r_p} \tag{2.1} $$
+
+dengan σ adalah tegangan permukaan, θ sudut kontak, dan r_p jari-jari pori efektif. Tekanan ini harus lebih besar daripada jumlah penurunan tekanan cairan di wick, penurunan tekanan uap, dan komponen gravitasi:
+
+$$ \Delta P_{cap} \ge \Delta P_l + \Delta P_v + \Delta P_g. \tag{2.2} $$
+
+Pada kondisi mikrogravitasi, ΔP_g = 0, sehingga seluruh kembalinya kondensat bergantung pada ΔP_cap. Hal ini membuat heat pipe mikrogravitasi lebih sensitif terhadap desain wick dibandingkan heat pipe terrestrial [21], [25].
+
+Batas sonik terjadi ketika uap mencapai kecepatan sonic di throat heat pipe. Batas ini penting pada suhu rendah, ketika tekanan uap dan massa jenis uap masih kecil. Batas entrainment terjadi ketika uap yang bergerak cepat menarik droplet cairan dari permukaan wick, sehingga cairan tidak kembali ke evaporator. Batas viskos terjadi ketika viskositas uap sangat tinggi pada suhu rendah, sehingga penurunan tekanan uap menjadi dominan. Batas didih terjadi ketika fluks kalor di evaporator cukup tinggi untuk membentuk gelembung uap di dalam wick, yang dapat menghalangi aliran cairan [21], [22], [26]–[28].
+
+Di samping batas-batas tersebut, startup heat pipe logam cair menghadapi tantangan tambahan karena fluida kerja membeku pada suhu kamar. Natrium meleleh pada 371 K dan membeku pada 371 K; kalium meleleh pada 337 K. Saat startup, kalor pertama-tama memanaskan dinding dan wick, kemudian melelehkan natrium, lalu menguapkan sebagian natrium, dan membentuk front thaw yang bergerak dari evaporator ke kondensor. Selama fase ini, heat pipe dapat mengalami batas viskos atau batas kapiler sementara, sehingga laju pemanasan harus dikendalikan [4], [5]. KRUSTY menunjukkan bahwa front thaw membutuhkan waktu sekitar 5 menit untuk menempuh panjang heat pipe, dan osilasi suhu dapat terjadi sebelum heat pipe mencapai keadaan kontinum [4].
+
+## II.5 Model Reduced-Order dan Validasi Termal
+
+Model reduced-order untuk heat pipe biasanya dibangun dengan membagi domain aksial menjadi sejumlah node dan menuliskan neraca energi untuk setiap node. Kapasitas termal dinding, wick, dan fluida kerja dihitung dari massa dan kalor jenisnya. Konduktansi termal antar-node dihitung dari konduktivitas dan geometri. Uap diperlakukan sebagai node isotermal karena kapasitas termalnya sangat kecil dibandingkan dinding dan fluida [22], [25].
+
+Pendekatan serupa telah digunakan dalam kode sistem reaktor ruang angkasa. FRINK menggunakan metode beda hingga coarse-mesh untuk menyelesaikan kopling termal-neutronik pada KRUSTY, dengan model heat pipe yang memodifikasi konduktivitas node uap agar sesuai dengan batas throughput [34]. MRPLOW menggunakan persamaan konduksi yang disederhanakan untuk menghitung suhu komponen dan menghasilkan input MCNP [3]. Kode sistem seperti RELAP5 dan TRACE mampu menyelesaikan termohidraulika dua fase secara lebih rinci, tetapi membutuhkan banyak parameter dan waktu komputasi yang lebih lama.
+
+Untuk aplikasi desain awal, ROM memiliki keunggulan dalam hal kecepatan dan transparansi. Namun, ROM harus divalidasi terhadap data eksperimen yang relevan. Validasi biasanya dilakukan dengan membandingkan suhu, daya, dan waktu respons pada kondisi tunak dan transien. Metrik yang umum digunakan adalah mean absolute percentage error (MAPE), root mean square error (RMSE), dan galat maksimum. Dalam penelitian ini, batas keberterimaan yang ditetapkan adalah galat relatif ≤10% pada titik-titik quasi-steady, sesuai dengan tingkat ketidakpastian data eksperimen dan penyederhanaan model.
+
+## II.6 Celah Penelitian dan Kebaruan
+
+Berdasarkan tinjauan di atas, terdapat tiga celah penelitian. Pertama, sebagian besar model heat pipe logam cair yang dipublikasikan berfokus pada analisis steady-state atau CFD tiga dimensi, sehingga kurang cocok untuk studi transien panjang dan optimasi desain sistem. Kedua, validasi model ROM terhadap data KRUSTY umumnya dilakukan dalam kerangka kode tertutup (FRINK, MRPLOW) yang tidak tersedia secara terbuka untuk peneliti Indonesia. Ketiga, belum ada kajian yang secara sistematis menerapkan model heat pipe mikrogravitasi untuk mendesain ulang sistem pendingin ISR dan membandingkannya dengan loop NaK-78 dari sisi massa, daya pompa, dan kegagalan.
+
+Penelitian ini mengisi celah tersebut dengan tiga kontribusi. Pertama, dikembangkan simulator ROM terbuka berbasis Python yang mencakup sifat termofisika Na/K, lima batas operasi, jaringan termal nodal, dan konduksi radial bahan bakar UN. Kedua, simulator divalidasi terhadap data uji 28 jam KRUSTY dengan metrik galat yang eksplisit, termasuk pemisahan antara titik quasi-steady dan transien. Ketiga, dilakukan desain dan evaluasi array heat pipe natrium untuk ISR-V2, termasuk analisis kegagalan, neraca massa, dan sensitivitas parameter. Dengan demikian, penelitian ini tidak hanya menghasilkan angka desain, tetapi juga kerangka kerja yang dapat direproduksi dan dikembangkan lebih lanjut.
