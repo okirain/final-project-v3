@@ -1,181 +1,280 @@
 
 # DASAR TEORI
 
-## Deskripsi Model dan Volume Kontrol
+## III.1 Termohidraulika Dua Fase pada Heat Pipe Logam Cair
 
-Pipa kalor dipandang sebagai volume kontrol satu dimensi dengan koordinat $x$ dari ujung tertutup evaporator menuju ujung kondenser. Panjang total $L$ merupakan jumlah panjang evaporator $L_e$, bagian adiabatik $L_a$, dan kondenser $L_c$. Ruang uap memiliki luas $A_v$, sedangkan luas annulus sumbu cair adalah $A_w$. Gambar @fig-skema memperlihatkan arah aliran yang berlawanan: uap bergerak dari evaporator ke kondenser dan cairan kembali melalui sumbu.
+Heat pipe logam cair bekerja pada siklus tertutup yang terdiri atas evaporasi, transport uap, kondensasi, dan kembalinya kondensat melalui wick. Secara termodinamika, tekanan uap di evaporator dan kondensor dihubungkan oleh kurva saturasi fluida kerja. Perbedaan tekanan antara kedua region tersebut mendorong aliran uap, sedangkan perbedaan tekanan kapiler pada meniskus wick mendorong aliran balik cairan. Pada kondisi tunak, laju kalor yang dipindahkan Q sama dengan laju penguapan dikalikan kalor laten, sehingga
 
-![Skema volume kontrol dan jalur aliran uap–cair yang digunakan dalam model. Garis putus-putus menunjukkan batas evaporator, adiabatik, dan kondenser.](./figures/skema-model.png){#fig-skema width=95%}
+$$ Q = \dot{m} h_{fg}, \tag{3.1} $$
 
-Asumsi kesetimbangan jenuh memungkinkan sifat cairan dan uap dievaluasi pada temperatur operasi $T_v$. Model tidak menyelesaikan distribusi temperatur dinding atau antarmuka, sehingga $T_v$ adalah temperatur efektif untuk perhitungan hidraulik. Resistansi kondenser menghubungkan temperatur tersebut dengan temperatur sink.
+dengan ṁ adalah laju aliran massa uap dan h_fg adalah kalor laten penguapan. Persamaan ini menjadi dasar bagi seluruh model batas operasi dan jaringan termal.
 
-## Neraca Energi dan Massa
+Di dalam evaporator, kalor dari dinding melewati wick dan mencapai permukaan cairan. Pada fluks kalor rendah, evaporasi terjadi secara difusif di permukaan bebas cairan. Pada fluks kalor tinggi, gelembung uap dapat terbentuk di dalam wick, sehingga terjadi rezim didih. Gelembung tersebut menghalangi aliran cairan dan dapat menyebabkan dryout lokal. Oleh karena itu, desain wick harus menjaga fluks kalor di bawah batas didih, yang bergantung pada ukuran pori, tegangan permukaan, dan konduktivitas efektif wick [21], [30].
 
-Dengan kehilangan kalor pada bagian adiabatik diabaikan, daya yang masuk evaporator sama dengan daya yang dilepas kondenser. Temperatur operasi didekati dengan
+Di region adiabatik, uap mengalir tanpa pertukaran kalor dengan lingkungan. Penurunan tekanan uap di region ini menyebabkan penurunan suhu saturasi, sehingga uap mengalami ekspansi dan percepatan. Jika kecepatan uap mendekati kecepatan sonic, kenaikan tekanan yang diperlukan tidak lagi dapat dicapai dan heat pipe mengalami choked flow. Fenomena ini dikenal sebagai batas sonik [27]. Pada heat pipe logam cair, batas sonik umumnya dominan pada suhu rendah, ketika tekanan uap masih kecil.
 
-$$
-T_v=T_{sink}+R_cQ,
-$$ {#eq-temperature}
+Di kondensor, uap mengembun pada dinding dan melepaskan kalor laten. Kondensat kemudian mengalir kembali ke evaporator melalui wick. Jika laju kondensasi melebihi kapasitas aliran balik wick, kondensat dapat menumpuk di kondensor dan menyebabkan kelaparan di evaporator. Fenomena ini berkaitan dengan batas entrainment dan batas kapiler. Pada kondisi mikrogravitasi, tidak ada gaya gravitasi yang membantu aliran balik, sehingga kapasitas wick menjadi penentu utama [22], [25].
 
-dengan $Q$ adalah daya masukan, $R_c$ resistansi termal efektif kondenser, dan $T_{sink}$ temperatur sink. Pendekatan ini adalah kondisi batas sederhana, bukan model radiator. Nilai $R_c$ harus diganti apabila radiasi atau pertukaran kalor diselesaikan secara lebih rinci.
+Startup heat pipe logam cair berlangsung melalui beberapa tahap. Pertama, kalor memanaskan dinding dan wick secara konduksi. Kedua, fluida kerja meleleh dan membasahi wick. Ketiga, uap mulai terbentuk di evaporator dan mengalir ke region yang lebih dingin, membentuk front thaw. Keempat, seluruh heat pipe mencapai kondisi kontinum dan uap menjadi hampir isotermal. Pada tahap awal, viskositas uap sangat tinggi dan tekanan uap sangat rendah, sehingga heat pipe dapat mengalami batas viskos. Laju pemanasan yang terlalu cepat dapat menyebabkan tegangan termal dan osilasi suhu [4], [5].
 
-Laju aliran massa lokal berkaitan dengan kalor aksial $Q_x(x)$ melalui kalor laten:
+Gambar 3.1 menunjukkan skema heat pipe silindris beserta pembagian region aksialnya.
 
-$$
-\dot m(x)=\frac{Q_x(x)}{h_{fg}}.
-$$ {#eq-mass}
+~~~text
+                 evaporator        adiabatik        kondensor
+              <--------------> <--------------> <-------------->
+   dinding    +================================================+
+   wick       |  ~~~~~~~~~~~~  |                |  ~~~~~~~~~~~~  |
+   uap        |  (  uap  )     |   (  uap  )    |  (  uap  )     |
+   wick       |  ~~~~~~~~~~~~  |                |  ~~~~~~~~~~~~  |
+   dinding    +================================================+
+              ^                ^                ^                ^
+              |                |                |                |
+           Q masuk          Q = 0            Q keluar        kondensat
+              |                                                 |
+              +------------------- wick -------------------------+
+~~~
 
-Untuk pemanasan dan pendinginan merata, profil kalor aksial adalah
+**Gambar 3.1** Skema heat pipe silindris dan pembagian region aksial
 
-$$
-Q_x(x)=
-\begin{cases}
-Q x/L_e, & 0\leq x\leq L_e,\\
-Q, & L_e<x\leq L_e+L_a,\\
-Q\left[1-(x-L_e-L_a)/L_c\right], & L_e+L_a<x\leq L.
-\end{cases}
-$$ {#eq-axialheat}
+## III.2 Mekanisme Kapiler pada Kondisi Mikrogravitasi
 
-Profil tersebut bernilai nol pada kedua ujung dan maksimum sebesar $Q$ di antara evaporator dan kondenser. Integral pembangkitan uap di evaporator sama dengan integral kondensasi di kondenser sehingga neraca massa global terpenuhi secara konstruksi.
+Tekanan kapiler timbul dari perbedaan tekanan pada antarmuka cair–uap yang melengkung. Untuk meniskus dengan jari-jari kelengkungan efektif r_c dan sudut kontak θ, perbedaan tekanan mengikuti persamaan Young–Laplace:
 
-## Sifat Natrium
+$$ \Delta P_{cap} = \frac{2\sigma \cos\theta}{r_c}. \tag{3.2} $$
 
-Tekanan jenuh natrium dihitung dengan korelasi Browning–Potter yang direkomendasikan Fink dan Leibowitz [7]:
+Pada wick berpori, jari-jari kelengkungan efektif dibatasi oleh jari-jari pori r_p. Dengan demikian, tekanan kapiler maksimum yang dapat dihasilkan wick adalah
 
-$$
-\ln P=11{,}9463-\frac{12633{,}73}{T_v}-0{,}4672\ln T_v,
-$$ {#eq-pressure}
+$$ \Delta P_{cap,max} = \frac{2\sigma \cos\theta}{r_p}. \tag{3.3} $$
 
-dengan $P$ dalam MPa dan $T_v$ dalam K. Program mengonversi tekanan ke Pa. Entalpi penguapan dihitung dengan
+Untuk fluida yang membasahi dinding (θ ≈ 0), persamaan (3.3) menjadi 2σ/r_p. Nilai r_p yang kecil meningkatkan tekanan kapiler, tetapi juga meningkatkan tahanan aliran cairan karena permeabilitas wick menurun. Oleh karena itu, desain wick selalu merupakan kompromi antara kapilaritas dan permeabilitas.
 
-$$
-h_{fg}=393{,}37(1-T_v/T_{cr})+4398{,}6(1-T_v/T_{cr})^{0{,}29302},
-$$ {#eq-latent}
+Pada kondisi mikrogravitasi, komponen gravitasi pada persamaan keseimbangan tekanan sama dengan nol. Keseimbangan tekanan menjadi
 
-dengan $h_{fg}$ dalam kJ/kg dan $T_{cr}=2503{,}7$ K. Densitas cairan dalam kg/m³ adalah
+$$ \Delta P_{cap,max} \ge \Delta P_l + \Delta P_v. \tag{3.4} $$
 
-$$
-\rho_l=219+275{,}32\tau+511{,}58\tau^{1/2},
-\qquad \tau=1-T_v/T_{cr}.
-$$ {#eq-density}
+Tidak adanya bantuan gravitasi berarti seluruh aliran balik harus disediakan oleh wick. Heat pipe yang diuji di Bumi, seperti KRUSTY, dapat memanfaatkan gravitasi untuk mengembalikan kondensat sehingga batas kapiler terlihat lebih tinggi daripada kondisi mikrogravitasi. Oleh karena itu, validasi heat pipe mikrogravitasi tidak dapat sepenuhnya mengandalkan data uji terrestrial [5].
 
-Viskositas cairan dalam Pa·s dihitung dari
+Jenis wick mempengaruhi permeabilitas dan tekanan kapiler. Wick screen memiliki permeabilitas yang dapat didekati dengan persamaan Blake–Kozeny:
 
-$$
-\ln\mu_l=-6{,}4406-0{,}3958\ln T_v+\frac{556{,}835}{T_v}.
-$$ {#eq-viscosity}
+$$ K = \frac{d_w^2 \varepsilon^3}{150(1-\varepsilon)^2}, \tag{3.5} $$
 
-Tegangan permukaan mengikuti bentuk Van der Waals:
+dengan d_w diameter kawat screen dan ε porositas. Untuk d_w = 50 µm dan ε = 0,70, persamaan (3.5) memberikan K ≈ 6,35 × 10⁻¹¹ m². Wick arterial atau groove memiliki permeabilitas yang jauh lebih tinggi, misalnya 10⁻⁹ hingga 10⁻⁸ m², karena jalur aliran cairan terpisah dari struktur pori halus. Peningkatan permeabilitas ini memungkinkan transport kalor yang lebih besar pada diameter heat pipe yang sama [21], [25].
 
-$$
-\sigma=0{,}2405(1-T_v/T_{cr})^{1{,}126}.
-$$ {#eq-sigma}
+## III.3 Sifat Termofisika Natrium dan Kalium
 
-Densitas uap didekati dengan gas ideal,
+Model membutuhkan sifat termofisika yang halus, monoton, dan dapat dievaluasi cepat pada rentang 800–1300 K. Korelasi yang digunakan dalam penelitian ini dirangkum pada Tabel 3.1. Korelasi tersebut merupakan fit engineering yang mengacu pada data Fink dan Leibowitz, Ohse, serta IAEA [18]–[20]. Ketelitiannya diperkirakan ±5% pada rentang suhu yang dikaji.
 
-$$
-\rho_v=\frac{PM}{R_uT_v},
-$$ {#eq-idealgas}
+**Tabel 3.1** Koefisien korelasi sifat termofisika natrium dan kalium
 
-dengan massa molar natrium $M=0{,}02298977$ kg/mol. Viskositas uap menggunakan estimasi gas encer bola keras karena laporan sifat yang sama tidak memberikan korelasi viskositas uap. Pendekatan ini merupakan sumber ketidakpastian dan perlu diganti untuk analisis berketelitian tinggi.
+| Sifat | Natrium (Na) | Kalium (K) | Satuan |
+|-------|--------------|------------|--------|
+| Massa molar, M | 0,02298977 | 0,0390983 | kg/mol |
+| Titik leleh, T_m | 370,94 | 336,70 | K |
+| Titik didih, T_b | 1156,1 | 1032,0 | K |
+| Kalor laten pada T_b, h_fg,b | 3,60 × 10⁶ | 1,95 × 10⁶ | J/kg |
+| Gradien kalor laten, dh_fg/dT | −1200 | −900 | J/(kg·K) |
+| Densitas cair, ρ_l = a + bT | 1014 − 0,235T | 900 − 0,220T | kg/m³ |
+| Viskositas, μ_l = A exp(B/T) | 7,0 × 10⁻⁵ exp(1100/T) | 5,0 × 10⁻⁵ exp(1200/T) | Pa·s |
+| Tegangan permukaan, σ = a + bT | 0,235 − 8,0 × 10⁻⁵T | 0,135 − 4,0 × 10⁻⁵T | N/m |
+| Kalor jenis cair, c_p = a + b(T−800) | 1260 + 0,10(T−800) | 800 + 0,05(T−800) | J/(kg·K) |
+| Konduktivitas cair, k = a + bT | 85 − 0,020T | 55 − 0,012T | W/(m·K) |
+| Rasio kalor spesifik uap, γ | 5/3 | 5/3 | — |
 
-## Aliran Uap
+Tekanan saturasi dihitung dengan mengintegrasikan persamaan Clausius–Clapeyron dengan kalor laten yang bergantung pada suhu:
 
-Kecepatan rata-rata uap pada setiap posisi adalah
+$$ \ln\frac{P_{sat}}{P_b} = -\frac{h_0 - a T_b}{R_v}\left(\frac{1}{T}-\frac{1}{T_b}\right) + \frac{a}{R_v}\ln\frac{T}{T_b}, \tag{3.6} $$
 
-$$
-u_v(x)=\frac{\dot m(x)}{\rho_v A_v}.
-$$ {#eq-velocity}
+dengan P_b = 101325 Pa, h_0 = h_fg(T_b), a = dh_fg/dT, dan R_v = R/M adalah konstanta gas spesifik uap. Persamaan (3.6) menjamin bahwa tekanan saturasi tepat sama dengan 1 atm pada titik didih normal. Kalor laten dihitung dengan
 
-Bilangan Reynolds dan Mach dinyatakan sebagai
+$$ h_{fg}(T) = h_0 + a(T - T_b). \tag{3.7} $$
 
-$$
-Re_v=\frac{\rho_v u_vD_v}{\mu_v},\qquad Ma_v=\frac{u_v}{a_v},
-$$ {#eq-dimensionless}
+Densitas uap dihitung dengan pendekatan gas ideal:
 
-dengan $a_v=\sqrt{\gamma R_vT_v}$ dan $\gamma=5/3$ untuk pendekatan gas monoatomik. Faktor gesek Darcy ditentukan dengan $64/Re_v$ untuk $Re_v<2300$ dan korelasi Blasius $0{,}3164Re_v^{-0{,}25}$ untuk kondisi di luar rentang tersebut. Gradien rugi tekanan uap adalah
+$$ \rho_v = \frac{P_{sat} M}{R T}. \tag{3.8} $$
 
-$$
-\frac{d(\Delta P_v)}{dx}=\frac{f}{D_v}\frac{\rho_v u_v^2}{2}.
-$$ {#eq-vaporpressure}
+Pendekatan ini cukup akurat pada tekanan di bawah 1 MPa, yang merupakan rentang operasi heat pipe Na/K pada 800–1300 K. Pada suhu 1073 K, tekanan saturasi natrium sekitar 51,5 kPa dan densitas uapnya sekitar 0,133 kg/m³. Pada suhu 1300 K, tekanan saturasi meningkat menjadi sekitar 257 kPa dan densitas uap menjadi sekitar 0,547 kg/m³.
 
-Persamaan @eq-vaporpressure diintegrasikan sepanjang pipa. Bilangan Mach digunakan sebagai pemeriksaan penerimaan pendekatan tak kompresibel; kasus acuan mensyaratkan $Ma<0{,}3$. Apabila batas tersebut terlampaui, hasil harus diinterpretasikan sebagai penyaringan dan model kompresibel diperlukan.
+**Tabel 3.2** Parameter geometri heat pipe acuan
 
-## Aliran Balik Cairan dan Tekanan Kapiler
+| Parameter | KRUSTY (validasi) | ISR-V2 in-channel | ISR-V2 array (3,0 cm) |
+|-----------|-------------------|-------------------|------------------------|
+| Diameter luar, D | 1,27 cm | 0,60 cm | 3,00 cm |
+| Panjang total, L | 100 cm | 50 cm | 80 cm |
+| Panjang evaporator, L_ev | 25 cm | 25 cm | 30 cm |
+| Panjang adiabatik, L_ad | 35 cm | 5 cm | 10 cm |
+| Panjang kondensor, L_cd | 40 cm | 20 cm | 40 cm |
+| Tebal dinding, t_w | 0,089 cm | 0,05 cm | 0,15 cm |
+| Tebal wick, t_wk | 0,05 cm | 0,05 cm | 0,15 cm |
+| Jari-jari pori, r_p | 15 µm | 10 µm | 10 µm |
+| Porositas, ε | 0,70 | 0,70 | 0,70 |
+| Permeabilitas, K | 6,35 × 10⁻¹¹ m² | 6,35 × 10⁻¹¹ m² | 1,0 × 10⁻⁹ m² |
+| Jenis wick | Screen nikel | Screen nikel | Arterial |
 
-Aliran cairan di dalam medium berpori mengikuti hukum Darcy. Untuk arah berlawanan dengan uap, besar gradien rugi tekanannya adalah
+## III.4 Batas Operasi Heat Pipe
 
-$$
-\frac{d(\Delta P_l)}{dx}=\frac{\mu_l\dot m(x)}{\rho_l K A_w}.
-$$ {#eq-darcy}
+### III.4.1 Batas Kapiler
 
-Untuk profil kalor pada Persamaan @eq-axialheat, integrasi menghasilkan panjang efektif
+Penurunan tekanan cairan di wick dihitung dengan persamaan Darcy:
 
-$$
-L_{eff}=\frac{L_e}{2}+L_a+\frac{L_c}{2}.
-$$ {#eq-effectivelength}
+$$ \Delta P_l = \frac{\mu_l L_{eff}}{\rho_l h_{fg} K A_w} Q, \tag{3.9} $$
 
-Dengan demikian, rugi tekanan cairan total dapat pula ditulis dalam bentuk kompak
+dengan L_eff adalah panjang efektif heat pipe, A_w luas penampang wick, dan K permeabilitas. Panjang efektif didekati dengan
 
-$$
-\Delta P_l=\frac{\mu_l Q L_{eff}}{\rho_l K A_w h_{fg}}.
-$$ {#eq-liquidpressure}
+$$ L_{eff} = \frac{L_{ev}}{2} + L_{ad} + \frac{L_{cd}}{2}. \tag{3.10} $$
 
-Tekanan kapiler maksimum didekati dengan persamaan Young–Laplace:
+Penurunan tekanan uap dihitung dengan pendekatan aliran laminar Poiseuille:
 
-$$
-\Delta P_{cap}=\frac{2\sigma\cos\theta_c}{r_c}.
-$$ {#eq-capillary}
+$$ \Delta P_v = \frac{8 \mu_v L_{eff}}{\pi r_v^4 \rho_v h_{fg}} Q, \tag{3.11} $$
 
-Kondisi operasi berkelanjutan adalah
+dengan r_v jari-jari inti uap. Komponen gravitasi adalah
 
-$$
-\Delta P_{cap}\geq \Delta P_v+\Delta P_l+\Delta P_g,
-$$ {#eq-balance}
+$$ \Delta P_g = \rho_l g L_{eff} \sin\phi, \tag{3.12} $$
 
-dengan tekanan akibat percepatan efektif
+dengan φ sudut kemiringan heat pipe terhadap horizontal. Untuk aplikasi mikrogravitasi, g = 0 sehingga ΔP_g = 0.
 
-$$
-\Delta P_g=\rho_l g_{eff}L\sin\theta.
-$$ {#eq-gravity}
+Dengan menyamakan ΔP_cap,max dengan jumlah penurunan tekanan, batas kapiler menjadi
 
-Sudut $\theta$ adalah kemiringan terhadap arah yang menghasilkan komponen hidrostatik aksial. Pada kasus mikrogravitasi ideal, $g_{eff}=0$ sehingga $\Delta P_g=0$. Model juga menerima percepatan nonnol untuk meniru residu akselerasi atau membandingkan kondisi Bumi. Nilai nol pada mikrogravitasi ideal tidak berarti seluruh masalah dua fase menghilang; kapilaritas, gesekan, dan inersia uap tetap diperhitungkan.
+$$ Q_{cap} = \frac{2\sigma\cos\theta/r_p - \rho_l g L_{eff}\sin\phi}{\frac{\mu_l L_{eff}}{\rho_l h_{fg} K A_w} + \frac{8\mu_v L_{eff}}{\pi r_v^4 \rho_v h_{fg}}}. \tag{3.13} $$
 
-## Batas Transportasi Kalor
+### III.4.2 Batas Sonik
 
-Batas kapiler $Q_{cap}$ adalah daya yang membuat ruas kanan Persamaan @eq-balance sama dengan $\Delta P_{cap}$. Karena rugi tekanan uap tidak selalu linear terhadap $Q$, program mencari akar margin kapiler dengan biseksi. Apabila tekanan hidrostatik saja sudah melebihi tekanan kapiler, batas kapiler ditetapkan nol sebagai indikator ketidakmampuan model beroperasi pada kondisi tersebut.
+Batas sonik terjadi ketika uap mencapai kondisi choked pada throat. Dengan menggunakan hubungan gas monatomik dan faktor kompresibilitas yang sesuai, batas sonik didekati dengan
 
-Batas sonik disaring menggunakan bentuk yang lazim dalam literatur pipa kalor [3, 4]:
+$$ Q_{sonic} = A_v \rho_v h_{fg} \sqrt{\frac{\gamma R_v T}{2(\gamma+1)}}. \tag{3.14} $$
 
-$$
-Q_s=0{,}474 A_v h_{fg}\sqrt{\rho_vP}.
-$$ {#eq-sonic}
+Batas ini meningkat tajam dengan suhu karena ρ_v dan kecepatan sonic meningkat. Pada suhu rendah, Q_sonic dapat menjadi batas yang paling ketat.
 
-Batas entrainment didekati dengan
+### III.4.3 Batas Entrainment
 
-$$
-Q_{ent}=A_v h_{fg}\sqrt{\frac{\rho_v\sigma}{2r_c}}.
-$$ {#eq-entrainment}
+Batas entrainment dihitung dengan kriteria Weber number sama dengan satu. Droplet cairan akan terentrain ketika tekanan dinamis uap melebihi tekanan kapiler yang menahan droplet. Dengan mengambil panjang karakteristik jari-jari pori, batas entrainment adalah
 
-Batas pendidihan di dalam sumbu dihitung sebagai
+$$ Q_{ent} = A_v h_{fg} \sqrt{\frac{\sigma \rho_v}{2 r_p}}. \tag{3.15} $$
 
-$$
-Q_b=\frac{2\pi L_e k_{eff}T_v}{h_{fg}\rho_v\ln(r_i/r_v)}
-\left(\frac{2\sigma}{r_b}-\Delta P_v-\Delta P_l-\Delta P_g\right),
-$$ {#eq-boiling}
+Persamaan (3.15) menunjukkan bahwa batas entrainment meningkat dengan tekanan uap dan menurun dengan jari-jari pori yang lebih besar. Pada heat pipe natrium 3,0 cm dengan wick arterial, batas entrainment merupakan batas yang mengikat pada 1050 K, yaitu sekitar 48,6 kW [28].
 
-dengan $k_{eff}$ konduktivitas efektif sumbu, $r_b$ jari-jari nukleasi, $r_v$ jari-jari ruang uap, dan $r_i=r_v+t_w$. Ketiga persamaan terakhir bersifat penyaringan dengan ketidakpastian korelasi. Nilai terkecil dari keempat batas digunakan sebagai batas pengatur untuk perbandingan, tetapi bukan jaminan bahwa seluruh mekanisme kegagalan telah tercakup.
+### III.4.4 Batas Viskos
 
-## Metode Numerik
+Pada suhu rendah, viskositas uap tinggi dan tekanan uap rendah, sehingga penurunan tekanan viskos menjadi dominan. Batas viskos didekati dengan
 
-Domain dibagi menjadi $N$ sel dengan titik $x_i=iL/N$. Besaran lokal dihitung pada setiap titik. Integrasi rugi tekanan menggunakan aturan trapesium:
+$$ Q_{visc} = \frac{\pi r_v^4 \rho_v h_{fg} P_{sat}}{8 \mu_v L_{eff}}. \tag{3.16} $$
 
-$$
-\int_0^L y(x)\,dx\approx\sum_{i=0}^{N-1}\frac{y_i+y_{i+1}}{2}(x_{i+1}-x_i).
-$$ {#eq-trapezoid}
+Batas ini sangat rendah pada suhu di bawah titik leleh fluida kerja dan meningkat cepat setelah fluida menguap.
 
-Untuk mencari $Q_{cap}$, algoritme pertama memeriksa margin pada $Q=0$. Jika margin tidak positif, kapasitas kapiler adalah nol. Jika positif, batas atas daya digandakan sampai margin berubah tanda. Biseksi kemudian mempersempit interval. Skema ini dipilih karena margin menurun secara monoton pada rentang yang dianalisis dan tidak membutuhkan turunan.
+### III.4.5 Batas Didih
 
-## Hipotesis
+Batas didih terjadi ketika superheat di wick cukup untuk mengaktifkan inti gelembung kritis. Dengan asumsi radius nukleasi r_n, superheat kritis adalah
 
-Berdasarkan persamaan di atas, dirumuskan dua dugaan yang diuji secara numerik. Pertama, pada geometri acuan, rugi tekanan cairan lebih besar daripada rugi tekanan uap sehingga batas kapiler menjadi pengatur pada temperatur sekitar 1000 K. Kedua, peningkatan percepatan efektif pada orientasi merugikan menurunkan kapasitas kapiler, sedangkan mikrogravitasi ideal menghilangkan kontribusi hidrostatik. Dugaan ini hanya berlaku untuk parameter yang diuji dan tidak digeneralisasi ke seluruh desain pipa kalor.
+$$ \Delta T_{crit} = \frac{2\sigma T}{r_n \rho_v h_{fg}}. \tag{3.17} $$
+
+Fluks kalor kritis dihitung dengan konduktivitas efektif wick:
+
+$$ q''_{boil} = \frac{k_{eff}\Delta T_{crit}}{t_{wick}}, \tag{3.18} $$
+
+dan batas didih adalah
+
+$$ Q_{boil} = q''_{boil} A_{ev,inner}. \tag{3.19} $$
+
+### III.4.6 Batas Gabungan
+
+Batas operasi total adalah nilai minimum dari kelima batas:
+
+$$ Q_{max}(T) = \min\left(Q_{cap}, Q_{sonic}, Q_{ent}, Q_{visc}, Q_{boil}\right). \tag{3.20} $$
+
+Pada model transien, Q_max digunakan untuk membatasi laju transport uap. Jika permintaan kalor melebihi Q_max, maka kelebihan kalor tidak dapat dipindahkan dan akan menaikkan suhu evaporator. Mekanisme ini menghasilkan perilaku startup yang tidak linier dan penting untuk keselamatan.
+
+## III.5 Neraca Energi Nodal dan Jaringan Termal
+
+Model transien membagi heat pipe menjadi N node aksial. Setiap node memiliki kapasitas termal dinding, wick, dan fluida kerja. Bahan bakar dan struktur inti direpresentasikan sebagai satu node lumped dengan kapasitas C_f. Uap direpresentasikan sebagai satu node isotermal dengan kapasitas C_v yang kecil. Sink (sistem konversi dan radiator) direpresentasikan sebagai satu node dengan kapasitas C_s.
+
+Neraca energi node bahan bakar adalah
+
+$$ C_f \frac{dT_f}{dt} = P(t) - Q_{MLI}(T_f) - \sum_i h_{fw,i}(T_f - T_{w,i}), \tag{3.21} $$
+
+dengan P(t) adalah daya fisi, Q_MLI adalah kehilangan kalor radiatif melalui MLI, dan h_fw,i adalah konduktansi bahan bakar–dinding pada node i.
+
+Neraca energi node dinding adalah
+
+$$ C_w \frac{dT_{w,i}}{dt} = h_{fw,i}(T_f - T_{w,i}) + G_{ax}(T_{w,i-1} - 2T_{w,i} + T_{w,i+1}) - Q_{v,i} - Q_{s,i} - Q_{loss,i}, \tag{3.22} $$
+
+dengan G_ax adalah konduktansi aksial dinding, Q_v,i adalah kalor yang dipindahkan ke uap (positif di evaporator, negatif di kondensor), Q_s,i adalah kalor ke sink di kondensor, dan Q_loss,i adalah kehilangan pasif.
+
+Neraca energi uap adalah
+
+$$ C_v \frac{dT_v}{dt} = \sum_{ev} h_{ve,i}(T_{w,i} - T_v) - \sum_{cd} h_{vc,i}(T_v - T_{w,i}), \tag{3.23} $$
+
+sedangkan neraca energi sink adalah
+
+$$ C_s \frac{dT_s}{dt} = \sum_{cd} h_{s,i}(T_{w,i} - T_s) - UA_{rej}(T_s - T_{rej}). \tag{3.24} $$
+
+Konduktansi aksial dinding dihitung dengan
+
+$$ G_{ax} = \frac{k_w A_{cond}}{\Delta z}, \tag{3.25} $$
+
+dengan A_cond adalah luas penampang konduksi efektif dan Δz adalah panjang node. Pada ujung-ujung domain, kondisi batas adiabatik diterapkan.
+
+Kehilangan kalor radiatif melalui MLI dihitung dengan
+
+$$ Q_{MLI} = \varepsilon_{eff} A_{MLI} \sigma_{SB} (T^4 - T_{amb}^4), \tag{3.26} $$
+
+dengan σ_SB = 5,670 × 10⁻⁸ W/(m²·K⁴). Bentuk radiatif dipilih karena kehilangan kalor pada suhu tinggi didominasi radiasi, dan konduktansi efektifnya menurun secara alami saat pendinginan. Pada model KRUSTY, ε_eff A_MLI dikalibrasi sehingga kehilangan kalor sekitar 400 W pada 1073 K, sesuai dengan neraca daya yang dilaporkan [4].
+
+Gambar 3.2 menunjukkan jaringan termal nodal yang digunakan.
+
+~~~mermaid
+graph LR
+    F["Node bahan bakar<br/>C_f, T_f"] -->|"h_fw"| W["Node dinding<br/>C_w, T_w(i)"]
+    W -->|"Q_v evaporator"| V["Node uap<br/>C_v, T_v"]
+    V -->|"Q_v kondensor"| W2["Node dinding kondensor<br/>C_w, T_w(j)"]
+    W2 -->|"h_s"| S["Node sink<br/>C_s, T_s"]
+    F -->|"Q_MLI"| A["Ambient 300 K"]
+    S -->|"UA_rej"| R["Rejector 300 K"]
+    W -.->|"G_ax"| W
+~~~
+
+**Gambar 3.2** Jaringan termal nodal model reduced-order
+
+## III.6 Konduksi Radial Bahan Bakar UN
+
+Suhu bahan bakar dihitung dengan persamaan konduksi radial steady-state pada silinder annulus dengan pembangkitan kalor volumetrik q''':
+
+$$ \frac{1}{r}\frac{d}{dr}\left(k_{UN}(T) r \frac{dT}{dr}\right) + q''' = 0. \tag{3.27} $$
+
+Untuk pendinginan di permukaan dalam (konfigurasi loop NaK-78 atau heat pipe in-channel), kondisi batasnya adalah
+
+$$ T(r_i) = T_b, \qquad \left.\frac{dT}{dr}\right|_{r_o} = 0, \tag{3.28} $$
+
+sedangkan untuk pendinginan di permukaan luar (konfigurasi heat pipe array di blok inti), kondisi batasnya adalah
+
+$$ \left.\frac{dT}{dr}\right|_{r_i} = 0, \qquad T(r_o) = T_b. \tag{3.29} $$
+
+Untuk konduktivitas konstan, solusi analitik untuk pendinginan luar adalah
+
+$$ T(r) - T_o = \frac{q'''}{4k}\left(r_o^2 - r^2\right) + \frac{q''' r_i^2}{2k}\ln\frac{r}{r_o}. \tag{3.30} $$
+
+Persamaan (3.30) menunjukkan bahwa suhu maksimum terjadi di permukaan dalam yang adiabatik. Untuk q''' = 4,16 × 10⁷ W/m³, k = 21 W/(m·K), r_i = 0,3825 cm, dan r_o = 1,63 cm, perbedaan suhu radial sekitar 103 K. Dengan suhu blok 1259 K, suhu puncak bahan bakar sekitar 1362 K, masih jauh di bawah batas 2523 K.
+
+Untuk konduktivitas yang bergantung pada suhu, persamaan (3.27) diselesaikan secara numerik dengan metode finite volume radial. Domain dibagi menjadi 160 sel, dan konduktansi antarsel dihitung dengan
+
+$$ G_{i+1/2} = \frac{2\pi k L}{\ln(r_{i+1}/r_i)}. \tag{3.31} $$
+
+Sistem persamaan linear diselesaikan secara iteratif karena k bergantung pada T. Konvergensi dicapai ketika perubahan suhu maksimum antarerasi kurang dari 10⁻⁶ K.
+
+## III.7 Metode Numerik dan Kriteria Validasi
+
+Sistem persamaan diferensial biasa (ODE) dari persamaan (3.21)–(3.24) diselesaikan dengan metode BDF (Backward Differentiation Formula) dari library SciPy. BDF dipilih karena sistem bersifat stiff: kapasitas uap sangat kecil dibandingkan kapasitas dinding, sehingga konstanta waktunya berbeda beberapa orde. Toleransi relatif dan absolut ditetapkan 10⁻⁵ dan 10⁻⁴, dengan langkah waktu maksimum 20–60 detik. Untuk kasus yang gagal konvergen, metode Radau digunakan sebagai cadangan.
+
+Validasi dilakukan dengan membandingkan suhu model T_model dengan suhu eksperimen T_exp pada waktu yang sama. Galat relatif didefinisikan sebagai
+
+$$ e_i = \frac{T_{model,i} - T_{exp,i}}{T_{exp,i}} \times 100\%. \tag{3.32} $$
+
+Metrik yang digunakan adalah mean absolute percentage error (MAPE),
+
+$$ \mathrm{MAPE} = \frac{1}{N}\sum_{i=1}^{N}|e_i|, \tag{3.33} $$
+
+root mean square error (RMSE),
+
+$$ \mathrm{RMSE} = \sqrt{\frac{1}{N}\sum_{i=1}^{N}(T_{model,i} - T_{exp,i})^2}, \tag{3.34} $$
+
+dan galat absolut maksimum. Batas keberterimaan yang ditetapkan adalah MAPE ≤10% dan galat maksimum ≤10% pada titik-titik quasi-steady. Titik transien yang dipengaruhi umpan balik neutronik dievaluasi secara terpisah dan dibahas secara kualitatif.
+
+Verifikasi model dilakukan melalui tiga cara: (1) pengujian unit untuk sifat termofisika dan batas operasi, (2) uji konvergensi mesh dan langkah waktu, dan (3) pemeriksaan neraca energi pada kondisi tunak. Pada kondisi tunak, daya masuk harus sama dengan jumlah kalor yang dipindahkan heat pipe, kehilangan MLI, dan kalor yang tersimpan (nol). Penyimpangan neraca energi di bawah 1% dianggap memadai.
