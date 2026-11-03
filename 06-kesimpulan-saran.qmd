@@ -1,19 +1,47 @@
 
 # KESIMPULAN DAN SARAN
 
-## Kesimpulan
+## VI.1 Kesimpulan
 
-Berdasarkan pengembangan model dan hasil perhitungan, diperoleh kesimpulan sebagai berikut.
+Berdasarkan pengembangan model, validasi, dan analisis desain yang telah dilakukan, dapat disimpulkan hal-hal berikut.
 
-1. Simulator aliran dua fase tunak satu dimensi telah berhasil disusun dalam Python dengan menggabungkan neraca energi, profil laju massa, aliran uap, aliran balik cairan Darcy, dan tekanan kapiler. Struktur kelas data, keluaran CSV/JSON, gambar otomatis, serta dokumen Quarto memungkinkan perhitungan direproduksi.
-2. Pada kasus acuan 800 W dan 1000 K dalam mikrogravitasi, rugi tekanan uap dan cairan masing-masing adalah 103,02 Pa dan 1296,43 Pa. Tekanan kapiler 3612,13 Pa memberikan margin 2212,68 Pa. Kecepatan uap maksimum adalah 31,87 m/s dan Mach maksimum 0,04105.
-3. Batas kapiler sebesar 2064,88 W menjadi batas pengatur kasus acuan. Batas sonik, entrainment, dan pendidihan masing-masing adalah 7155,53 W, 3212,10 W, dan 24.232,80 W. Utilisasi daya terhadap batas pengatur adalah 38,74%.
-4. Peta temperatur menunjukkan batas sonik mengatur pada 800 K, entrainment sedikit mengatur pada 900 K, dan kapiler mengatur pada 1000–1200 K. Kapasitas kapiler mencapai sekitar 2066 W di dekat 1100 K kemudian menurun menjadi 1969,78 W pada 1200 K.
-5. Pada orientasi merugikan dan temperatur 1000 K, percepatan 1 m/s² menurunkan batas kapiler menjadi 1618,53 W. Kondisi Bumi 9,81 m/s² menghasilkan tekanan hidrostatik yang melampaui kapiler untuk geometri acuan, sedangkan mikrogravitasi ideal menghilangkan rugi tekanan tersebut.
-6. Sepuluh pengujian otomatis berhasil dan perbedaan rugi tekanan antara grid 50 dan 1600 sel hanya 0,03478%. Hasil ini memverifikasi konsistensi implementasi, tetapi belum merupakan validasi eksperimental.
+1. **Model reduced-order berhasil dikembangkan dan diverifikasi.** Simulator Python yang dibangun mampu menghitung sifat termofisika natrium dan kalium pada 800–1300 K, lima batas operasi heat pipe (kapiler, sonik, entrainment, viskos, dan didih), serta dinamika transien jaringan termal bahan bakar–dinding–uap–sink. Model menggunakan 30 node aksial, 160 sel radial untuk bahan bakar, dan integrator BDF. Seluruh 29 pengujian unit lulus, dan uji konvergensi mesh menunjukkan perubahan suhu puncak kurang dari 0,5 K. Neraca energi pada keadaan tunak tertutup dalam 1%.
 
-## Saran
+2. **Validasi terhadap KRUSTY memenuhi kriteria keberterimaan.** Pada enam titik quasi-steady, model memberikan MAPE 3,13%, RMSE 38,24 K, dan galat maksimum 7,20%. Jika seluruh delapan titik dilaporkan, galat maksimum adalah 9,59%. Pada keadaan nominal 8 jam, suhu bahan bakar model 1081,8 K dibandingkan 1073,15 K dari data, dengan galat +0,81%. Waktu untuk mencapai 500 °C adalah 0,70 jam dibandingkan 0,63 jam dari data, atau selisih sekitar 4,2 menit. Model mereproduksi fase kehilangan pendinginan aktif (galat −0,10% pada 20,5 jam) dan pendinginan pascascram hingga 87 jam (galat +4,48%). Galat terbesar, yaitu −9,59% pada 31 jam, terjadi pada fase transisi shutdown heat pipe dan telah dibahas sebagai keterbatasan model lumped.
 
-Pengembangan selanjutnya perlu diarahkan pada validasi terhadap data eksperimen pipa kalor natrium dengan geometri dan kondisi batas yang terdokumentasi. Model sifat uap sebaiknya ditingkatkan dengan korelasi yang sesuai untuk campuran monomer dan dimer, sedangkan aliran kompresibel perlu digunakan pada kasus bermach tinggi. Hubungan eksperimen antara pori, permeabilitas, porositas, dan konduktivitas efektif juga diperlukan agar studi desain lebih realistis.
+3. **Konfigurasi ISR-V2 yang layak berhasil diidentifikasi.** Penggantian langsung kanal 0,6 cm dengan heat pipe (V2-A) tidak layak karena Q_max hanya 0,689 kW dibandingkan beban 8,20 kW per pin. Array 19 heat pipe 3,0 cm dengan wick screen (V2-B) juga tidak layak karena Q_max 7,34 kW dibandingkan beban 26,32 kW. Konfigurasi yang layak adalah 19 heat pipe natrium 3,0 cm dengan wick arterial (V2-C), yang mampu memindahkan 48,60 kW per heat pipe dengan margin 1,85. Suhu puncak bahan bakar adalah 1369,8 K, dengan margin 1153,2 K atau 45,7% terhadap batas 2523 K. Jika satu heat pipe gagal, suhu puncak naik menjadi 1582,2 K; jika tiga heat pipe berdekatan gagal, suhu puncak menjadi 1794,9 K. Keduanya masih di bawah batas, sehingga array memiliki toleransi kegagalan yang baik.
 
-Model dapat dikembangkan menjadi jaringan termal transien yang mencakup kapasitas panas dinding, start-up beku, gas takterkondensasi, dan radiator. Untuk analisis reaktor, kopling dengan model teras dan umpan balik reaktivitas harus dilakukan setelah model pipa tervalidasi. Analisis ketidakpastian dan sensitivitas global disarankan sebelum hasil digunakan untuk menetapkan margin desain. Terakhir, studi kegagalan satu pipa dan propagasinya pada tingkat sistem merupakan kelanjutan penting yang tidak dapat dijawab oleh model satu pipa ini.
+4. **Perbandingan dengan loop NaK-78 menunjukkan keunggulan pada keandalan, bukan pada massa.** Massa sistem pendingin heat pipe adalah 89,29 kg, sedangkan loop NaK-78 aktif 90,85 kg. Dengan massa reaktor 447,12 kg, total massa reaktor dan sistem pendingin adalah 536,41 kg untuk ISR-V2 dan 537,97 kg untuk loop NaK-78. Perbedaan hanya 1,56 kg atau 0,29%, sehingga dapat dikatakan hampir netral. Keunggulan utama ISR-V2 adalah penghilangan pompa EM 6 kW(e), penghilangan daya parasitik sekitar 4,8% dari daya listrik bersih, dan peningkatan toleransi kegagalan. Pada loop NaK-78, kegagalan satu kanal dapat menyebabkan pin kehilangan pendinginan dengan laju kenaikan suhu adiabatik sekitar 16 K/s dan waktu menuju batas pelelehan sekitar 88 detik. Pada array heat pipe, kegagalan tiga heat pipe masih menyisakan margin 728 K.
+
+Tabel 6.1 merangkum jawaban terhadap tujuan penelitian.
+
+**Tabel 6.1** Ringkasan jawaban tujuan penelitian
+
+| Tujuan | Hasil | Status |
+|--------|-------|--------|
+| Mengembangkan simulator ROM | Python, 4 paket modul, 29 unit test, 3 figur utama | Tercapai |
+| Memvalidasi terhadap KRUSTY | MAPE 3,13%, galat maks 7,20% pada envelope | Tercapai |
+| Mendesain array heat pipe ISR-V2 | 19 × 3,0 cm arterial, 26,3 kW/HP, margin 1,85 | Tercapai |
+| Membandingkan dengan loop NaK-78 | Massa 536,41 vs 537,97 kg; pompa 6 kW(e) dihilangkan; 3 HP gagal masih aman | Tercapai |
+
+Secara keseluruhan, penelitian ini menunjukkan bahwa pendingin heat pipe natrium pasif secara teknis layak untuk ISR 500 kWth, tetapi kelayakannya bergantung pada ketersediaan wick arterial berpermeabilitas tinggi dan pada desain inti yang mampu mengakomodasi 19 heat pipe 3,0 cm. Massa sistem hampir netral, sehingga argumen utama untuk beralih ke heat pipe adalah keandalan, kesederhanaan, dan inherent safety, bukan pengurangan massa.
+
+## VI.2 Saran
+
+Berdasarkan keterbatasan dan temuan penelitian, disarankan beberapa hal untuk pengembangan lanjut.
+
+1. **Kopling neutronik–termal.** Model termal ini sebaiknya dikopling dengan kinetika titik dan umpan balik reaktivitas, sehingga load-following, osilasi daya, dan respons terhadap perubahan reaktivitas dapat diprediksi. Kopling dengan MCNP atau OpenMC untuk distribusi daya dan koefisien reaktivitas akan meningkatkan realisme desain ISR-V2.
+
+2. **Validasi CFD tiga dimensi.** Aliran uap dan cairan di dalam heat pipe, terutama di evaporator dan daerah transisi artery, perlu diselesaikan dengan CFD tiga dimensi untuk memvalidasi koefisien perpindahan kalor dan batas entrainment yang digunakan dalam ROM. Hasil CFD dapat digunakan untuk mengoreksi korelasi analitik pada geometri yang lebih kompleks.
+
+3. **Pengujian wick arterial.** Teknologi kritis ISR-V2 adalah wick arterial dengan permeabilitas sekitar 10⁻⁹ m² yang stabil terhadap getaran, siklus termal, dan depriming. Pengujian prototipe heat pipe 3,0 cm pada kondisi horizontal, miring, dan mikrogravitasi parsial (parabolic flight atau drop tower) sangat diperlukan sebelum konsep dinaikkan TRL-nya.
+
+4. **Uji kompatibilitas material.** Natrium pada 1050–1300 K bersifat korosif terhadap beberapa logam dan dapat bereaksi dengan oksigen serta air. Kompatibilitas Haynes 230, Mo-30Re, dan wick nikel dengan natrium pada siklus termal panjang perlu diuji, termasuk pengaruh kemurnian natrium dan lapisan oksida.
+
+5. **Optimasi geometri inti.** Desain ISR-V2 saat ini menggunakan 19 heat pipe 3,0 cm dan inti 34,0 cm. Optimasi lebih lanjut dapat mempertimbangkan heat pipe 4,0 cm dengan jumlah 13–19, konfigurasi heat pipe annular, atau integrasi heat pipe ke dalam pin bahan bakar untuk mengurangi massa reflektor dan blok inti.
+
+6. **Analisis sistem dan biaya.** Perbandingan massa dalam penelitian ini belum mencakup massa radiator, struktur, perisai, dan sistem kendali. Analisis sistem lengkap, termasuk biaya pengembangan, pengujian, dan peluncuran, diperlukan untuk menilai kelayakan ekonomi ISR-V2 secara keseluruhan.
+
+7. **Strategi startup dan kendali.** Startup 4 jam yang disimulasikan dalam penelitian ini masih konservatif. Strategi kendali yang mengatur laju ramp daya berdasarkan suhu bahan bakar dan laju kenaikan suhu heat pipe perlu dikembangkan untuk mempercepat startup tanpa melampaui batas tegangan termal.
+
+Dengan rekomendasi tersebut, diharapkan penelitian ini dapat menjadi landasan bagi pengembangan reaktor ruang angkasa Indonesia yang lebih matang, aman, dan berkelanjutan.
