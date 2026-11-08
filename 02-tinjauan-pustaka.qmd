@@ -3,7 +3,11 @@
 
 ## II.1 Perkembangan Reaktor Ruang Angkasa dan Teknologi Pendinginnya
 
-Reaktor ruang angkasa telah dikembangkan sejak awal era atom untuk memenuhi kebutuhan daya misi yang tidak dapat dipenuhi oleh sumber energi kimia atau surya. Tabel 2.1 merangkum beberapa konsep yang paling berpengaruh, termasuk konfigurasi pendingin dan sistem konversi energinya. Perbandingan ini penting karena pilihan pendingin tidak dapat dipisahkan dari pilihan suhu operasi, sistem konversi, dan tingkat kematangan teknologi.
+Reaktor ruang angkasa telah dikembangkan sejak awal era atom untuk memenuhi kebutuhan daya misi yang
+tidak dapat dipenuhi oleh sumber energi kimia atau surya. Tabel 2.1 merangkum beberapa konsep yang
+paling berpengaruh, termasuk konfigurasi pendingin dan sistem konversi energinya. Perbandingan ini
+penting karena pilihan pendingin tidak dapat dipisahkan dari pilihan suhu operasi, sistem konversi,
+dan tingkat kematangan teknologi.
 
 **Tabel 2.1** Perbandingan teknologi reaktor ruang angkasa dan sistem pendinginnya
 
