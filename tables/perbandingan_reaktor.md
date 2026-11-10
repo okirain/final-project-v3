@@ -1,5 +1,5 @@
-| Reaktor  | Periode | Daya termal/listrik   | Pendingin    | Konversi         | Status dan catatan                                                |
-|----------|---------|-----------------------|--------------|------------------|-------------------------------------------------------------------|
+| Reaktor  | Periode | Daya termal/listrik | Pendingin | Konversi | Status dan catatan |
+|:---:|:---:|:---:|:---:|:---:|:---:|
 | SNAP-10A | 1965    | ~30 kWth / 500 W(e)   | NaK-78       | Termoelektrik    | Terbang 43 hari; kegagalan sistem non-nuklir [8]                  |
 | BUK      | 1970-an | ~100 kWth / 3 kW(e)   | NaK-78       | Termoelektrik    | Operasional misi radar laut; pengalaman operasi terbatas [7], [8] |
 | TOPAZ-I  | 1987    | ~150 kWth / 5–6 kW(e) | NaK-78       | Termoelektrik    | Dua unit terbang; suhu operasi dibatasi titik didih NaK [7]       |

@@ -9,7 +9,12 @@ paling berpengaruh, termasuk konfigurasi pendingin dan sistem konversi energinya
 penting karena pilihan pendingin tidak dapat dipisahkan dari pilihan suhu operasi, sistem konversi,
 dan tingkat kematangan teknologi.
 
+
+::: {.landscape}
+
 {{< include tables/perbandingan_reaktor.md >}}
+
+:::
 
 Konsep LEGO untuk daya permukaan Bulan [12], kajian bahan bakar LEU [13], [14], serta analisis
 keselamatan reaktor cepat [32], [39], [40] melengkapi gambaran perkembangan tersebut. SNAP-10A, BUK,
