@@ -9,3 +9,4 @@
 | S4       | 2006    | ~470 kWth / 100 kW(e) | Na heat pipe | Stirling         | Konsep; fokus pada subkritisitas saat terendam [10]               |
 | KRUSTY   | 2018    | 5 kWth / ~1 kW(e)     | Na heat pipe | Stirling         | Uji nuklir 28 jam; benchmark utama penelitian ini [2]–[5]         |
 | ISR      | 2020    | 500 kWth              | NaK-78       | Belum ditentukan | Konsep reaktor cepat Indonesia [1]                                |
+: Perbandingan teknologi reaktor ruang angkasa dan sistem pendinginnya {#tbl-perbandingan}
